@@ -99,7 +99,7 @@ export default {
 
 <style>
 
-@import "../css/microMall/manageStyle.css";
+@import "../../css/microMall/manageStyle.css";
 
 </style>
 
