@@ -9,43 +9,97 @@
         <div class="manageCon">
         	<div class="manageBg"><img src="https://style.org.hc360.com/images/microMall/manage/manageBg.png"></div>
             <div class="personalInfo">
-            	<div class="headPortrait"><a href="#"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
+            	<div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.name'><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/manage/hImg.png'"></a></div>
                 <div class="comName">
-                	<a href="#" target="_blank">戴尔中国官方旗舰店</a>
+                	<a :href='"//m.hc360.com/b2b/"+companyInfo.name' target="_blank">{{companyInfo.name}}</a>
                 </div>
             </div>
             <div class="manageContent">
             	<div class="manageNavBox">
                 	<ul>
-                    	<li><a href="#"><em class="ico1"></em>店铺管理</a></li>
-                    	<li><a href="#"><em class="ico2"></em>商品管理</a></li>
-                    	<li><a href="#"><em class="ico3"></em>订单管理</a></li>
-                    	<li><a href="#"><em class="ico4"></em>经营分析</a></li>
-                    	<li><a href="#"><em class="ico5"></em>聚精彩</a></li>
-                    	<li><a href="#"><em class="ico6"></em>小程序管理</a></li>
+                    	<li v-for="(app,i) in sysApps" :key="i"><a :href="app.linkUrl"><em :class="app.className"></em>{{app.name}}</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="slogenBox">
-        	<dl>
-            	<dt><h5>慧聪微商城</h5></dt>
-                <dd>打造指尖上的移动电商</dd>
-            </dl></div>
+
+        <logo-tip></logo-tip>
+        
         
     </section>
   
 </template>
 
 <script>
+import logoTip from 'components/v-logoTip'
 export default {
+
+    data(){
+        return {
+            sysApps:[{
+                name:'店铺管理',
+                className:'ico1',
+                linkUrl:''
+            },{
+                name:'商铺管理',
+                className:'ico2',
+                linkUrl:''
+            },{
+                name:'订单管理',
+                className:'ico3',
+                linkUrl:''
+            },{
+                name:'经营分析',
+                className:'ico4',
+                linkUrl:'/#/operationDaily?level='+ this.$route.query.level
+            },{
+                name:'聚精彩',
+                className:'ico5',
+                linkUrl:''
+            },{
+                name:'小程序管理',
+                className:'ico6',
+                linkUrl:''
+            }],
+
+            /**公司信息 */
+            companyInfo:{}
+        }
+    },
+    
+    components:{
+        'logo-tip':logoTip
+    },
+
+    methods:{
+        getShopInfos(){
+            let _this = this;
+
+            _this.$http('get','//wsdetail.b2b.hc360.com/mobile/company?callback=',{
+
+            }).then((res) =>{
+                res = JSON.parse(res.replace(/\(|\)/g,'')) || {};
+                _this.companyInfo = res;
+            })
+        }
+
+    },
+
+    mounted(){
+        let _this = this;
+        _this.$nextTick(() =>{
+            _this.getShopInfos()
+        })
+    }
+
+    
     
 }
 </script>
 
 <style>
 
-@import "//style.org.hc360.com/css/microMall/global.css";
+@import "../css/microMall/manageStyle.css";
 
 </style>
 
