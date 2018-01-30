@@ -1,0 +1,291 @@
+{
+  "data": {
+    "orderlist": [{
+      "order": {
+        "orderSn": "dd201511100023",
+        "mtOrderId": "C29FF17418D00001E4CB86041E5030A00328",
+        "orderCreateTime": "2015-11-10 14:38:26",
+        "userCompanyName": "18501955539",
+        "fullCompanyName": "文思",
+        "userName": "yd255901955539",
+        "providerid": 100024086103,
+        "orderStatus": "100",
+        "orderSource": "2"
+      },
+      "products": {
+        "batchOrderid": "C29FF17419500001AF6A187071321B8C",
+        "orderTotalAmout": "5000000.00",
+        "orderFareAmount": "0.00",
+        "orderStatus": "等待卖家确认订单",
+        "orderStatusNoHtml": "等待卖家确认订单",
+        "orderStatusNo": "100",
+        "orderOperation": "\u003cp\u003e\u003cbutton id\u003d\"cfmorder\" onclick\u003d\u0027window.open(\"http://my.b2b.hc360.com/my/turbine/template/transaction,order,order_edit.html?orderid\u003dC29FF17418D00001E4CB86041E5030A00328\")\u0027 class\u003d\"red_btn3\" type\u003d\"button\" onmouseover\u003d\"this.className\u003d\u0027red_btn3_hov\u0027\" onmouseout\u003d\"this.className\u003d\u0027red_btn3\u0027\"\u003e确认订单\u003c/button\u003e\u003c/p\u003e\u003cp\u003e\u003ca id\u003d\"clsorder\" href\u003d\"javaScript:initOrderId(\u0027C29FF17418D00001E4CB86041E5030A00328\u0027,\u0027C29FF17419500001AF6A187071321B8C\u0027,\u0027100\u0027);\" style\u003d\"cursor:pointer\"\u003e关闭订单\u003c/a\u003e\u003c/p\u003e",
+        "operations": [{
+          "code": "SELLER_CONFIRM_ORDER",
+          "name": "确认订单",
+          "paramter": {}
+        }, {
+          "code": "SELLER_CLOSE_ORDER",
+          "name": "关闭订单",
+          "paramter": {}
+        }],
+        "prodList": [{
+          "bcPic": "http://img004.hc360.cn/m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png",
+          "bcName": "测试---投影仪IT设备、数码产品其他",
+          "bcId": 502870400,
+          "bcUnitPrice": "100000.00",
+          "bcUnits": "台",
+          "bcNumber": 50,
+          "bcAmount": "5000000.00",
+          "orderAmount": 0.0,
+          "mtBatchOrderId": "C29FF17419500001AF6A187071321B8C",
+          "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d502870400|C29FF174195000014F121DF0813010E7",
+          "deliverGoodsTime": "huo72",
+          "deliverGoodsNote": "10天发货",
+          "fifteenChange": "0",
+          "skuvalueList": ["颜色:白色"]
+        }],
+        "orderSource": "2",
+        "orderPaymentWay": 0,
+        "earnestMoneyPay": 0
+      },
+      "telephone": "18501955539",
+      "batchOrderid": "C29FF17419500001AF6A187071321B8C",
+      "orderStatus": "等待卖家确认订单",
+      "frozenState": 0
+    }, {
+      "order": {
+        "orderSn": "dd201801100079",
+        "mtOrderId": "C39EE00632A0000170598A80490D1AD67928",
+        "orderCreateTime": "2018-01-10 15:44:31",
+        "userCompanyName": "卫华安防公司",
+        "fullCompanyName": "卫华安防公司",
+        "userName": "anfang01",
+        "providerid": 100008844679,
+        "orderStatus": "100",
+        "orderSource": "2"
+      },
+      "products": {
+        "batchOrderid": "C39EE00633000001E9CE15B0258017BE",
+        "orderTotalAmout": "1.00",
+        "orderFareAmount": "0.00",
+        "orderStatus": "等待买家付款",
+        "orderStatusNoHtml": "等待买家付款",
+        "orderStatusNo": "200",
+        "orderOperation": "\u003cp\u003e\u003cbutton onclick\u003d\u0027window.open(\"http://my.b2b.hc360.com/my/turbine/template/transaction,order,order_edit.html?orderid\u003dC39EE00632A0000170598A80490D1AD67928\")\u0027 class\u003d\"red_btn3\" type\u003d\"button\" onmouseover\u003d\"this.className\u003d\u0027red_btn3_hov\u0027\" onmouseout\u003d\"this.className\u003d\u0027red_btn3\u0027\"\u003e修改订单\u003c/button\u003e\u003c/p\u003e\u003cp\u003e\u003ca href\u003d\"javaScript:initOrderId(\u0027C39EE00632A0000170598A80490D1AD67928\u0027,\u0027C39EE00633000001E9CE15B0258017BE\u0027,\u0027200\u0027);\" style\u003d\"cursor:pointer\"\u003e关闭订单\u003c/a\u003e\u003c/p\u003e",
+        "operations": [{
+          "code": "SELLER_MODIFY_ORDER",
+          "name": "修改订单",
+          "paramter": {}
+        }, {
+          "code": "SELLER_CLOSE_ORDER",
+          "name": "关闭订单",
+          "paramter": {}
+        }],
+        "prodList": [{
+          "bcPic": "http://img000.hc360.cn/k3/M00/87/C3/wKhQx1pNhXuEUpI0AAAAAO-Ey-E264.jpg",
+          "bcName": "亚津JS-0488 CD盒whctest201801101530",
+          "bcId": 680173348,
+          "bcUnitPrice": "0.10",
+          "bcUnits": "盒",
+          "bcNumber": 10,
+          "bcAmount": "1.00",
+          "orderAmount": 0.0,
+          "mtBatchOrderId": "C39EE00633000001E9CE15B0258017BE",
+          "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d680173348|C39EE00633000001CACC10906C1A1970",
+          "deliverGoodsTime": "huo72",
+          "deliverGoodsNote": "10天发货",
+          "fifteenChange": "0",
+          "skuvalueList": []
+        }],
+        "orderSource": "2",
+        "orderPaymentWay": 0,
+        "earnestMoneyPay": 0
+      },
+      "telephone": "13811601961",
+      "batchOrderid": "C39EE00633000001E9CE15B0258017BE",
+      "orderStatus": "等待买家付款",
+      "frozenState": 0,
+      "payVo": {
+        "mtOrderId": "C39EE00632A0000170598A80490D1AD67928",
+        "totalAmount": "1.00",
+        "count": "10盒"
+      }
+    }, {
+      "order": {
+        "orderSn": "dd201703140282",
+        "mtOrderId": "C33DBA747E700001B8F425BEBEC0D6003228",
+        "orderCreateTime": "2017-03-14 19:57:18",
+        "userCompanyName": "伊敏牛肉销售代理",
+        "fullCompanyName": "伊敏牛肉销售代理",
+        "userName": "xinle516997615",
+        "providerid": 100024404432,
+        "orderStatus": "100",
+        "orderSource": "3"
+      },
+      "products": {
+        "batchOrderid": "C33DBA747EB00001F9AC1BFDF2073DD0",
+        "orderTotalAmout": "0.02",
+        "orderFareAmount": "0.00",
+        "orderStatus": "等待卖家发货",
+        "orderStatusNoHtml": "等待卖家发货",
+        "orderStatusNo": "300",
+        "orderOperation": "\u003cp\u003e\u003cbutton class\u003d\"red_btn3_hov\" onclick\u003d\u0027window.open(\"http://my.b2b.hc360.com/my/turbine/template/transaction,order,sendproduct.html?orderSn\u003dC33DBA747E700001B8F425BEBEC0D6003228\u0026batchSn\u003dC33DBA747EB00001F9AC1BFDF2073DD0\")\u0027 type\u003d\"button\" onmouseover\u003d\"this.className\u003d\u0027red_btn3_hov\u0027\" onmouseout\u003d\"this.className\u003d\u0027red_btn3\u0027\" id\u003d\"listsendgoods\"\u003e发货\u003c/button\u003e\u003c/p\u003e",
+        "operations": [{
+          "code": "SELLER_DELIVERY",
+          "name": "发货",
+          "paramter": {}
+        }],
+        "prodList": [{
+          "bcPic": "http://img001.hc360.cn/k2/M09/95/30/wKhQxVf-NuOEMgr2AAAAAOeYORs707.jpg",
+          "bcName": "测试品类1的第三个",
+          "bcId": 601951851,
+          "bcUnitPrice": "0.01",
+          "bcUnits": "扇",
+          "bcNumber": 2,
+          "bcAmount": "0.02",
+          "orderAmount": 0.0,
+          "mtBatchOrderId": "C33DBA747EB00001F9AC1BFDF2073DD0",
+          "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d601951851|C33DBA747EB000014BA4B6FC1A9E198C",
+          "prodState": {
+            "mtProductOrderId": "C33DBA747EB000014BA4B6FC1A9E198C",
+            "sendState": "未发货"
+          },
+          "deliverGoodsTime": "huo72",
+          "deliverGoodsNote": "10天发货",
+          "fifteenChange": "0",
+          "skuvalueList": []
+        }],
+        "orderSource": "3",
+        "orderPaymentWay": 0,
+        "earnestMoneyPay": 0
+      },
+      "telephone": "18001050220",
+      "batchOrderid": "C33DBA747EB00001F9AC1BFDF2073DD0",
+      "orderStatus": "等待卖家发货",
+      "frozenState": 0
+    },{
+        "order": {
+          "orderSn": "dd201606120059",
+          "mtOrderId": "C2E5247B8C30000147561E439B3011C04028",
+          "orderCreateTime": "2016-06-12 14:31:00",
+          "userCompanyName": "18519219161",
+          "fullCompanyName": "18519219161",
+          "userName": "yd892219219161",
+          "providerid": 100025502340,
+          "orderStatus": "800",
+          "orderSource": "3"
+        },
+        "products": {
+          "batchOrderid": "C2E5247B8C80000186D4FA2DDE30C620",
+          "orderTotalAmout": "0.01",
+          "orderFareAmount": "0.00",
+          "orderStatus": "交易成功",
+          "orderStatusNoHtml": "交易成功",
+          "orderStatusNo": "800",
+          "evaluationInfo": "\u003ca target\u003d\"_blank\" href\u003d\"http://my.b2b.hc360.com/my/turbine/template/evaluation,sellerdetail.html?mtOrderId\u003dC2E5247B8C30000147561E439B3011C04028\"\u003e买家已评\u003c/a\u003e",
+          "orderOperation": "",
+          "prodList": [{
+            "bcPic": "http://img005.hc360.cn/m3/M00/85/60/wKhQ51UHmauEUAZYAAAAAMw7LFc538.jpg",
+            "bcName": "拯救卖火柴的小女孩",
+            "bcId": 413775120,
+            "bcUnitPrice": "0.01",
+            "bcUnits": "立方",
+            "bcNumber": 1,
+            "bcAmount": "0.01",
+            "orderAmount": 0.0,
+            "mtBatchOrderId": "C2E5247B8C80000186D4FA2DDE30C620",
+            "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d413775120|C2E5247B8C80000116C1A7CD18C0142F",
+            "deliveryProdState": "已发货",
+            "receiveProdState": "已收货",
+            "prodState": {
+              "mtProductOrderId": "C2E5247B8C80000116C1A7CD18C0142F",
+              "sendState": "已收货"
+            },
+            "deliverGoodsTime": "huo72",
+            "deliverGoodsNote": "10天发货",
+            "fifteenChange": "0",
+            "skuvalueList": []
+          }],
+          "orderSource": "3",
+          "orderPaymentWay": 0,
+          "earnestMoneyPay": 0
+        },
+        "telephone": "18519219161",
+        "logistic": {
+          "logisticsCode": "zx201606120414",
+          "deliveryType": "自行发货",
+          "receivePordAddress": "王斌 赶工期 北京 昌平区  知春路（030098）  18610321887",
+          "logisticsCompanyName": "德邦物流",
+          "itemNumber": "000823748927343",
+          "remarkInfo": "",
+          "sendTime": "2016-06-12 14:32:41",
+          "sendProdcutList": [{
+            "bcid": 413775120,
+            "bcPicUrl": "http://img005.hc360.cn/m3/M00/85/60/wKhQ51UHmauEUAZYAAAAAMw7LFc538.jpg",
+            "bcPicUrlResourceId": "m3/M00/85/60/wKhQ51UHmauEUAZYAAAAAMw7LFc538.jpg",
+            "urlAddress": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d413775120|C2E5247B8C80000116C1A7CD18C0142F",
+            "bcName": "拯救卖火柴的小女孩",
+            "bcNumber": 1,
+            "bcUnit": "立方"
+          }]
+        },
+        "batchOrderid": "C2E5247B8C80000186D4FA2DDE30C620",
+        "orderStatus": "交易成功",
+        "frozenState": 0
+      },{
+      "order": {
+        "orderSn": "dd201710310227",
+        "mtOrderId": "C38807747000000119202973B43017227328",
+        "orderCreateTime": "2017-10-31 16:13:22",
+        "userCompanyName": "飞迅汽配",
+        "fullCompanyName": "飞迅汽配",
+        "userName": "dongjian3712",
+        "providerid": 100015547573,
+        "orderStatus": "900",
+        "orderSource": "2"
+      },
+      "products": {
+        "batchOrderid": "C388077470600001C3741120EDA01AD0",
+        "orderTotalAmout": "2.10",
+        "orderFareAmount": "0.10",
+        "orderStatus": "交易关闭",
+        "orderStatusNoHtml": "交易关闭",
+        "orderStatusNo": "900",
+        "orderOperation": "",
+        "prodList": [{
+          "bcPic": "http://img006.hc360.cn/k3/M08/29/01/wKhQx1jblLGEXxYwAAAAAL-Fydk027.jpg",
+          "bcName": "支持 衣服测试商机请勿下单",
+          "bcId": 633227246,
+          "bcUnitPrice": "2.00",
+          "bcUnits": "副",
+          "bcNumber": 1,
+          "bcAmount": "2.00",
+          "orderAmount": 0.0,
+          "mtBatchOrderId": "C388077470600001C3741120EDA01AD0",
+          "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d633227246|C3880774707000012F1215C01EB32760",
+          "prodState": {
+            "mtProductOrderId": "C3880774707000012F1215C01EB32760"
+          },
+          "deliverGoodsTime": "huo72",
+          "deliverGoodsNote": "按时发货",
+          "fifteenChange": "0",
+          "skuvalueList": ["尺码:25", "颜色:白色"]
+        }],
+        "orderSource": "2",
+        "orderPaymentWay": 0,
+        "earnestMoneyPay": 0
+      },
+      "telephone": " ",
+      "batchOrderid": "C388077470600001C3741120EDA01AD0",
+      "orderStatus": "交易关闭",
+      "frozenState": 0
+    }],
+    "page": 1,
+    "pages": 186
+  },
+  "errno": 0
+}
+
+
+

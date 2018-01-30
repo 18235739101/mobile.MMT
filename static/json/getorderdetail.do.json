@@ -1,0 +1,137 @@
+{
+  "data": {
+    "orderDetail": {
+      "orderID": "C29FF17418D00001E4CB86041E5030A00328",
+      "batchOrderId": "C29FF17419500001AF6A187071321B8C",
+      "orderSn": "dd201511100023",
+      "orderState": 100,
+      "orderStateInfo": "等待卖家确认订单",
+      "payInfoNotify": "",
+      "ssoid": 0,
+      "buyerProviderid": 100024086103,
+      "sellerProviderid": 100008361628,
+      "userIdentity": "1",
+      "orderFlow": "3",
+      "userOperation": "\u003cdiv class\u003d\"tp_item\"\u003e\u003cspan class\u003d\"st_title\"\u003e交易操作：\u003c/span\u003e\u003cspan class\u003d\"info_hand_z\"\u003e请您\u003c/span\u003e\u003ca id\u003d\"cfmoder\" class\u003d\"btn9-3\" href\u003d\"http://my.b2b.hc360.com/my/turbine/template/transaction,order,order_edit.html?orderid\u003dC29FF17418D00001E4CB86041E5030A00328\" target\u003d\"_blank\"\u003e修改/确认订单\u003c/a\u003e\u003c/div\u003e\u003cdiv class\u003d\"tp_item_ot\"\u003e\u003cspan class\u003d\"info_hand_z\"\u003e如果交易无法继续执行，您可以\u003c/span\u003e\u003ca id\u003d\"sclose\" href\u003d\"javaScript:void(0);\" onclick\u003d\"closeOrderVerify(\u0027detail\u0027,\u0027showdiv\u0027);\" style\u003d\"cursor:pointer\"\u003e关闭交易\u003c/a\u003e\u003c/div\u003e",
+      "sendProdState": "0",
+      "timeLimitEntity": {
+        "remindInfo": "\u003c!-- 时限提醒已过期 (2015-12-10 14:38:26.0) --\u003e"
+      },
+      "isHaveCommissionAmount": "0",
+      "isForzen": "0",
+      "orderFlowType": "1",
+      "isShowEvalInfo": false,
+      "buyerPayFareState": "0",
+      "orderSource": "2",
+      "orderPaymentWay": 0,
+      "earnestMoneyPay": 0,
+      "orderDetailTabViewObject": {
+        "userInfoEntity": {
+          "companyName": "185019555...",
+          "companyNameAll": "18501955539",
+          "telphone": "",
+          "linkMan": "松",
+          "userName": "yd255901955539",
+          "mobile": "18501955539",
+          "memberLevel": "0",
+          "providerid": 100024086103
+        },
+        "orderIntroEntity": {
+          "orderCode": 0,
+          "confirmOrderTime": "2015-11-10 14:38:26",
+          "orderFareAmount": "0.00",
+          "orderTotalAmount": "5000000.00",
+          "mtInvoiceId": "0"
+        },
+        "pordList": [{
+          "bcid": 502870400,
+          "picurl": "http://img004.hc360.cn/m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png",
+          "picUrlResourceId": "m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png",
+          "businName": "测试---投影仪IT设备、数码产品其他",
+          "deliveryTime": "huo72",
+          "deliveryTimeInfo": "10天发货",
+          "fifteenChange": "0",
+          "price": "100000.00",
+          "bcnumber": 50,
+          "productAmount": "5000000.00",
+          "bcUnit": "台",
+          "mtProductOrderId": "C29FF174195000014F121DF0813010E7",
+          "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d502870400|C29FF174195000014F121DF0813010E7",
+          "skuvalue": "颜色:白色;",
+          "skuid": 74595568,
+          "skuList": ["颜色:白色"]
+        }]
+      }
+    },
+    "userInfoEntity": {
+      "companyName": "185019555...",
+      "companyNameAll": "18501955539",
+      "telphone": "",
+      "linkMan": "松",
+      "userName": "yd255901955539",
+      "mobile": "18501955539",
+      "memberLevel": "0",
+      "providerid": 100024086103
+    },
+    "orderIntroEntity": {
+      "orderCode": 0,
+      "confirmOrderTime": "2015-11-10 14:38:26",
+      "orderFareAmount": "0.00",
+      "orderTotalAmount": "5000000.00",
+      "mtInvoiceId": "0"
+    },
+    "products": {
+      "batchOrderid": "C29FF17419500001AF6A187071321B8C",
+      "orderTotalAmout": "5000000.00",
+      "orderFareAmount": "0.00",
+      "orderStatus": "等待卖家确认订单",
+      "orderStatusNoHtml": "等待卖家确认订单",
+      "orderStatusNo": "100",
+      "orderOperation": "\u003cp\u003e\u003cbutton id\u003d\"cfmorder\" onclick\u003d\u0027window.open(\"http://my.b2b.hc360.com/my/turbine/template/transaction,order,order_edit.html?orderid\u003dC29FF17418D00001E4CB86041E5030A00328\")\u0027 class\u003d\"red_btn3\" type\u003d\"button\" onmouseover\u003d\"this.className\u003d\u0027red_btn3_hov\u0027\" onmouseout\u003d\"this.className\u003d\u0027red_btn3\u0027\"\u003e确认订单\u003c/button\u003e\u003c/p\u003e\u003cp\u003e\u003ca id\u003d\"clsorder\" href\u003d\"javaScript:initOrderId(\u0027C29FF17418D00001E4CB86041E5030A00328\u0027,\u0027C29FF17419500001AF6A187071321B8C\u0027,\u0027100\u0027);\" style\u003d\"cursor:pointer\"\u003e关闭订单\u003c/a\u003e\u003c/p\u003e",
+      "operations": [{
+        "code": "SELLER_CONFIRM_ORDER",
+        "name": "确认订单",
+        "paramter": {}
+      }, {
+        "code": "SELLER_CLOSE_ORDER",
+        "name": "关闭订单",
+        "paramter": {}
+      }],
+      "prodList": [{
+        "bcPic": "http://img004.hc360.cn/m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png",
+        "bcName": "测试---投影仪IT设备、数码产品其他",
+        "bcId": 502870400,
+        "bcUnitPrice": "100000.00",
+        "bcUnits": "台",
+        "bcNumber": 50,
+        "bcAmount": "5000000.00",
+        "orderAmount": 0.0,
+        "mtBatchOrderId": "C29FF17419500001AF6A187071321B8C",
+        "bcSnapshotUrl": "http://detail.b2b.hc360.com/detail/turbine/template/trade,snap,busin.html?key\u003d502870400|C29FF174195000014F121DF0813010E7",
+        "deliverGoodsTime": "huo72",
+        "deliverGoodsNote": "10天发货",
+        "fifteenChange": "0",
+        "skuvalueList": ["颜色:白色"]
+      }],
+      "orderSource": "2",
+      "orderPaymentWay": 0,
+      "earnestMoneyPay": 0
+    },
+    "note": {
+      "noteEvidenceParamList": {
+        "lstResult": [],
+        "DEF_PAGE_VIEW_SIZE": 20,
+        "page": 1,
+        "pageSize": 5,
+        "count": 0,
+        "endNo": 0,
+        "actionType": 0
+      },
+      "status": "1"
+    },
+    "telephone": "18501955539",
+    "remindStr": "您的订单已提交成功，请耐心等待商家处理",
+    "address": "空咯哦哦您累了吗磨练陌陌Moo 66米16 北京 昌平区  天通苑（100000）  18599996952"
+  },
+  "errno": 0
+}

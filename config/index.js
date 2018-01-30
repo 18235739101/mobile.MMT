@@ -2,7 +2,8 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path'),
+      url=require('url');
 
 module.exports = {
   dev: {
@@ -10,7 +11,34 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        '/manager':{
+          target:'http://localhost:8080',
+          secure:false,//默认情况下，不接受运行在 HTTPS 上，如果想代理https，需要配置此参数
+          changeOrigin:true,
+          pathRewrite: function(path, req) {
+            var urlParsed = url.parse(req.url, true),
+                query = urlParsed.query,
+                pathname = urlParsed.pathname.replace(/\/*$/g,'');
+            pathname = pathname.substring(pathname.lastIndexOf('/'));
+            return '/static/json' + pathname + '.json'
+            // Object.keys(query).forEach((key) => {
+            //     pathname += ('-' + key + query[key]);
+            // });
+            // pathname = '/static/json' + pathname + '.json';
+            // console.log('proxy request ' + path + ' to ' + pathname);
+            // return pathname;
+        }
+        },
+        '/api':{
+          target:'https://mlogin.hc360.com',
+          changeOrigin:true,
+          pathRewrite: {
+            '^/api': ''
+          }
+        }
+
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

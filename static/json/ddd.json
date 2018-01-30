@@ -1,0 +1,40 @@
+{
+  "data": {
+    "orderDetail": {
+      "order": {
+        "orderCode": "dd201511100023", //订单编号
+        "orderCreateTime": "2015-11-10 14:38:26", //下单时间
+        "buy_openid": "jkgjkfdkds", //买家openid 用于发货时调用发送模板消息
+        "rec_name": "张先生", //收货人
+        "rec_addr": "中国", //收货地址
+        "nickname": "文思", //买家昵称
+        "telephone": "18501955539", //收货人联系方式
+        "headImg": "url网络地址", //买家头像
+        "orderStatus": "1", //订单状态(0-代发货 1-待收货 2-已完成)
+        "orderTotalAmout": "5000000.00", //总金额
+        "orderFareAmount": "0.00" //运费
+      },
+      "prodList": [{
+        "bcPic": "http://img004.hc360.cn/m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png", //商品图片
+        "bcName": "测试---投影仪IT设备、数码产品其他", //商品标题
+        "bcId": 502870400, //商品id
+        "bcUnitPrice": "100000.00", //商品单价
+        "bcNumber": 50, //商品数量
+        "bcAmount": "5000000.00" //商品总价格
+      }, {
+        "bcPic": "http://img004.hc360.cn/m8/M01/CC/AD/wKhQplZBj3qEFgsaAAAAANMXN3o448.png",
+        "bcName": "测试---投影仪IT设备、数码产品其他",
+        "bcId": 502870400,
+        "bcUnitPrice": "100000.00",
+        "bcNumber": 50,
+        "bcAmount": "5000000.00"
+      }],
+      "post": {
+        "post_company": "中通快递",
+        "post_code": "87944974578585",
+        "post_remark": "空咯哦哦您累了吗磨练"
+      }
+    },
+    "errcode": 0
+  }
+}
