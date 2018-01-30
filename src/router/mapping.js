@@ -12,10 +12,19 @@ const routeConfig = [
           resolve(require('../components/order'));
         });
       }
-    },    
+    },
+    {
+      name:'店铺订单',
+      path:'/shopOrder',
+      component:resolve => {
+        require.ensure(['../components/order/shop-order.vue'], () => {
+          resolve(require('../components/order/shop-order.vue'));
+        });
+      }
+    },   
     {
       name:'店铺订单详情页',
-      path:'/order/detail',
+      path:'/shopOrder/detail',
       component:resolve => {
         require.ensure(['../components/order/shop-order-detail.vue'], () => {
           resolve(require('../components/order/shop-order-detail.vue'));

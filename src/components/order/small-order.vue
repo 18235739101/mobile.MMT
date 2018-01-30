@@ -1,13 +1,5 @@
 <template>
-  <section>
-        <header class="mHeaderBox"><a href="#" class="arrowLeft"></a><h3>订单管理</h3></header>
-        <div class="orderTab">
-        	<dl>
-            	<dd @click="swichRouter"><a>店铺订单</a></dd>
-                <dd @click="swichRouter" class="tabCur"><a>小程序订单</a></dd>
-            </dl>
-        </div>
-        <div class="orderListBox">
+    <div class="orderListBox">
         	<div class="wxOrderTit">
             	<ul>
                 	<li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" >{{orderVal.name}}</li>                            
@@ -39,13 +31,12 @@
                         </dl>
                         <div class="orderBot">
                             <div class="wxOrderBot"><p>共{{ ol.prodList.length }}件商品 合计：<span>&yen;{{ol.order.orderTotalAmout}}</span>（含运费￥{{ol.order.orderFareAmount}}）</p></div>
-                            <div class="logisticsBtn" v-show="getOrderStatus(ol.order.orderStatus)"><a :href="'#/smallOrder/delivery?bcid='+ol.order.orderCode">发货</a></div>
+                            <div class="logisticsBtn" v-show="getOrderStatus(ol.order.orderStatus)"><a :href="'#/smallOrder/delivery?orderid='+ol.order.orderCode">发货</a></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-	</section>
 </template>
 
 <script>
@@ -114,26 +105,6 @@ export default {
       orderContext=deliveryStatus[parseInt(status)];
       return orderContext=="代发货"
      },
-    swichRouter(e) {
-      var that = this;
-      const navContent = e.target.innerText,
-        routerList = [
-          {
-            name: "店铺订单",
-            path: "/order"
-          },
-          {
-            name: "小程序订单",
-            path: "/smallOrder"
-          }
-        ];
-
-      routerList.forEach(function(val) {
-        if (val.name == navContent) {
-          that.$router.push(val.path);
-        }
-      });
-    },
      /**
      * @method 获取订单列表
      */
