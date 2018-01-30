@@ -8,8 +8,8 @@ const routeConfig = [
       name:'店铺订单',
       path:'/order',
       component:resolve => {
-        require.ensure(['../component/order'], () => {
-          resolve(require('../component/order'));
+        require.ensure(['../components/order'], () => {
+          resolve(require('../components/order'));
         });
       }
     },    
@@ -17,8 +17,8 @@ const routeConfig = [
       name:'店铺订单详情页',
       path:'/order/detail',
       component:resolve => {
-        require.ensure(['../component/order/shop-order-detail.vue'], () => {
-          resolve(require('../component/order/shop-order-detail.vue'));
+        require.ensure(['../components/order/shop-order-detail.vue'], () => {
+          resolve(require('../components/order/shop-order-detail.vue'));
         });
       }
     },
@@ -26,8 +26,8 @@ const routeConfig = [
       name:'小程序订单',
       path:'/smallOrder',
       component:resolve => {
-        require.ensure(['../component/order/small-order.vue'], () => {
-          resolve(require('../component/order/small-order.vue'));
+        require.ensure(['../components/order/small-order.vue'], () => {
+          resolve(require('../components/order/small-order.vue'));
         });
       }
     },
@@ -35,8 +35,8 @@ const routeConfig = [
       name:'小程序订单详情页',
       path:'/smallOrder/detail',
       component:resolve => {
-        require.ensure(['../component/order/small-order-detail.vue'], () => {
-          resolve(require('../component/order/small-order-detail.vue'));
+        require.ensure(['../components/order/small-order-detail.vue'], () => {
+          resolve(require('../components/order/small-order-detail.vue'));
         });
       }
     },
@@ -44,9 +44,71 @@ const routeConfig = [
       name:'小程序发货页面',
       path:'/smallOrder/delivery',
       component:resolve => {
-        require.ensure(['../component/order/small-delivery.vue'], () => {
-          resolve(require('../component/order/small-delivery.vue'));
+        require.ensure(['../components/order/small-delivery.vue'], () => {
+          resolve(require('../components/order/small-delivery.vue'));
         });
+      }
+  },
+    {
+      name:'慧聪微店管理后台',
+      path:'/manage',
+      meta: { 
+          requireAuth: true
+      },
+      query:'level',
+      component:resolve => {
+        require.ensure(['../components/manage/index.vue'],() => {
+          resolve(require('../components/manage/index.vue'))
+        })
+      }
+    },
+    {
+      name: '运营日报',
+      path: '/operationDaily',
+      meta: { 
+        requireAuth: true
+      },
+      query:'level',
+      component: resolve => {
+        require.ensure(['../components/operationDaily/index.vue'], () => {
+          resolve(require('../components/operationDaily/index.vue'))
+        })
+      }
+    },
+    {
+      name: '曝光量详情',
+      path: '/operationDaily/exposure',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/operationDaily/exposure.vue'], () => {
+          resolve(require('../components/operationDaily/exposure.vue'))
+        })
+      }
+    },
+    {
+      name: '在售商品数',
+      path: '/operationDaily/onsale',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/operationDaily/onsale.vue'], () => {
+          resolve(require('../components/operationDaily/onsale.vue'))
+        })
+      }
+    },
+    {
+      name: '30天询盘详情',
+      path: '/operationDaily/inqueryFor30',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/operationDaily/inqueryFor30.vue'], () => {
+          resolve(require('../components/operationDaily/inqueryFor30.vue'))
+        })
       }
     }
   ];

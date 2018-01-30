@@ -1,0 +1,50 @@
+.indexBox{overflow:hidden;}
+.indexBox ul li{overflow:hidden;text-align:center;height: 4rem;position: relative;padding: 0.5rem 0;}
+.indexBox ul li:nth-child(1),.indexBox ul li:nth-child(3){background:#fff;}
+.indexBox .box1Left{text-align: left;display:inline-block;vertical-align:middle;margin-right:0.2rem;padding-top: 0.6rem;position: absolute;left: 0.45rem;top: 0.6rem;right: 3.07407rem;}
+.indexBox .box1Left h3{font-size:.3rem;color: #333;font-weight:normal;line-height: 0.46rem;height:0.46rem;white-space: nowrap;vertical-align: middle;margin-bottom: 0.05rem;}
+.indexBox .box1Left p{font-size:0.24rem;color: #999;padding-bottom: 0.05rem;line-height:0.54rem;white-space: nowrap;}
+.indexBox .box1Left a{display:inline-block;width:2.4rem;height:0.54rem;color:#ff3b3b;background:none;border:0.02rem solid #ff3b3b;line-height:0.54rem;border-radius:0.3rem;text-decoration:none;font-size:0.3rem;text-align: center;}
+.indexBox .box1Rig{width:2.61rem;height:2.28rem;float: right;vertical-align:middle;margin: 0.4rem 0.45rem 0 0;}
+.indexBox .box1Left h3 b{font-size: 0.5rem;color: #ff3b3b;padding-left: 0.1rem;}
+.conter{background:#f8f8f8;}
+.exposureBox{overflow:hidden;}
+.botBoxNew{overflow:hidden;}
+.botBoxCon5,.botBoxCon3{padding: 0;color:#333;overflow: hidden;background: #fff;}
+.botBoxCon5 dt,,.botBoxCon3 dt,.botBoxCon4 dd{font-size: 0.24rem;}
+.botBoxCon5 dd,.botBoxCon3 dd{padding-bottom:1.111rem;}
+.botBoxCon5 dd b,.botBoxCon3 dd b{color:#ee2e2c;}
+.botBoxCon5 dt{line-height: 0.62rem;padding-left: 0.25rem;background: #f8f8f8;}
+.botBoxCon5.boxCon6 ul li{width: calc(33.333% - 2.5% - 0.02rem);margin-right: 2.5%;}
+.botBoxCon5.boxCon6 ul li:last-child{margin-right:0}
+.botBoxCon5.boxCon6 ul li span,.botBoxCon3 ul li span{display: block;font-size: 0.24rem;line-height: 0.36rem;}
+.titleCon{font-size: 0.3rem;font-weight:bold;color: #333;padding-left: 0.65rem;background: url(https://style.org.hc360.com/images/microMall/index/analysisIco.png) no-repeat #fff -1.45rem -0.42rem;background-size: 2rem 14.95rem;height: 0.88rem;line-height: 0.88rem;}
+.botBoxCon5 ul li em.ico1{background-position: 0.07rem -4.26rem;}
+.botBoxCon5 ul li em.ico2{background-position: 0.07rem -5.1rem;}
+.botBoxCon5 ul li em.ico3{background-position: 0.08rem -5.943rem;}
+.botBoxCon5 ul li em.ico4{background-position: 0.06rem 0.06rem;}
+.botBoxCon5 ul li em.ico10{background-position: 0.04rem -0.74rem;}
+.botBoxCon5 ul li em.ico5{background-position: 0.04rem -1.64rem;}
+.botBoxCon5 ul li em.ico6{background-position: 0.07rem -2.54rem;}
+.botBoxCon5 ul li em.ico9{background-position: 0.07rem -3.4rem;}
+.botBoxCon3 ul li em.ico7{background-position: 0rem -6.753rem;}
+.botBoxCon3 ul li em.ico8{background-position: 0.04rem -7.653rem;}
+.botBoxCon3 ul li em.ico9{background-position: 0.08rem -5.943rem;}
+.botBoxCon3 ul li em.ico10{background-position: 0.08rem -8.523rem;}
+.botBoxCon3 ul li,.botBoxCon5 ul li{width: calc(50% - 2.5% - 0.02rem);height: initial;float: left;border:1px solid #ccc;border-radius: 0.15rem;text-align:center;margin-right: 2.5%;padding-bottom: 0.22rem;}
+.botBoxCon5 ul li span{{display: block;font-size: 0.24rem;line-height: 0.36rem;}
+display: block;font-size: 0.24rem;line-height: 0.36rem;}
+.botBoxCon ul li em,.botBoxCon5 ul li em,.botBoxCon3 ul li em{display:block;margin: 0.2rem auto 0.08rem;width: 0.7rem;height: 0.7rem;background: url(https://style.org.hc360.com/images/microMall/index/analysisIco.png) no-repeat;background-size: 2rem 14.95rem;}
+.botBoxCon5 ul,.botBoxCon3  ul{overflow: hidden;padding: 0 0.25rem 0.3rem;text-align: center;width: 103%;}
+.botBoxCon3 ul li b,.botBoxCon5 ul li b{color: #ff3b3b;}
+.botBoxCon5.boxCon6,.botBoxCon3{border-bottom:0.2rem solid #f8f8f8;}
+.promptCon2{line-height: 0.62rem;padding-left: 0.25rem;font-size: 0.24rem;color: #666;}
+.titleCon.redStar{background: url(https://style.org.hc360.com/images/microMall/index/analysisIco.png) no-repeat #fff -1.45rem .28rem;background-size: 2rem 14.95rem;}
+.botBoxCon2{background:#fff;overflow:hidden;}
+.dataBox3{padding: 0 0.65rem 0.2rem 0.65rem;overflow:hidden;}
+.dataBox3 a{display: block;height: 0.7rem;line-height: 0.7rem;border-radius: 0.5rem;background: #ff3b3b;text-align: center;color: #fff;font-size: 0.3rem;margin: 0.3rem 0 0.4rem;box-shadow: 0.05rem 0.08rem 0.35em #ddd;}
+.dataBox3 p{color:#666;}
+.slogenBox dt h5{ background:#f8f8f8 !important;}
+.dataBox2{ padding:0.2rem 0.25rem; min-height:3rem;}
+.titleCon a{float: right;margin-right: 0.25rem;font-size:0.24rem;color: #ff3b3b;font-weight: normal;padding-right: 0.3rem;background: url(https://style.org.hc360.com/images/microMall/index/analysisIco.png) no-repeat #fff -0.8rem -1.08rem;background-size: 2rem 14.95rem;}
+.indexBox .box1Rig img{ width:2.61rem; height:2.28rem;}
