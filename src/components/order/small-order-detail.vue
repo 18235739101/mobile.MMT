@@ -1,15 +1,17 @@
 <template>
   <section>
-        <header class="mHeaderBox"><a href="#" class="arrowLeft"></a><h3>订单详情</h3></header>
-        <div class="orderListBox" v-if="orderDetail.order">
-			<div class="orderNum">
-            	<p>{{orderDetail.order.orderCode}}</p>
-                <span>{{orderDetail.order.orderStatus}}</span>
-            </div>
-            <div class="wxAddressBox">
-            	<div class="addressLeft">
-                	<h5>{{orderDetail.order.rec_name}}<span>{{orderDetail.order.telephone}}</span></h5>
-                    <p>{{orderDetail.order.rec_addr}}</p>
+        <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="gotoBack()"></a><h3>订单详情</h3></header>
+        <div class="orderListBox" >
+            <div v-if="orderDetail.order">
+                <div class="orderNum">
+                    <p>{{orderDetail.order.orderCode}}</p>
+                    <span>{{orderDetail.order.orderStatus}}</span>
+                </div>
+                <div class="wxAddressBox">
+                    <div class="addressLeft">
+                        <h5>{{orderDetail.order.rec_name}}<span>{{orderDetail.order.telephone}}</span></h5>
+                        <p>{{orderDetail.order.rec_addr}}</p>
+                    </div>
                 </div>
             </div>
             <div class="orderContent">
@@ -20,17 +22,19 @@
                     <dl>
                         <dd v-show="orderDetail.prodList" v-for="(item,i) in orderDetail.prodList" :key="i">
                             <div class="orderImg">
-                                <a href="//m.hc360.com/supplyself/680173348.html"><img :src="item.bcPic"></a>
+                                <a href="javascript:;"><img :src="item.bcPic"></a>
                             </div> 
                             <div class="orderImgRig">
-                                <a href="//m.hc360.com/supplyself/680173348.html">
+                                <a href="javascript:;">
                                     <div class="orderName"><p class="oName">{{item.bcName}}</p> </div> 
                                     <div class="oListPrice"><p>&yen;{{item.bcUnitPrice}}</p><p>X{{item.bcNumber}}</p></div>
                                 </a>
-                                <a href="#" class="fhBtn">发货</a>
+                               <span v-if="orderDetail.order" >
+                                   <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" class="fhBtn">发货</a>
+                               </span>
                             </div>
                         </dd>
-                        <dt>
+                        <dt v-if="orderDetail.order">
                         	<div class="orderDetail">
                             	<p><span>下单时间</span><b>{{orderDetail.order.orderCreateTime}}</b></p>
                             </div>
@@ -43,11 +47,17 @@
                     <div class="orderDetailBot2">应付总额：<span>&yen;1.00</span></div>
                 </div>
             </div>
-            <div class="courierBox">
+            <div class="courierBox" v-if="orderDetail.post">
             	<ul>
-                	<li><span class="courierLeft">物流公司：</span><span class="courierRig">{{orderDetail.post.post_company}}</span></li>
-                	<li><span class="courierLeft">物流单号：</span><span class="courierRig">{{orderDetail.post.post_code}}</span></li>
-                	<li><span class="courierLeft">备注：</span><span class="courierRig">{{orderDetail.post.post_remark}}</span></li>
+                	<li v-show="orderDetail.post.post_company">
+                        <span class="courierLeft">物流公司：</span><span class="courierRig">{{orderDetail.post.post_company}}</span>
+                     </li>
+                	<li v-show="orderDetail.post.post_code">
+                        <span class="courierLeft">物流单号：</span><span class="courierRig">{{orderDetail.post.post_code}}</span>
+                    </li>
+                	<li v-show="orderDetail.post.post_remark">
+                        <span class="courierLeft">备注：</span><span class="courierRig">{{orderDetail.post.post_remark}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -84,28 +94,21 @@ export default {
 
          })
        },
-       /**@method 获取当前订单的状态
-        * 
+       /**@method
+        * 返回上一级
         */
-       getOrderContent(){
-           const status={
-
-           }
-       },
-       /**返回上一页 */
-       backPrePage(){
-         this.$router.go(-1);
+       gotoBack(){
+          this.$router.go(-1);
        }
     },
     created(){
        let _this=this,
-           result=this.getOrderDetail();
+           result=this.getOrderDetail();           
        result.then((res)=>{
            res=(res.data || {}).orderDetail;
            if(res){
               _this.orderDetail= res;
            }
-           console.log(res);
        },err=>{
            console.log(err);
        })      

@@ -1,6 +1,6 @@
 <template>
      <section>
-        <header class="mHeaderBox"><a href="#" class="arrowLeft"></a><h3>订单发货</h3></header>
+        <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft"></a><h3>订单发货</h3></header>
         <div class="courierContent">
             <ul>
                 <li>
