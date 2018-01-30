@@ -12,37 +12,44 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/manager':{
-          target:'http://localhost:8080',
-          secure:false,//默认情况下，不接受运行在 HTTPS 上，如果想代理https，需要配置此参数
-          changeOrigin:true,
-          pathRewrite: function(path, req) {
-            var urlParsed = url.parse(req.url, true),
-                query = urlParsed.query,
-                pathname = urlParsed.pathname.replace(/\/*$/g,'');
-            pathname = pathname.substring(pathname.lastIndexOf('/'));
-            return '/static/json' + pathname + '.json'
-            // Object.keys(query).forEach((key) => {
-            //     pathname += ('-' + key + query[key]);
-            // });
-            // pathname = '/static/json' + pathname + '.json';
-            // console.log('proxy request ' + path + ' to ' + pathname);
-            // return pathname;
-        }
-        },
-        '/api':{
-          target:'https://mlogin.hc360.com',
-          changeOrigin:true,
-          pathRewrite: {
-            '^/api': ''
-          }
-        }
+      // '/':{
+      //     target:'http://ydmmt.hc360.com/mobilemmt',
+      //     changeOrigin:true,
+      //     pathRewrite:{
+      //       '^/':'/'
+      //     }
+      //  }
+        // '/manager':{
+        //   target:'http://localhost:8080',
+        //   secure:false,//默认情况下，不接受运行在 HTTPS 上，如果想代理https，需要配置此参数
+        //   changeOrigin:true,
+        //   pathRewrite: function(path, req) {
+        //     var urlParsed = url.parse(req.url, true),
+        //         query = urlParsed.query,
+        //         pathname = urlParsed.pathname.replace(/\/*$/g,'');
+        //     pathname = pathname.substring(pathname.lastIndexOf('/'));
+        //     return '/static/json' + pathname + '.json'
+        //     // Object.keys(query).forEach((key) => {
+        //     //     pathname += ('-' + key + query[key]);
+        //     // });
+        //     // pathname = '/static/json' + pathname + '.json';
+        //     // console.log('proxy request ' + path + ' to ' + pathname);
+        //     // return pathname;
+        // }
+        // },
+        // '/api':{
+        //   target:'https://mlogin.hc360.com',
+        //   changeOrigin:true,
+        //   pathRewrite: {
+        //     '^/api': ''
+        //   }
+        // }
 
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: '8080', // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -71,7 +78,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    //正式环境路径
+    assetsPublicPath: '//ydmmt.hc360.com/mobilemmt/',
 
     /**
      * Source Maps

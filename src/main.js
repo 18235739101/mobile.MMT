@@ -46,7 +46,7 @@ router.beforeEach((to,from,next) =>{
         to.query.level = res.usersession.userlevel;
         next()
       }else{
-        location.href="https://mlogin.hc360.com/login.html?flag=m&ReturnURL=http://mlogin.hc360.com/manager/mindex.html"
+        location.href="https://mlogin.hc360.com/mobilemmt/login.html"
       }
     })
   }else{

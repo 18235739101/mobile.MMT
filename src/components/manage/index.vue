@@ -17,7 +17,9 @@
             <div class="manageContent">
             	<div class="manageNavBox">
                 	<ul>
-                    	<li v-for="(app,i) in sysApps" :key="i"><a :href="app.linkUrl"><em :class="app.className"></em>{{app.name}}</a></li>
+                    	<li v-for="(app,i) in sysApps" :key="i">
+                            <a :href="app.linkUrl"><em :class="app.className"></em>{{app.name}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -51,7 +53,7 @@ export default {
             },{
                 name:'经营分析',
                 className:'ico4',
-                linkUrl:'/#/operationDaily?level='+ this.$route.query.level
+                linkUrl:'#/operationDaily?level='+ this.$route.query.level
             },{
                 name:'聚精彩',
                 className:'ico5',
@@ -99,7 +101,7 @@ export default {
 
 <style>
 
-@import "../../css/microMall/manageStyle.css";
+@import "https://style.org.hc360.com/css/microMall/manageStyle.css";
 
 </style>
 

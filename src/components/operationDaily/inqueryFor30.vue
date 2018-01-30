@@ -17,9 +17,6 @@
                         <li><em class="ico10"></em><span>同行近7天询盘量<br><b>{{areaCountIn7}}</b>笔</span></li>
                     </ul>
                 </div> 
-                <div class="botBoxCon4">
-                    <div class="titleCon">我的留言信息（{{msgCount}}）<a href="//mlogin.hc360.com/sellerorder/index.html#/msglist">查看详情</a></div>
-                </div> 
                 <div class="promptCon2" v-show="buyAbleOnline">根据您的商品数据，建议您进行以下操作：</div>
                 <div class="botBoxCon2" v-show="buyAbleOnline">
                     <div class="titleCon redStar">自营买卖通广告</div>
@@ -47,8 +44,6 @@ export default {
             myInqueryDatas:{},
             /**同行业询盘数据对象 */
             areaInqueryDatas:{},
-            /**留言消息数 */
-            msgCount:0,
             /**同行业近30天询盘量 */
             areaCountIn30:0,
             /**同行业近7天询盘量 */
@@ -81,8 +76,11 @@ export default {
             _this.$http('get','//home.hc360.com/homes/outerInf/shopOperating/getMyInquiryColumnData?callback=',{
 
             }).then((res) =>{
-                _this.areaCountIn30 = res.count[0] || 0;
-                _this.areaCountIn7 = res.count[1] || 0;
+                res = res.data;
+                if(res && res.count && res.count.length>0){
+                    _this.areaCountIn30 = res.count[0] || 0;
+                    _this.areaCountIn7 = res.count[1] || 0;
+                }
             })
         },
 
@@ -101,21 +99,6 @@ export default {
                     _this.buyAbleOnline = true;
                 }
             })
-        },
-
-        /**
-         * 留言信息
-         */
-        getMsgCount(){
-            let _this = this;
-
-            _this.$http('get','//my.b2b.hc360.com/my/turbine/action/outerinf.MsiteBusnoteAction/eventsubmit_doGetnotreadnum/doGetnotreadnum?jsoncallback=',{
-
-            }).then((res) =>{
-                res = JSON.parse(res.replace(/\(|\)/g,'')) ;
-                _this.msgCount = res.cnt
-            })
-
         }
 
     },
@@ -129,14 +112,13 @@ export default {
         }else{
             _this.buyAbleOnline = false;
         }
-        _this.getMsgCount();
     }
   
 }
 </script>
 
 <style>
-@import "../../css/microMall/analysisStyle.css";
+@import "https://style.org.hc360.com/css/microMall/analysisStyle.css";
 </style>
 
 
