@@ -118,7 +118,7 @@ export default {
 </script>
 
 <style>
-@import "../css/microMall/analysisStyle.css";
+@import "../../css/microMall/analysisStyle.css";
 </style>
 
 

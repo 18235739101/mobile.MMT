@@ -68,6 +68,6 @@ export default {
 
 <style>
 
-@import "../css/microMall/analysisStyle.css";
+@import "../../css/microMall/analysisStyle.css";
 
 </style>
