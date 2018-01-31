@@ -42,10 +42,15 @@ router.beforeEach((to,from,next) =>{
       
     }).then((res) =>{
       if(res.islogin && res.islogin>0){
-        //给路由传递参数（用户级别）
-        to.query.level = res.usersession.userlevel;
-        next()
-      }else{
+        if(res.isbuy && res.isbuy>0){
+          //给路由传递参数（用户级别）
+          to.query.level = res.usersession.userlevel;
+          next()
+        }else{
+          //未购买进入宣传页
+          location.href="#/notice"
+        }
+      }else{//未登录进入登录页
         location.href="https://mlogin.hc360.com/mobilemmt/login.html"
       }
     })
