@@ -81,6 +81,15 @@ const routeConfig = [
       }
     },
     {
+      name:'宣传页',
+      path:'/notice',
+      component:resolve => {
+        require.ensure(['../components/manage/notice.vue'], () => {
+          resolve(require('../components/manage/notice.vue'));
+        });
+      }
+    },
+    {
       name: '运营日报',
       path: '/operationDaily',
       meta: { 
