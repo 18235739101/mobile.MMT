@@ -2,7 +2,7 @@ const routeConfig = [
     {
       name: '根',
       path: '/',
-      redirect: '/addgoods',
+      //redirect: '/addgoods',
       hidden: true
     },{
       name:'店铺订单',

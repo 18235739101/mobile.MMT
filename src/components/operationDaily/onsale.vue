@@ -118,7 +118,7 @@ export default {
 </script>
 
 <style>
-@import "../../css/microMall/analysisStyle.css";
+@import "https://style.org.hc360.com/css/microMall/analysisStyle.css";
 </style>
 
 
