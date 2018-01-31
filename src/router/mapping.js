@@ -2,7 +2,7 @@ const routeConfig = [
     {
       name: '根',
       path: '/',
-      redirect: '/order',
+      redirect: '/addgoods',
       hidden: true
     },{
       name:'店铺订单',
@@ -57,7 +57,16 @@ const routeConfig = [
           resolve(require('../components/order/small-delivery.vue'));
         });
       }
-  },
+    },
+    {
+      name:'商品发布页面',
+      path:'/addgoods',
+      component:resolve => {
+        require.ensure(['../components/addGoods/index.vue'], () => {
+          resolve(require('../components/addGoods/index.vue'));
+        });
+      }
+    },
     {
       name:'慧聪微店管理后台',
       path:'/manage',

@@ -64,8 +64,6 @@
 	</section>
 </template>
 <script>
-/** 引入当前组件的样式 */
-import "../../css/manageStyle.css";
 export default {
     data(){
        return {
@@ -73,27 +71,6 @@ export default {
        }
     },
     methods:{
-       /** 获取订单详情 */ 
-       getOrderDetail(){
-         const _this=this;
-         return new Promise((resolve,reject)=>{
-             _this.axios.get('/manager/order/seller/orderdetail',{
-                 params:{
-                     mtOrderId:_this.$route.query.orderid
-                 }
-             }).then((function(res){
-                 res=res.data||{};
-                if(parseInt(res.errcode)!=0){
-                    reject(res);
-                }
-                console.log(res);
-                resolve(res);
-             }),function(err){
-                 reject(err);
-             })
-
-         })
-       },
        /**@method
         * 返回上一级
         */
@@ -102,16 +79,22 @@ export default {
        }
     },
     created(){
-       let _this=this,
-           result=this.getOrderDetail();           
-       result.then((res)=>{
+       let _this=this;              
+       /**获取订单详情 */
+        _this.$http('get','/manager/order/seller/orderdetail',{
+             params:{
+                     mtOrderId:_this.$route.query.orderid
+                 }
+        }).then(res=>{
+            //  if(data.errno!=0){
+            //      return;
+            //  }
+
            res=(res.data || {}).orderDetail;
            if(res){
               _this.orderDetail= res;
            }
-       },err=>{
-           console.log(err);
-       })      
+        })    
     }
 };
 </script>

@@ -52,9 +52,6 @@
         </div> 
 </template>
 <script>
-/** 引入当前组件的样式 */
-import "../../css/manageStyle.css";
-
 /** 引入swiper组件库和样式 */
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
@@ -153,63 +150,35 @@ export default {
         }
       });
     },
-     /**
-     * @method 获取订单列表
-     */
-    getOrderData(status) {
-      let _this = this;
-      return new Promise(function(resolve, reject) {
-         if(_this.finisheLoaded){
-             reject('数据加载完毕');
-             return;
-         } 
-        _this.axios.get("/manager/order/seller/getorderlist.do", {
-            params: {
-              stateDesc:_this.orderStatus.state,
-              page: _this.searchCondition.pageNo
-            }
-          }).then(
-            response => {
-              response = response.data || {};
-              /**
-                * 验证数据状态
-                */
-              if (parseInt(response.errno) !== 0) {
-                console.log("State code is error!");
-                reject(response);
-                return;
-              }
-              resolve(response.data || {});
-            },
-            err => {
-              console.log("Failed to get Data,Please try again later!");
-              reject(err);
-            }
-          );
-      });
-    },
+     
      /**
      * @method 滚动事件分页加载订单列表
      */
     loadMore() {
       let _this = this;
-      if(!_this.finisheLoaded){
-            _this.loading = true;
-            //当前页数加1
-            _this.searchCondition.pageNo++;
-            /***数据返回成功 */
-            _this.getOrderData().then(res => {
-                let data = res.orderlist;
-                if (data && data.length > 0) {
-                    /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
-                    if(data.length<_this.searchCondition.pageSize){
-                        _this.finisheLoaded=true;
-                    }
-                _this.loading = false;
-                _this.orderContent = _this.orderContent.concat(data);
-                }
-            });
-        }
+      if(_this.finisheLoaded){
+        return false;
+      }
+       _this.loading = true;
+      //当前页数加1
+      _this.searchCondition.pageNo++;
+      /***调用订单接口 */
+      _this.$http('get','//mlogin.hc360.com/manager/order/seller/getorderlist.do',{params:{
+              stateDesc:_this.orderStatus.state,
+              page: _this.searchCondition.pageNo
+      }}).then((res)=>{
+             if(parseInt(res.errno)!=0){
+               return;
+             }
+             res=res.data;
+             let data = res.orderlist;
+             /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
+             if(data.length<_this.searchCondition.pageSize){
+               _this.finisheLoaded=true;
+             }
+              _this.loading = false;
+             _this.orderContent = _this.orderContent.concat(data);
+      })  
      
     },
     /**

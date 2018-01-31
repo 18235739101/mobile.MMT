@@ -50,8 +50,6 @@
 	</section>
 </template>
 <script>
-/** 引入当前组件的样式 */
-import "../../css/manageStyle.css";
 export default {
     data(){
        return {
@@ -59,37 +57,23 @@ export default {
        }
     },
     methods:{
-       /** 获取订单详情 */ 
-       getOrderDetail(){
-         const _this=this;
-         return new Promise((resolve,reject)=>{
-             _this.axios.get('/manager/order/seller/getorderdetail.do',{
-                 params:{
-                     mtOrderId:_this.$route.query.orderid
-                 }
-             }).then((function(res){
-                 res=res.data||{};
-                if(parseInt(res.errno)!=0){
-                    reject(res);
-                }
-                console.log(res);
-                resolve(res);
-             }),function(err){
-                 reject(err);
-             })
-
-         })
-       },
        /**返回上一页 */
        backPrePage(){
          this.$router.go(-1);
        }
     },
     created(){
-       let _this=this,
-           result=this.getOrderDetail();
-       result.then((res)=>{
-           res=res.data || {}
+       let _this=this;
+        /**获取订单详情 */
+        _this.$http('get','//mlogin.hc360.com/manager/order/seller/getorderdetail.do',{
+             params:{
+                     mtOrderId:_this.$route.query.orderid
+                 }
+        }).then(res=>{
+             if(res.errno!=0){
+                 return;
+             }
+             res=res.data || {};
            if(res.orderDetail){
                 if(res.orderDetail.orderFlowType == "0"){
                   res.orderDetail.orderFlowType =  '慧付宝支付'
@@ -98,7 +82,7 @@ export default {
                 }
             }
              _this.orderDetail= res ;
-       })      
+        }) 
     }
 };
 </script>

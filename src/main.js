@@ -6,11 +6,8 @@ import axios from 'axios';
 import App from './App'
 import router from './router'
 import echarts from 'echarts'
-
-import {http} from './common/http'
-
-//引入全局样式
-import './css/global.css';
+import http from './common/http';
+import store from './store';
 
 /**引入mint ui组件库和样式 */
 import 'mint-ui/lib/style.css'
@@ -31,6 +28,17 @@ Vue.prototype.$http = http
  * 注册全局的echarts图表
  */
 Vue.prototype.$echarts = echarts;
+
+
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  store,
+  router,
+  components: { App },
+  template: '<App/>'
+})
 
 
 /**
@@ -54,13 +62,3 @@ router.beforeEach((to,from,next) =>{
   }
 })
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
-
-/**将axios挂载到vue原型上 */
-Vue.prototype.axios=axios;

@@ -40,8 +40,6 @@
 </template>
 
 <script>
-/** 引入当前组件的样式 */
-import "../../css/manageStyle.css";
 export default {
   data() {
     return {
@@ -147,13 +145,20 @@ export default {
      */
     loadMore() {
       let _this = this;
-      if (!_this.finisheLoaded) {
-        _this.loading = true;
+      if(_this.finisheLoaded){
+         return;
+      }
+      _this.loading = true;
         //当前页数加1
-        _this.searchCondition.pageNo++;
-        /***数据返回成功 */
-        _this.getOrderData().then(res => {
-          let data = res.orderlist;
+      _this.searchCondition.pageNo++;
+
+      _this.$http('get','/manager/order/seller/orderlist',{
+         params: {
+              stateDesc: _this.orderStatus.state,
+              page: _this.searchCondition.pageNo
+         }
+      }).then(res=>{
+          let data = (res.data||{}).orderlist;
           if (data && data.length > 0) {
             /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
             if (data.length < _this.searchCondition.pageSize) {
@@ -161,12 +166,8 @@ export default {
             }
             _this.loading = false;
             _this.orderContent = _this.orderContent.concat(data);
-            console.log( _this.orderContent)
           }
-        },err=>{
-            console.log(err);
-        });
-      }
+      })
     },
     /**
      * @method 订单状态切换
