@@ -5,8 +5,11 @@ const routeConfig = [
       //redirect: '/addgoods',
       hidden: true
     },{
-      name:'店铺订单',
+      name:'订单管理',
       path:'/order',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order'], () => {
           resolve(require('../components/order'));
@@ -16,6 +19,9 @@ const routeConfig = [
     {
       name:'店铺订单',
       path:'/shopOrder',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/shop-order.vue'], () => {
           resolve(require('../components/order/shop-order.vue'));
@@ -25,6 +31,9 @@ const routeConfig = [
     {
       name:'店铺订单详情页',
       path:'/shopOrder/detail',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/shop-order-detail.vue'], () => {
           resolve(require('../components/order/shop-order-detail.vue'));
@@ -34,6 +43,9 @@ const routeConfig = [
     {
       name:'小程序订单',
       path:'/smallOrder',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-order.vue'], () => {
           resolve(require('../components/order/small-order.vue'));
@@ -43,6 +55,9 @@ const routeConfig = [
     {
       name:'小程序订单详情页',
       path:'/smallOrder/detail',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-order-detail.vue'], () => {
           resolve(require('../components/order/small-order-detail.vue'));
@@ -52,6 +67,9 @@ const routeConfig = [
     {
       name:'小程序发货页面',
       path:'/smallOrder/delivery',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-delivery.vue'], () => {
           resolve(require('../components/order/small-delivery.vue'));
@@ -61,6 +79,9 @@ const routeConfig = [
     {
       name:'商品发布页面',
       path:'/addgoods',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/addGoods/index.vue'], () => {
           resolve(require('../components/addGoods/index.vue'));
@@ -137,7 +158,148 @@ const routeConfig = [
           resolve(require('../components/operationDaily/inqueryFor30.vue'))
         })
       }
+    },
+    {
+      name: '店铺管理',
+      path: '/shopManage',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/shopManage/index.vue'], () => {
+          resolve(require('../components/shopManage/index.vue'))
+        })
+      }
+    },
+
+    {
+      name: '店铺资料',
+      path: '/shopManage/info',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/shopManage/shopInfo.vue'], () => {
+          resolve(require('../components/shopManage/shopInfo.vue'))
+        })
+      }
+    },
+
+    {
+      name: '店铺二维码',
+      path: '/shopManage/code',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/shopManage/shopCode.vue'], () => {
+          resolve(require('../components/shopManage/shopCode.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序管理',
+      path: '/xcxManage',
+      meta: { 
+        requireAuth: true,
+        requireXCXAuth:true
+      }
+      
+    },
+
+    {
+      name: '小程序已授权',
+      path: '/xcxManage/authen',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxAuthen.vue'], () => {
+          resolve(require('../components/xcxManage/xcxAuthen.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序未授权',
+      path: '/xcxManage/unAuthen',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxUnAuthen.vue'], () => {
+          resolve(require('../components/xcxManage/xcxUnAuthen.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序账户',
+      path: '/xcxManage/account',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxAccount.vue'], () => {
+          resolve(require('../components/xcxManage/xcxAccount.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序客服帮助',
+      path: '/xcxManage/help',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxHelp.vue'], () => {
+          resolve(require('../components/xcxManage/xcxHelp.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序客二维码',
+      path: '/xcxManage/code',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxCode.vue'], () => {
+          resolve(require('../components/xcxManage/xcxCode.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序装修',
+      path: '/xcxManage/decorate',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/xcxDecoration.vue'], () => {
+          resolve(require('../components/xcxManage/xcxDecoration.vue'))
+        })
+      }
+    },
+
+    {
+      name: '小程序店铺模板预览',
+      path: '/xcxManage/preview',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/xcxManage/tplPreview.vue'], () => {
+          resolve(require('../components/xcxManage/tplPreview.vue'))
+        })
+      }
     }
+
+    
   ];
   
   export default routeConfig;

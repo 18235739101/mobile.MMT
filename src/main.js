@@ -16,8 +16,9 @@ Vue.component(Spinner.name, Spinner);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
 
-Vue.config.productionTip = false;
 
+
+Vue.config.productionTip = false;
 
 /**
  * 注册全局的http对象
@@ -30,6 +31,52 @@ Vue.prototype.$http = http
 Vue.prototype.$echarts = echarts;
 
 
+/**
+ * 切换路由之前先验证权限
+ */
+router.beforeEach((to,from,next) =>{
+  if(to.meta && to.meta.requireAuth){
+
+    http('get','https://mlogin.hc360.com/get/ssohelper',{
+      
+    }).then((res) =>{
+        if(res.islogin && res.islogin>0){
+          res.isbuy = 1;
+          if(res.isbuy && res.isbuy>0){
+            //给路由传递参数（用户级别）
+            to.query.level = res.usersession.userlevel;
+            
+            //是否需要小程序授权
+            if(to.meta.requireXCXAuth){
+              
+              http('get','//madata.hc360.com/mobileapp/wx/isAuth?callback=',{
+                params:{
+                  imid:res.usersession.username
+                }
+              }).then(res1 =>{
+                  if(res1.state && res1.state>1){
+                      location.href='#/xcxManage/authen'
+                  }else{
+                      location.href='#/xcxManage/unAuthen'
+                  }
+              })
+
+            }else{
+              next()
+            }
+            
+          }else{
+            //未购买进入宣传页
+            location.href="#/notice"
+          }
+        }else{//未登录进入登录页
+          location.href="https://mlogin.hc360.com/mobilemmt/login.html"
+        }
+    })
+  }else{
+    next();
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
@@ -41,29 +88,4 @@ new Vue({
 })
 
 
-/**
- * 切换路由之前先验证权限
- */
-router.beforeEach((to,from,next) =>{
-  if(to.meta && to.meta.requireAuth){
-    http('get','https://mlogin.hc360.com/get/ssohelper',{
-      
-    }).then((res) =>{
-      if(res.islogin && res.islogin>0){
-        if(res.isbuy && res.isbuy>0){
-          //给路由传递参数（用户级别）
-          to.query.level = res.usersession.userlevel;
-          next()
-        }else{
-          //未购买进入宣传页
-          location.href="#/notice"
-        }
-      }else{//未登录进入登录页
-        location.href="https://mlogin.hc360.com/mobilemmt/login.html"
-      }
-    })
-  }else{
-    next();
-  }
-})
 
