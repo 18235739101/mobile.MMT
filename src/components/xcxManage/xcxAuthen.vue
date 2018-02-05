@@ -3,9 +3,9 @@
  <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>小程序管理</h3></header>
  <section>
         <div class="personalInfoNew">
-            <div class="headPortrait"><a href="#"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
+            <div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
             <div class="comName">
-                <a href="#" target="_blank">戴尔中国官方旗舰店</a>
+                <a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
             </div>
             <div class="comCodeCon"><a href="#/xcxManage/code"></a></div>
         </div>
@@ -40,9 +40,36 @@ import logoTip from 'components/v-logoTip.vue'
 import footerContent from 'components/footer.vue'
 export default {
 
+    data(){
+        return {
+            companyInfo:''
+        }
+    },
+
     components:{
         logoTip,
         footerContent
+    },
+
+    methods:{
+        getShopInfos(){
+            let _this = this;
+
+            _this.$http('get','//wsdetail.b2b.hc360.com/mobile/company?callback=',{
+
+            }).then((res) =>{
+                res = JSON.parse(res.replace(/\(|\)/g,'')) || {};
+                _this.companyInfo = res;
+                localStorage.setItem('companyInfo',JSON.stringify(_this.companyInfo))
+            })
+      }
+    },
+
+    mounted(){
+        let _this = this;
+        _this.$nextTick(() =>{
+            _this.getShopInfos();
+        })
     }
   
 }

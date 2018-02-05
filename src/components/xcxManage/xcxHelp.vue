@@ -6,16 +6,14 @@
     	<div class="telBox">
             <dl>
                 <dt>客服电话</dt>
-                <dd>400-600-800</dd>
+                <dd>400-6360-888</dd>
             </dl>
-            <a href="#">拨打</a>
+            <a href="tel:400-6360-888">拨打</a>
         </div>
         <div class="helpBox">
         	<dl>
             	<dt>常见问题</dt>
-                <dd><a href="#">如何设置小程序主页、商品页？</a></dd>
-                <dd><a href="#">如何设置小程序主页、商品页？</a></dd>
-                <dd><a href="#">如何设置小程序主页、商品页？</a></dd>
+                <dd v-for="(item,i) in questions" :key="i"><a :href="item.url">{{item.title}}</a></dd>
             </dl>
         </div>
     </section>
@@ -26,8 +24,32 @@
 <script>
 import footerContent from 'components/footer.vue'
 export default {
+    data(){
+        return {
+            /**常见问题对象 */
+            questions:{}
+        }
+    },
   components:{
       footerContent
+  },
+
+  methods:{
+      getQuestions(){
+          let _this = this;
+          _this.$http('get','http://madata.hc360.com/mobileapp/index/docx',{
+
+          }).then(res =>{
+              _this.questions = res;
+          })
+      }
+  },
+
+  mounted(){
+      let _this = this;
+      _this.$nextTick(() =>{
+          _this.getQuestions();
+      })
   }
 }
 </script>

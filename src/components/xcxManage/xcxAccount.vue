@@ -8,8 +8,8 @@
                 <dd><span>小程序：</span>{{xcxInfo.nickname}}</dd>
                 <dd><span>线上版本：</span>{{xcxInfo.version}}</dd>
                 <dd><span>主体名称：</span>{{xcxInfo.principalname}}</dd>
-                <dd><span>更新时间：</span>无</dd>
-                <dd><span>更新状态：</span>无</dd>
+                <dd v-if="xcxInfo.publishtime"><span>更新时间：</span>{{xcxInfo.publishtime}}</dd>
+                <dd><span>更新状态：</span>{{states[xcxInfo.publishstate]}}</dd>
                 <dd><span>商户号：</span>{{xcxInfo.mchid}}</dd>
             </dl>    
         </div>
@@ -27,7 +27,9 @@ export default {
     data(){
         return{
             /**小程序信息 */
-            xcxInfo:{}
+            xcxInfo:{},
+            /**更新状态值 */
+            states:["未发布","审核中","审核失败","发布成功","发布失败"]
         }
     },
 
