@@ -1,17 +1,13 @@
 <template>
 
     <section>
-    	<div class="headPrompt">
-        	<span>店铺处于免费试用期（还剩 * 天）</span>
-            <a href="javascript:;" target="_blank">购买</a>
-        </div>
         <header class="mHeaderBox"><h3>慧聪微店管理后台</h3></header>
         <div class="manageCon">
         	<div class="manageBg"><img src="https://style.org.hc360.com/images/microMall/manage/manageBg.png"></div>
             <div class="personalInfo">
-            	<div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.name'><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/manage/hImg.png'"></a></div>
+            	<div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username'><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/manage/hImg.png'"></a></div>
                 <div class="comName">
-                	<a :href='"//m.hc360.com/b2b/"+companyInfo.name' target="_blank">{{companyInfo.name}}</a>
+                	<a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
                 </div>
             </div>
             <div class="manageContent">
@@ -26,14 +22,16 @@
         </div>
 
         <logo-tip></logo-tip>
-        
+
+        <footerContent></footerContent>
         
     </section>
   
 </template>
 
-<script>
+<script scoped>
 import logoTip from 'components/v-logoTip'
+import footerContent from 'components/footer.vue'
 export default {
 
     data(){
@@ -41,15 +39,15 @@ export default {
             sysApps:[{
                 name:'店铺管理',
                 className:'ico1',
-                linkUrl:''
+                linkUrl:'#/shopManage'
             },{
-                name:'商铺管理',
+                name:'商品管理',
                 className:'ico2',
                 linkUrl:''
             },{
                 name:'订单管理',
                 className:'ico3',
-                linkUrl:''
+                linkUrl:'#/order'
             },{
                 name:'经营分析',
                 className:'ico4',
@@ -57,11 +55,11 @@ export default {
             },{
                 name:'聚精彩',
                 className:'ico5',
-                linkUrl:''
+                linkUrl:'https://mlogin.hc360.com/mjjc/index.html#/buyerList'
             },{
                 name:'小程序管理',
                 className:'ico6',
-                linkUrl:''
+                linkUrl:'#/xcxManage'
             }],
 
             /**公司信息 */
@@ -70,7 +68,8 @@ export default {
     },
     
     components:{
-        'logo-tip':logoTip
+        'logo-tip':logoTip,
+        footerContent
     },
 
     methods:{
@@ -99,6 +98,9 @@ export default {
 }
 </script>
 
+<style scoped>
+@import "https://style.org.hc360.com/css/microMall/manageStyle.css";
+</style>
 
 
 

@@ -24,18 +24,15 @@
                         <a href="//mlogin.hc360.com/manager/zymmtbuy.html?source=1">立即购买</a>
                     </div>
                 </div>
-                <div class="slogenBox">
-                    <dl>
-                        <dt><h5>慧聪微商城</h5></dt>
-                        <dd>打造指尖上的移动电商</dd>
-                    </dl>
-                </div>
+
+                <logoTip></logoTip>
             </article>
         </section>
     </section>
 </template>
 
 <script>
+import logoTip from 'components/v-logoTip'
 export default {
 
     data(){
@@ -50,6 +47,10 @@ export default {
             /**是否支持在线购买988 */
             buyAbleOnline:false
         }
+    },
+
+    components:{
+        logoTip
     },
 
     methods:{
