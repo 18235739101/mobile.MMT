@@ -1,7 +1,7 @@
 <template>
    <header class="mHeaderBox">
-       <a href="#" class="arrowLeft"></a>
-       <h3>添加商品</h3>
+       <a href="javascript:;" class="arrowLeft" @click="gotoback()"></a>
+       <h3>{{headName}}</h3>
     </header>
 </template>
 <script>
@@ -10,6 +10,16 @@
          return {
 
          }
+       },
+       methods:{
+           gotoback(){
+            this.$router.go(-1);
+           }
+       },
+       props:{
+           headName:{
+               type:String
+           }
        }
    }
 </script>

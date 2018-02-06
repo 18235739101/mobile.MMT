@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <div>
+       <section>
         <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="gotoBack()"></a><h3>订单详情</h3></header>
         <div class="orderListBox" >
             <div v-if="orderDetail.order">
@@ -62,8 +63,12 @@
             </div>
         </div>
 	</section>
+     <footerContent/>
+  </div>    
+  
 </template>
 <script>
+import footerContent from '../footer.vue';
 export default {
     data(){
        return {
@@ -77,6 +82,9 @@ export default {
        gotoBack(){
           this.$router.go(-1);
        }
+    },
+    components: {
+        footerContent
     },
     created(){
        let _this=this;              

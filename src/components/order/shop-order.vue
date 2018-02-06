@@ -171,13 +171,18 @@ export default {
                return;
              }
              res=res.data;
-             let data = res.orderlist;
-             /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
-             if(data.length<_this.searchCondition.pageSize){
-               _this.finisheLoaded=true;
+             if(!res){
+                _this.finisheLoaded=true;
+                return;
+             }else{
+                let data =(res|| {}).orderlist;
+                 /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
+                if(data.length<_this.searchCondition.pageSize){
+                  _this.finisheLoaded=true;
+                }
+                 _this.loading = false;
+                _this.orderContent = _this.orderContent.concat(data);
              }
-              _this.loading = false;
-             _this.orderContent = _this.orderContent.concat(data);
       })  
      
     },

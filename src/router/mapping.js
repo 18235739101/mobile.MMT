@@ -2,11 +2,14 @@ const routeConfig = [
     {
       name: '根',
       path: '/',
-      //redirect: '/addgoods',
+      redirect: '/addgoods/setPrice',
       hidden: true
     },{
-      name:'店铺订单',
+      name:'订单',
       path:'/order',
+      meta: { 
+        requireAuth: true
+     },
       component:resolve => {
         require.ensure(['../components/order'], () => {
           resolve(require('../components/order'));
@@ -16,6 +19,9 @@ const routeConfig = [
     {
       name:'店铺订单',
       path:'/shopOrder',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/shop-order.vue'], () => {
           resolve(require('../components/order/shop-order.vue'));
@@ -25,6 +31,9 @@ const routeConfig = [
     {
       name:'店铺订单详情页',
       path:'/shopOrder/detail',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/shop-order-detail.vue'], () => {
           resolve(require('../components/order/shop-order-detail.vue'));
@@ -34,6 +43,9 @@ const routeConfig = [
     {
       name:'小程序订单',
       path:'/smallOrder',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-order.vue'], () => {
           resolve(require('../components/order/small-order.vue'));
@@ -43,6 +55,9 @@ const routeConfig = [
     {
       name:'小程序订单详情页',
       path:'/smallOrder/detail',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-order-detail.vue'], () => {
           resolve(require('../components/order/small-order-detail.vue'));
@@ -52,6 +67,9 @@ const routeConfig = [
     {
       name:'小程序发货页面',
       path:'/smallOrder/delivery',
+      meta: { 
+        requireAuth: true
+      },
       component:resolve => {
         require.ensure(['../components/order/small-delivery.vue'], () => {
           resolve(require('../components/order/small-delivery.vue'));
@@ -64,6 +82,51 @@ const routeConfig = [
       component:resolve => {
         require.ensure(['../components/addGoods/index.vue'], () => {
           resolve(require('../components/addGoods/index.vue'));
+        });
+      }
+    },
+    {
+      name:'选择类目',
+      path:'/addgoods/category',     
+      component:resolve => {
+        require.ensure(['../components/addGoods/category.vue'], () => {
+          resolve(require('../components/addGoods/category.vue'));
+        });
+      }
+    },
+    {
+      name:'添加描述',
+      path:'/addgoods/addDesc',     
+      component:resolve => {
+        require.ensure(['../components/addGoods/addDesc.vue'], () => {
+          resolve(require('../components/addGoods/addDesc.vue'));
+        });
+      }
+    },    
+    {
+      name:'价格设置',
+      path:'/addgoods/setPrice',     
+      component:resolve => {
+        require.ensure(['../components/addGoods/setPrice.vue'], () => {
+          resolve(require('../components/addGoods/setPrice.vue'));
+        });
+      }
+    },
+    {
+      name:'炫铺分类',
+      path:'/addgoods/storeClass',     
+      component:resolve => {
+        require.ensure(['../components/addGoods/storeClass.vue'], () => {
+          resolve(require('../components/addGoods/storeClass.vue'));
+        });
+      }
+    },
+    {
+      name:'发布成功',
+      path:'/addgoods/releaseSuccess',     
+      component:resolve => {
+        require.ensure(['../components/addGoods/releaseSuccess.vue'], () => {
+          resolve(require('../components/addGoods/releaseSuccess.vue'));
         });
       }
     },

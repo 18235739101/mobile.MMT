@@ -8,9 +8,9 @@ axios.defaults.withCredentials = true
  * @param {*} data 请求数据
  * @param {*} {Promise} 
  */
-export default function http(type, url, data = {}){
+export default function http(type, url, data = {},config={}){
     return new Promise((resolve,reject) => {
-        axios[type](url,data)
+        axios[type](url,data,config)
             .then(response =>{
                 resolve(response.data); 
             }, err =>{

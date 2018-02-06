@@ -1,19 +1,23 @@
 <template>
-    <section>
-        <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="backPrePage()"></a><h3>订单管理</h3></header>
-        <div class="orderTab">
-        	<dl>
-            	<dd @click="checkComponent(nav.componentName)" :class="{'tabCur':nav.componentName==currentView}" v-for="(nav,i) in navList" :key="i"><a>{{nav.name}}</a></dd>
-          </dl>
-        </div>
-        <keep-alive>
-          <component :is="currentView"></component>
-        </keep-alive>  
-	</section>
+    <div>
+      <section>
+          <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="backPrePage()"></a><h3>订单管理</h3></header>
+          <div class="orderTab">
+            <dl>
+                <dd @click="checkComponent(nav.componentName)" :class="{'tabCur':nav.componentName==currentView}" v-for="(nav,i) in navList" :key="i"><a>{{nav.name}}</a></dd>
+            </dl>
+          </div>
+          <keep-alive>
+            <component :is="currentView"></component>
+          </keep-alive>  
+    </section>
+     <footerContent/>
+  </div> 
 </template>
 <script>
 import ShopOrder from "./shop-order";
 import SmallOrder from "./small-order";
+import footerContent from '../footer.vue';
 export default {
   data: () => {
     return {
@@ -31,7 +35,8 @@ export default {
   },
   components: {
     ShopOrder,
-    SmallOrder
+    SmallOrder,
+    footerContent
   },
   methods: {
     /***

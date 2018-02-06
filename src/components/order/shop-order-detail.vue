@@ -1,4 +1,5 @@
 <template>
+      <div>
        <section>
         <header class="mHeaderBox"><a class="arrowLeft" @click="backPrePage()"></a><h3>订单详情</h3></header>
        <div class="orderListBox">
@@ -47,9 +48,12 @@
                 </div>
             </div>
         </div>
-	</section>
+	  </section>
+       <footerContent/>
+    </div>
 </template>
 <script>
+import footerContent from '../footer.vue';
 export default {
     data(){
        return {
@@ -61,6 +65,9 @@ export default {
        backPrePage(){
          this.$router.go(-1);
        }
+    },
+    components: {
+        footerContent
     },
     created(){
        let _this=this;
