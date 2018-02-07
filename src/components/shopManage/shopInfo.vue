@@ -28,7 +28,7 @@
             </dl>
         	<dl class="certificationList">
             	<dt><h3>认证信息</h3></dt>
-                <dd><span>企业信息</span><p>{{companyInfo.authenorg}}</p></dd>
+                <dd><span>企业认证</span><p>{{companyInfo.authenorg}}</p></dd>
             </dl>
         </div>
         <logoTip></logoTip>

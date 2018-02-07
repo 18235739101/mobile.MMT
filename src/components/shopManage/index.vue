@@ -1,6 +1,6 @@
 <template>
     <div>
-    <shopHeader titleName="商铺管理"></shopHeader>
+    <shopHeader titleName="店铺管理"></shopHeader>
     <section>
         <div class="personalInfo">
             <div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username'><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/manage/hImg.png'"></a></div>

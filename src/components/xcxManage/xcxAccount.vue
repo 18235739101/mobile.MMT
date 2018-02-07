@@ -9,7 +9,7 @@
                 <dd><span>线上版本：</span>{{xcxInfo.version}}</dd>
                 <dd><span>主体名称：</span>{{xcxInfo.principalname}}</dd>
                 <dd v-if="xcxInfo.publishtime"><span>更新时间：</span>{{xcxInfo.publishtime}}</dd>
-                <dd><span>更新状态：</span>{{states[xcxInfo.publishstate]}}</dd>
+                <dd><span>更新状态：</span>{{states[xcxInfo.publishstate] || '无'}}</dd>
                 <dd><span>商户号：</span>{{xcxInfo.mchid}}</dd>
             </dl>    
         </div>

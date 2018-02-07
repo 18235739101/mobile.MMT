@@ -1,7 +1,7 @@
 <template>
   <section class="botFixedNew">
     	<ul>
-        	<li><a :href="'https://m.hc360.com/b2b/'+username"><em class="ico1"></em>店铺预览</a></li>
+        	<li><a :href="'https://m.hc360.com/b2b/'+username"><em class="ico1"></em>预览店铺</a></li>
         	<li><a href="#/shopManage/code"><em class="ico2"></em>店铺二维码</a></li>
         	<li v-if="isShare"><a href="javascritp:void(0)" @click="shopShare"><em class="ico3"></em>店铺分享</a>
 			</li>
