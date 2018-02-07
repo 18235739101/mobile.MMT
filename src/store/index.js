@@ -3,61 +3,99 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-let store=new Vuex.Store({
-    state:{
-        componentname:'ShopOrder',
-        //商品名称
-        shopTitle:'',
-        // 商品图片
-        imgList:[],
-        //商品描述
-        desc:'',
-        //商品类目
-        cate:{},
-        priceSite:{
-            // 价格类型
-            ptype:'negotiable',
-            //商品价格
-            price:'',
-            // 库存量
-            inventory:'',
-        },
-         //店铺分类
-         storeClassList:'全部'
+// 图片上传
+let productObj = {
+        //商品标题
+        title: '',
+        //调用picstr返回的商品id
+        sessionid: '',
+        //图片列表
+        imgList: [],
+        // 商品描述
+        desc: '',
+        // 商品类目
+        cate: {}
     },
-    mutations:{
+    //价格设置
+    priceObj = {
+        // 价格类型
+        ptype: 'negotiable',
+        //商品价格
+        price: '',
+        // 库存量
+        inventory: ''
+    },
+    //炫铺分类
+    storeObj = {
+        name: '全部',
+        bsid: '',
+        child: {
+            name: '',
+            seriesid: ''
+        }
+    };
+
+let store = new Vuex.Store({
+    state: {
+        // 订单组件状态
+        componentname: 'ShopOrder',
+
+        // 留言组件状态
+        messageValue: 'messageList',
+
+        // 图片上传
+        productObj:{...productObj},
+
+        //价格设置
+        priceObj:{...priceObj},
+
+        //炫铺分类
+        storeObj:{...storeObj} 
+    },
+    mutations: {
         /**切换店铺订单和小程序订单 */
-        changeComponent(state,name){
-           state.componentname=name;
+        changeComponent(state, name) {
+            state.componentname = name;
         },
-        /** 保存商品名称 */
-        addShopTitle(state,title){
-            state.shopTitle=title;
+        /**即时沟通和留言列表*/
+        changeMessage(state, name) {
+            state.messageValue = name;
         },
-        /** 添加图片 */
-        addImg(state,imgInfo){
-           state.imgList.push(imgInfo);
+
+        // 保存商品设置
+        saveShopSet(state, proObj) {
+            state.productObj = {
+                ...state.productObj,
+                ...proObj
+            }
         },
-        /** 删除图片 */
-        deleteImg(state,i){
-          state.imgList.splice(i,1);
-        },
-        /**修改类目 */
-        changeCate(state,cate){
-            state.cate=cate;
-        },
-        /**修改描述 */
-        changeDesc(state,desc){
-            state.desc=desc;
-        },
+
         // 保存价格设置
-        changePrice(state,priceObj){
-            // 修改价格
-            state.priceSite=Object.assign(state.priceSite,priceObj);
+        savePrice(state, priceObj) {
+            state.priceObj = {
+                ...state.priceObj,
+                ...priceObj
+            }
         },
+
         /* 选择店铺分类 */
-        selectSort(state,name){
-            state.storeClassList=name;
+        saveSort(state, storeObj) {
+            state.storeObj = {
+                ...state.storeObj,
+                ...storeObj
+            };
+        },
+
+        //清除发布商机的state
+        clearProduct(state) {
+             // 图片上传
+             state.productObj={...productObj};
+        
+             //价格设置
+             state.priceObj={...priceObj};
+        
+             //炫铺分类
+             state.storeObj={...storeObj} 
         }
     }
 })

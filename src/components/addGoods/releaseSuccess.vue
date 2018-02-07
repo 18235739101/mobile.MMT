@@ -6,7 +6,7 @@
             <em></em>
             <p>恭喜您商品发布成功</p>
             <div class="succBoxBtn">
-                <a href="#/addgoods" class="succLeftBtn" >继续发布</a>
+                <a href="javascript:;" class="succLeftBtn" @click="continueRelease">继续发布</a>
                 <a href="#">管理商品</a>
             </div>
         </div>
@@ -20,6 +20,13 @@ export default {
       return {
           headname:'发布成功'
       }
+  },
+  methods:{
+     // 跳转到商机发布页  
+     continueRelease(){
+         this.$store.commit('clearProduct');
+         this.$router.push('/addgoods')
+     }
   },
   components:{
        goodhead

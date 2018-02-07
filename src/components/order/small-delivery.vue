@@ -32,11 +32,36 @@ export default {
       return {
          logisticsCom:'',
          courierNum:'',
-         note:''
+         note:'',
+         orderCode:''
+
       }   
     },
     methods:{
         submit(){
+            let _this=this;
+            _this.$http('get','http://madata.hc360.com/mobileapp/order/saveAppPost',{
+                params:{
+                    orderCode:_this.orderCode,
+                    post_code:_this.courierNum,
+                    post_company:_this.logisticsCom,
+                    post_remark:_this.note,
+                }
+            }).then((res)=>{
+               if(res.errcode==0){
+                   _this.$http('get','http://madata.hc360.com/mobileapp/order/orderSendOrRec',{
+                       params:{
+                          orderCode:_this.orderCode,
+                          //确认发货 
+                          status:2
+                       }
+                   }).then((res)=>{
+                       if(res.errcode==0){
+                           console.log('发货成功')
+                       }
+                   })
+               }
+            })
            console.log(this.logisticsCom,this.courierNum,this.note)
         },
         backPrePage(){
@@ -47,7 +72,7 @@ export default {
         footerContent
     },
     created(){
-        console.log(this.$route.query.orderid)
+        this.orderCode=this.$route.query.orderid;
     }
 }
 </script>

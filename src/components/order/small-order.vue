@@ -43,6 +43,7 @@
 export default {
   data() {
     return {
+      username:'tyc5010',
       /**
         * 订单状态集合
         */
@@ -86,60 +87,17 @@ export default {
       finisheLoaded: false,
        /**发货状态码 */
       deliveryStatus:{
-         0:"代发货",
-         1:"待收货",
-         2:"已完成"
+         1:"待发货",
+         2:"待收货",
+         3:"已完成"
       }
     };
   },
   methods: {
      getOrderStatus(status){
-      /**发货状态码 */
-      const deliveryStatus={
-         0:"代发货",
-         1:"待收货",
-         2:"已完成"
-      },
-      orderContext=deliveryStatus[parseInt(status)];
+      let  orderContext=this.deliveryStatus[parseInt(status)];
       return orderContext=="代发货"
-     },
-     /**
-     * @method 获取订单列表
-     */
-    getOrderData(status) {
-      let _this = this;
-      return new Promise(function(resolve, reject) {
-        if (_this.finisheLoaded) {
-          reject("数据加载完毕");
-          return;
-        }
-        _this.axios
-          .get("/manager/order/seller/orderlist", {
-            params: {
-              stateDesc: _this.orderStatus.state,
-              page: _this.searchCondition.pageNo
-            }
-          })
-          .then(
-            response => {
-              response = response.data || {};
-              /**
-                * 验证数据状态
-                */
-              if (parseInt(response.errCode) !== 0) {
-                console.log("State code is error!");
-                reject(response);
-                return;
-              }
-              resolve(response.data || {});
-            },
-            err => {
-              console.log("Failed to get Data,Please try again later!");
-              reject(err);
-            }
-          );
-      });
-    },
+     },    
     /**
      * @method 滚动事件分页加载订单列表
      */
@@ -152,10 +110,16 @@ export default {
         //当前页数加1
       _this.searchCondition.pageNo++;
 
-      _this.$http('get','/manager/order/seller/orderlist',{
+      _this.$http('get','http://madata.hc360.com/mobileapp/order/getAppOrderList',{
          params: {
-              stateDesc: _this.orderStatus.state,
-              page: _this.searchCondition.pageNo
+              //用户名
+              identity:_this.username,
+              //订单状态
+              status: _this.orderStatus.state,
+              //当前第几页
+              pageNo: _this.searchCondition.pageNo,
+              //代表买家卖家 1买家  2卖家
+              sign:2
          }
       }).then(res=>{
           let data = (res.data||{}).orderlist;
