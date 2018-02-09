@@ -7,11 +7,11 @@
        </div>
 
         <transition name="component-fade" mode="out-in">
-            <component :is="currentView" keep-alive isSwitch="isSwitch"></component>
+            <component :is="currentView" keep-alive></component>
         </transition>
 
        <div class="proBotAdd">
-       		<a href="#">添加商品</a>
+       		<a href="#/addgoods">添加商品</a>
        </div> 
     </section>
 </template>
@@ -81,7 +81,7 @@ export default {
   },
 
   mounted(){
-    console.info(this.isSwitch);
+
   }
 }
 </script>

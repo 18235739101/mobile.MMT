@@ -102,6 +102,7 @@ export default {
 </script>
 
 <style>
+@import 'https://style.org.hc360.com/css/microMall/proManage.css';
 .page-infinite-loading {
   text-align: center;
   height: 50px;

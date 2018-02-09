@@ -47,7 +47,7 @@ export default {
       */
     getCateData(){
       var _this = this;
-      _this.$http("get", "http://192.168.3.52:92/supercat/getSuperCatChild", {
+      _this.$http("get", "//wsproduct.hc360.com/supercat/getSuperCatChild", {
           params: {
             supcatid: _this.cate.sid || ''
           }

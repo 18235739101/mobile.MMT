@@ -83,7 +83,7 @@ export default {
         _this.$store.commit('saveShopSet',{
           title:_this.shopname
         }) 
-        _this.$http("get", "http://192.168.3.52:92/mBusinChance/alfWarnCheck", {
+        _this.$http("get", "//wsproduct.hc360.com/mBusinChance/alfWarnCheck", {
             params: {
               title: _this.shopname
             }
@@ -123,7 +123,7 @@ export default {
             return;
         }
         // 获取图片上传需要的参数picStr
-        _this.$http("get","http://192.168.3.52:92/mBusinChance/getBcImgUploadParam",{
+        _this.$http("get","//wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
               params: {
                 // 商机id，如果新发是0，修改是原有的商机id
                 bcid: 0

@@ -99,7 +99,7 @@ export default {
            }
 
            // 发布商机
-           _this.$http('get','http://192.168.3.52:92/mBusinChance/pubbusin',{
+           _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
            }).then((res)=>{
                if(res.success){
