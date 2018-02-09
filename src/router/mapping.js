@@ -2,6 +2,7 @@ const routeConfig = [
     {
       name: '根',
       path: '/',
+      redirect:'/manage',
       hidden: true
     },{      
       name:'订单管理',
@@ -144,6 +145,42 @@ const routeConfig = [
       component:resolve => {
         require.ensure(['../components/addGoods/releaseSuccess.vue'], () => {
           resolve(require('../components/addGoods/releaseSuccess.vue'));
+        });
+      }
+    },
+    {
+      name:'留言管理',
+      path:'/message', 
+      meta: { 
+        requireAuth: true
+      },    
+      component:resolve => {
+        require.ensure(['../components/message/index.vue'], () => {
+          resolve(require('../components/message/index.vue'));
+        });
+      }
+    },
+    {
+      name:'留言详情',
+      path:'/message/detail', 
+      meta: { 
+        requireAuth: true
+      },    
+      component:resolve => {
+        require.ensure(['../components/message/messageInfo.vue'], () => {
+          resolve(require('../components/message/messageInfo.vue'));
+        });
+      }
+    },
+    {
+      name:'聊天界面',
+      path:'/message/chatInfo', 
+      meta: { 
+        requireAuth: true
+      },    
+      component:resolve => {
+        require.ensure(['../components/message/chatInfo.vue'], () => {
+          resolve(require('../components/message/chatInfo.vue'));
         });
       }
     },
@@ -354,6 +391,19 @@ const routeConfig = [
       component: resolve => {
         require.ensure(['../components/xcxManage/tplPreview.vue'], () => {
           resolve(require('../components/xcxManage/tplPreview.vue'))
+        })
+      }
+    },
+
+    {
+      name: '商品管理',
+      path: '/goodsManage',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/goodsManage/goodsList.vue'], () => {
+          resolve(require('../components/goodsManage/goodsList.vue'))
         })
       }
     }

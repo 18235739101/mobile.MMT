@@ -5,11 +5,11 @@
         <div class="addProBox">
             <div class="addList4Top"><p>分类至</p><span>{{ classInfo }}</span></div>
          
-            <div class="addList4Box" :class="{'addList4No':item.children.length==0}" v-for="(item,i) in lstSeriesVO" :key="i" @click="showChildren(i,$event)">
-                <div class="addList4" ><a href="javascript:;" @click="selectSort(item.seriesName)">{{ item.seriesName}}</a></div>
+            <div class="addList4Box" v-for="(item,i) in lstSeriesVO" :key="i" @click="showChildren(i,$event)">
+                <div class="addList4" ><a href="javascript:;" @click="selectSort(item,'1')">{{ item.seriesName}}</a><em v-show="item.children.length>0"></em></div>
                 <div class="addList4List" v-show="item.children.length>0">
                 	<ul v-for="(pro,j) in item.children" :key="j">
-                    	<li><a href="javascript:;" @click="selectSort(pro.seriesName)">{{ pro.seriesName }}</a></li>
+                    	<li><a href="javascript:;" @click="selectSort(pro,'2')">{{ pro.seriesName }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -28,7 +28,16 @@ export default {
           // 炫铺分类
           lstSeriesVO:[],
           //选择的分类
-          classInfo:'（按分类展示商品，方便买家筛选）'
+          classInfo:'全部',
+          // 炫铺分类对象:
+          storeObject:{
+            name:'全部',
+            bsid:'',
+            child:{
+               name:'',
+               seriesid:''
+            }
+          }
       }
   },
   components:{
@@ -51,21 +60,38 @@ export default {
      // 点击显示二级分类
      showChildren(i,e){
          let wrap=document.getElementsByClassName('addList4Box'),
-             data=this.lstSeriesVO[i];
-        if(data.children.length>0){
-          let _className=wrap[i].className+' addList4Show';
-          wrap[i].setAttribute('class',_className);
-        }
+             _classlist=wrap[i].className.split(' '),
+             index=_classlist.indexOf('addList4Show');
+        if(this.lstSeriesVO[i].children.length>0){
+            if(index>0){
+                _classlist.splice(index,1);
+            }else{
+                _classlist.push('addList4Show');
+            }
+             wrap[i].setAttribute('class',_classlist.join(' ')); 
+        }        
     },
     // 点击对应的分类
-    selectSort(seriesName){
-       this.$store.commit('selectSort',seriesName);
-       this.$router.go(-1);
-    }
-  },
-  computed:{
-    storeClassList(){
-        return this.$store.state.storeClassList      
+    selectSort(store,level){
+       if(level==1){
+          Object.assign(this.storeObject,{
+              name:store.seriesName,
+              bsid:store.seriesid
+          })
+       }else{
+           Object.assign(this.storeObject,{
+               child:{
+                   name:store.seriesName,
+                   seriesid:store.seriesid
+               }
+           }) 
+       } 
+       this.$store.commit('saveSort',this.storeObject);
+       this.classInfo=store.seriesName;
+       setTimeout(()=>{
+           this.$router.go(-1);
+       },1500)
+      
     }
   },
   created(){

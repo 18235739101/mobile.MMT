@@ -31,7 +31,9 @@ export default {
           _cate= JSON.parse(JSON.stringify(cate));
 
         /**修改state中选择的类目 */
-       _this.$store.commit('changeCate',_cate);
+       _this.$store.commit('saveShopSet',{
+         cate:_cate
+       });
           
         //判断是否有下一级分类
       if(_this.cate.hasNext==1){
@@ -49,22 +51,21 @@ export default {
           params: {
             supcatid: _this.cate.sid || ''
           }
-        })
-        .then(
-          res => {
+        }).then(res => {
             res = res.data;
             if (res && res.length > 0) {
               _this.supcateArray = [...res];
             }
-          },
-          () => {}
+          }
         );
     },
      /**
        * @method清除当前类目重新选择
       */
     clearCate(){
-       this.$store.commit('changeCate',{});
+       this.$store.commit('saveShopSet',{
+        cate:{}
+       });
        this.getCateData();
     }
   },
@@ -76,13 +77,15 @@ export default {
     /**如果点击修改商机进来，清空类目对象，重新选择类目 */
     if(_bcid){
       this.bcid=_bcid;
-      this.$store.commit('changeCate',{})
+      this.$store.commit('saveShopSet',{
+        cate:{}
+      })
     }
     this.getCateData();
   },
   computed:{
     cate(){
-      return this.$store.state.cate
+      return this.$store.state.productObj.cate
     }
   }
 };

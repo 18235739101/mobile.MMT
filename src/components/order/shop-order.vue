@@ -7,7 +7,7 @@
                   </swiper>
                 </ul>
             </div>
-            <div ref="wrapper" :style="{ height: wrapperHeight + 'px' }" class="orderContent"  >
+            <div  class="orderContent"  >
             	<div class="orderNo" v-show="finisheLoaded&&orderContent.length==0"><p>暂无订单</p></div>                
                 <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
                   <div class="orderListCon" v-show="orderContent.length>0" v-for="(ol,i) in orderContent" :key="i">

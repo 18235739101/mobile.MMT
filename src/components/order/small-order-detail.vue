@@ -89,9 +89,9 @@ export default {
     created(){
        let _this=this;              
        /**获取订单详情 */
-        _this.$http('get','/manager/order/seller/orderdetail',{
+        _this.$http('get','http://madata.hc360.com/mobileapp/order/getAppOrderDetail',{
              params:{
-                     mtOrderId:_this.$route.query.orderid
+                     orderCode:_this.$route.query.orderid
                  }
         }).then(res=>{
             //  if(data.errno!=0){

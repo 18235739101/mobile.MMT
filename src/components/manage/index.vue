@@ -43,7 +43,7 @@ export default {
             },{
                 name:'商品管理',
                 className:'ico2',
-                linkUrl:''
+                linkUrl:'#/goodsManage'
             },{
                 name:'订单管理',
                 className:'ico3',

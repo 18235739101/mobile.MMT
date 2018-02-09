@@ -30,13 +30,19 @@ export default {
       * 提交描述 
       */  
      submitdesc(){
-        this.$store.commit('changeDesc',this.shopdesc);
+        if(this.shopdesc.length<15){
+            this.$toast('商品描述长度小于15个字,请重新填写！');
+            return;
+        }
+        this.$store.commit('saveShopSet',{
+           desc:this.shopdesc
+        })
         this.$router.go(-1);
      }
    },
    computed:{
        desc(){
-           return this.$store.state.desc
+           return this.$store.state.productObj.desc
        }
    },
    beforeMount(){
