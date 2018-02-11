@@ -2,27 +2,30 @@
   <!--审核未通过-->
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && refuseList.length == 0">没有任何商品哦~</div>
-            <div v-show="finishLoading && refuseList.length>0" v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="30">
+            <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="30">
                 <div class="proListCon" v-for="(pro,i) in refuseList" :key="i">
                     <div class="proImgBox">
-                        <div class="proImgBoxCon"><a href="#"><img src="https://style.org.hc360.com/images/microMall/pro/img1.png"><em class="pcIco"></em></a></div>
+                        <div class="proImgBoxCon"><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
                     </div>
                     <div class="proImgBoxRig">
                         <div class="proName">
-                            <p><a href="#">韩版新品秋季宽松套头毛衣女装秋装薄款高领新款</a></p>
-                            <span>2017/11/12</span>
+                            <p><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'">{{pro.title}}</a></p>
+                            <span>{{new Date(parseInt(pro.pubdate)).toLocaleString().replace(/:\d{1,2}$/,'').split(/\s/g)[0]}}</span>
                         </div>
                         <div class="proBotCon">
-                            <p><b>¥</b>338.<b>00</b></p>
+                            <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                             <div class="proBotConRig">
-                                <a href="#" class="programIco"></a>
-                                <a href="#" class="moreBtn"></a>
+                                <a href="javascript:void(0)" :class="{programIco:pro.isWeChat}"></a>
+                                <a href="javascript:void(0)" class="moreBtn"></a>
                             </div>
                         </div>
                     </div>
                     <div class="moreCon" style="display:block;">
                         <ul>
-                            <li><a href="#"><em class="proIco1"></em><p>撤出小程序</p></a></li><li><a href="#"><em class="proIco3"></em><p>编辑</p></a></li><li><a href="#"><em class="proIco4"></em><p>删除</p></a></li><li><a href="#"><em class="proIco7"></em><p>查看</p></a></li>
+                            <li><a href="#"><em class="proIco1"></em><p>撤出小程序</p></a></li>
+                            <li><a href="#"><em class="proIco3"></em><p>编辑</p></a></li>
+                            <li><a href="#"><em class="proIco4"></em><p>删除</p></a></li>
+                            <li><a href="#"><em class="proIco7"></em><p>查看</p></a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,10 +74,8 @@ export default {
             if(_this.finishLoading){
                 return false;
             }
+
             _this.loading = true;
-            if(_this.isSwitch){
-                _this.searchCondition.pageNo = 0;
-            }
             _this.searchCondition.pageNo++ ;
 
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/obtainBusinPage',{
@@ -88,11 +89,15 @@ export default {
                     _this.finishLoading = true
                     return false;
                 }else{
+                    //判断是否还有下一页
                     if(_this.searchCondition.pageNo == res.pageBean.pages || _this.searchCondition.pageNo > res.pageBean.pages){
-                        _this.finishLoading = true
+                        _this.finishLoading = true;
                     }
-                     _this.loading = false;
-                    _this.refuseList = _this.refuseList.concat(res.lstResult || []);
+                    //延迟加载数据
+                    setTimeout(() =>{
+                        _this.refuseList = _this.refuseList.concat(res.lstResult || []);
+                        _this.loading = false;
+                    },1000)
                 }
                 
             })
@@ -104,11 +109,12 @@ export default {
 <style>
 @import 'https://style.org.hc360.com/css/microMall/proManage.css';
 .page-infinite-loading {
+  margin-top:20px;
   text-align: center;
   height: 50px;
   line-height: 50px;
 }
-.page-infinite-loading div {
+.page-infinite-loading span {
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
