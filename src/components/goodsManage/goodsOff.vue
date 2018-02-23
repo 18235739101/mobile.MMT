@@ -2,7 +2,7 @@
   <!--已下架商品-->
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && offList.length == 0">没有任何商品哦~</div>
-            <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="30">
+            <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="10">
                 <div class="proListCon" v-for="(pro,i) in offList" :key="i"> 
                     <div class="proImgBox">
                         <div class="proImgBoxCon"><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
@@ -15,16 +15,16 @@
                         <div class="proBotCon">
                             <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                             <div class="proBotConRig">
-                                <a href="#" :class="{programIco:pro.isWeChat}"></a>
-                                <a href="#" class="moreBtn"></a>
+                                <a href="#" :class="{programIco:pro.weChat}"></a>
+                                <a href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
                             </div>
                         </div>
                     </div>
-                    <div class="moreCon" style="display:block;">
+                    <div class="moreCon" v-show="pro.isShowMore">
                         <ul>
-                            <li><a href="#"><em class="proIco3"></em><p>编辑</p></a></li>
-                            <li><a href="#"><em class="proIco4"></em><p>删除</p></a></li>
-                            <li><a href="#"><em class="proIco8"></em><p>上架</p></a></li>
+                            <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
+                            <li @click="deletePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                            <li @click="shelvePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco8"></em><p>上架</p></a></li>
                         </ul>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ export default {
       }
   },
   methods:{
-      /**加载更多 */
+        /**加载更多 */
         loadMore(){
             let _this = this;
             if(_this.finishLoading){
@@ -92,13 +92,66 @@ export default {
                     }
                     //延迟加载数据
                     setTimeout(() =>{
+
+                        //默认不展示每一商品更多选项
+                        (res.lstResult || []).forEach((item) =>{
+                            item.isShowMore = false;
+                        })
+
                         _this.offList = _this.offList.concat(res.lstResult || []);
                         _this.loading = false;
-                    },1000)
+                    },100)
                 }
                 
             })
+        },
+        
+        /**删除商机事件 */
+        deletePro(bcid){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/removebusin',{
+                params:{
+                    bcid:bcid
+                }
+            }).then(res =>{
+
+            })
+        },
+
+        /**
+         * 上架商机 
+         */
+        shelvePro(bcid){
+            let _this = this;
+            _this.$http('get','http://wsproduct.hc360.com/mBusinChance/shelves',{
+                params:{
+                    bcid:bcid
+                }
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.offList.length;i++){
+                        if(_this.offList[i].bcid == bcid){
+                            _this.offList.splice(i,1);
+                            _this.$toast('商机上架成功！');
+                            break;
+                        }
+                    }
+                }else{
+                    _this.$toast('商机上架失败！');
+                }
+            })
+        },
+
+        /**显示更多 */
+        showMore(proItem){
+            proItem.isShowMore = !proItem.isShowMore
         }
+  },
+
+  mounted(){
+      let _this = this;
+      _this.$nextTick(() =>{
+      })
   }
 }
 </script>

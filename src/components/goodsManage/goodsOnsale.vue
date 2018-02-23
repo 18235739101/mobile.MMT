@@ -1,5 +1,6 @@
 <template>
   <!--在售商品-->
+  <div>
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && onSaleList.length == 0">没有任何商品哦~</div>
             <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="10">
@@ -15,20 +16,20 @@
                     <div class="proBotCon">
                         <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                         <div class="proBotConRig">
-                            <a href="javascript:void(0)" :class="{programIco:pro.isWeChat}"></a>
-                            <a href="javascript:void(0)" class="moreBtn" @click="showMore"></a>
+                            <a href="javascript:void(0)" :class="{programIco:pro.weChat}"></a>
+                            <a href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
                         </div>
                     </div>
                 </div>
 
-                <div class="moreCon">
+                <div class="moreCon" v-show="pro.isShowMore">
                     <ul>
-                        <li><a href="#"><em class="proIco1"></em><p>导入小程序</p></a></li>
-                        <li><a href="#"><em class="proIco2"></em><p>重发</p></a></li>
-                        <li><a href="#"><em class="proIco3"></em><p>编辑</p></a></li>
-                        <li><a href="#"><em class="proIco4"></em><p>删除</p></a></li>
-                        <li><a href="#"><em class="proIco5"></em><p>下架</p></a></li>
-                        <li><a href="#"><em class="proIco6"></em><p>推广</p></a></li>
+                        <li v-show="!pro.weChat" @click='importXCX(pro)' ><a href="javascript:void(0)"><em class="proIco1"></em><p>导入小程序</p></a></li>
+                        <li v-show="pro.weChat" @click='exportXCX(pro.bcid)'><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
+                        <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
+                        <li @click='deletePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                        <li @click='unShelvePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco5"></em><p>下架</p></a></li>
+                        <li><a href="javascript:void(0)"><em class="proIco6"></em><p>推广</p></a></li>
                     </ul>
                 </div>
             </div>
@@ -38,8 +39,71 @@
                 <mt-spinner type="snake"></mt-spinner>
                 加载中...
             </p>     
+            </div>
+
        </div>
-       </div>
+
+
+        <!--导入小程序弹框-->
+        <div class="wxSetUp" style="display:block" v-if="isShowImportXCXAlert">
+            <div class="wxSetUpCon">
+                <h5>小程序商品设置</h5>
+                <a class="closeBtn" @click="importXCX()">×</a>
+                <ul>
+                    <li>
+                        <span class="wxSetUpLeft">是否支持在线交易</span>
+                        <div class="wxSetUpRig">
+                            <div class="redioBox"><input type="radio" id="radio-1-1" ref="supportTradeOnline" name="radio-1-set" class="regular-radio" checked=""><label for="radio-1-1"></label><span>是</span></div>
+                            <div class="redioBox"><input type="radio" id="radio-1-2" ref="unsupportTradeOnline" name="radio-1-set" class="regular-radio"><label for="radio-1-2"></label><span>否</span></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="wxSetUpLeft">一口价</span>
+                        <div class="wxSetUpRig"><input type="text" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
+                    </li>
+                </ul>
+                <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
+                <div class="wxSetUpBtn">
+                    <button type="submit" class="leftRedBtn" @click="confirmImportXCX()">确定</button>
+                    <button type="button" @click="importXCX()">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!--撤出小程序弹框-->
+        <div class="proAlertBox" style="display:block" v-if="isShowExportXCXAlert">
+            <div class="proAlertBoxCon">
+                <a class="closeBtn" @click="exportXCX()">×</a>
+                <dl>
+                    <dt>您确定将商品<br>从小程序商铺下架吗？</dt>
+                    <dd><button type="button" class="leftRedBtn" @click="confirmExportXCX()">确定</button><button type="button" @click="exportXCX()">取消</button></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!--删除商机弹框-->
+        <div class="proAlertBox" style="display:block" v-if="isShowDeleteProAlert">
+            <div class="proAlertBoxCon">
+                <a class="closeBtn" @click='deletePro()'>×</a>
+                <dl>
+                    <dt>确定要删除这个商品吗？</dt>
+                    <dd><button type="button" class="leftRedBtn" @click='confirmDeletePro()'>确定</button><button type="button" @click='deletePro()'>取消</button></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- 下架商机弹框 -->
+        <div class="proAlertBox" style="display:block" v-if="isShowUnshelveProAlert">
+            <div class="proAlertBoxCon">
+                <a class="closeBtn" @click="unShelvePro()">×</a>
+                <dl>
+                    <dt>确定要下架这个商品吗？</dt>
+                    <dd><button type="button" class="leftRedBtn" @click="confirmUnShelvePro()">确定</button><button type="button" @click="unShelvePro()">取消</button></dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
 </template>
 
 <script>
@@ -71,13 +135,48 @@ export default {
              */
             finishLoading:false,
 
-            isShowMore:false
+            /**
+             * 是否显示导入小程序弹框
+             */
+            isShowImportXCXAlert:false,
+
+            /**
+             * 是否显示撤出小程序弹框
+             */
+            isShowExportXCXAlert:false,
+
+            /**
+             * 是否显示删除商机弹框
+             */
+            isShowDeleteProAlert:false,
+
+            /**
+             * 是否显示下架商机弹框
+             */
+            isShowUnshelveProAlert:false,
+            
+            /**
+             * 导入小程序接口参数
+             */
+            setXCXparams:{
+                bcid:'',
+                price:'',
+                type:''      //1导入  2撤出
+            },
+
+            /**
+             * 正在操作的商机bcid
+             */
+            currentBcid:''
+
         }
     },
 
     methods:{
 
-        /**加载更多 */
+        /**
+         * 加载更多 
+         */
         loadMore(){
             let _this = this;
             if(_this.finishLoading){
@@ -103,17 +202,181 @@ export default {
                     }
                     //延迟加载数据
                     setTimeout(() =>{
+
+                        //默认不展示每一商品更多选项
+                        (res.lstResult || []).forEach((item) =>{
+                            item.isShowMore = false;
+                        })
+                        //拼接数据
                         _this.onSaleList = _this.onSaleList.concat(res.lstResult || []);
+
                         _this.loading = false;
-                    },1000)
+                    },100)
                 }
                 
             })
         },
 
-        /**显示更多 */
-        showMore(){
-            this.isShowMore = !this.isShowMore
+        /**
+         * 导入小程序 
+         */
+        importXCX(proItem){
+            let _this = this;
+            _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
+            if(proItem){
+                _this.setXCXparams.bcid = proItem.bcid;
+                _this.setXCXparams.type = 1;
+            }
+        },
+
+        /**
+         * 确定导入小程序 
+         */
+        confirmImportXCX(){
+            let _this = this;
+            if(_this.$refs.supportTradeOnline.checked){//支持在线交易
+                if(_this.$refs.priceOnline.value && _this.$refs.priceOnline.value.length>0){
+                    _this.setXCXparams.price = _this.$refs.priceOnline.value;
+                }else{
+                    _this.$toast('请填写价格！');
+                }
+            }else{
+                _this.setXCXparams.price = '0.00'   //后台要求0.00
+            }
+
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
+                params:_this.setXCXparams
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.onSaleList.length;i++){
+                        if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
+                            _this.onSaleList[i].weChat = true;
+                            _this.$toast('导入小程序成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
+                }else{
+                    _this.$toast(res.returnMsg || '导入小程序失败！');
+                }
+            })
+        },
+
+        /**
+         * 撤出小程序
+         */
+        exportXCX(bcid){
+            let _this = this;
+            _this.isShowExportXCXAlert = !_this.isShowExportXCXAlert;
+            if(bcid){
+                _this.setXCXparams.bcid = bcid;
+                _this.setXCXparams.type = 2;
+                _this.setXCXparams.price = '0.00';  //后台要求
+            }
+        },
+
+        /**
+         * 确定撤出小程序
+         */
+        confirmExportXCX(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
+                params:_this.setXCXparams
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.onSaleList.length;i++){
+                        if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
+                            _this.onSaleList[i].weChat = false;
+                            _this.$toast('撤出小程序成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowExportXCXAlert = !_this.isShowExportXCXAlert;
+                }else{
+                    _this.$toast(res.returnMsg || '撤出小程序失败！');
+                }
+            })
+        },
+
+        /**
+         * 删除商机
+         */
+        deletePro(bcid){
+            let _this = this;
+            _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+
+            if(bcid){
+                _this.currentBcid = bcid;
+            }
+        },
+
+        /**
+         * 确定删除商机
+         */
+        confirmDeletePro(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/removebusin',{
+                params:{
+                    bcid:_this.currentBcid
+                }
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.onSaleList.length;i++){
+                        if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
+                            _this.onSaleList[i].weChat = false;
+                            _this.$toast('删除商机成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+                }else{
+                    _this.$toast('删除商机失败！');
+                }
+            })
+        },
+
+        /**
+         * 下架商机 
+         */
+        unShelvePro(bcid){
+            let _this = this;
+            _this.isShowUnshelveProAlert = !_this.isShowUnshelveProAlert
+
+            if(bcid){
+                _this.currentBcid = bcid;
+            }
+        },
+
+        /**
+         * 确定下架商机
+         */
+        confirmUnShelvePro(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/underTheShelf',{
+                params:{
+                    bcid : _this.currentBcid
+                }
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.onSaleList.length;i++){
+                        if(_this.onSaleList[i].bcid == _this.currentBcid){
+                            _this.onSaleList.splice(i,1);
+                            _this.$toast('商机下架成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowUnshelveProAlert = !_this.isShowUnshelveProAlert
+                }else{
+                    _this.$toast(res.returnMsg || '商机下架失败！');
+                }
+            })
+        },
+
+        /**
+         * 显示更多 
+         */
+        showMore(proItem){
+            proItem.isShowMore = !proItem.isShowMore
         }
     },
 
@@ -129,6 +392,7 @@ export default {
 
 <style scoped>
 @import 'https://style.org.hc360.com/css/microMall/proManage.css';
+
 .page-infinite-loading {
   margin-top:20px;
   text-align: center;

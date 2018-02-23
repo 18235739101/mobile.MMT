@@ -1,6 +1,6 @@
 <template>
 <div>
-    <header class="whiteHeader"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>小程序管理</h3></header>
+    <header class="whiteHeader"><a href="javascript:history.go(-2)" class="arrowLeft"></a><h3>小程序管理</h3></header>
     <section>
     	<div class="hBuyPrompt">您已购买小程序服务！</div>
         <div class="wxProgramCon">

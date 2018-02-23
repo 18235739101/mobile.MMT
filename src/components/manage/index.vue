@@ -81,6 +81,7 @@ export default {
             }).then((res) =>{
                 res = JSON.parse(res.replace(/\(|\)/g,'')) || {};
                 _this.companyInfo = res;
+                localStorage.setItem('companyInfo',JSON.stringify(_this.companyInfo))
             })
         }
 

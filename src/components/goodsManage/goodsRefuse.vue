@@ -15,17 +15,17 @@
                         <div class="proBotCon">
                             <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                             <div class="proBotConRig">
-                                <a href="javascript:void(0)" :class="{programIco:pro.isWeChat}"></a>
-                                <a href="javascript:void(0)" class="moreBtn"></a>
+                                <a href="javascript:void(0)" :class="{programIco:pro.weChat}"></a>
+                                <a href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
                             </div>
                         </div>
                     </div>
-                    <div class="moreCon" style="display:block;">
+                    <div class="moreCon" v-show="pro.isShowMore">
                         <ul>
-                            <li><a href="#"><em class="proIco1"></em><p>撤出小程序</p></a></li>
-                            <li><a href="#"><em class="proIco3"></em><p>编辑</p></a></li>
-                            <li><a href="#"><em class="proIco4"></em><p>删除</p></a></li>
-                            <li><a href="#"><em class="proIco7"></em><p>查看</p></a></li>
+                            <li><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
+                            <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
+                            <li><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                            <li><a href="javascript:void(0)"><em class="proIco7"></em><p>查看</p></a></li>
                         </ul>
                     </div>
                 </div>
@@ -68,7 +68,9 @@ export default {
   },
 
   methods:{
-      /**加载更多 */
+        /**
+         * 加载更多 
+         */
         loadMore(){
             let _this = this;
             if(_this.finishLoading){
@@ -95,12 +97,25 @@ export default {
                     }
                     //延迟加载数据
                     setTimeout(() =>{
+
+                        //默认不展示每一商品更多选项
+                        (res.lstResult || []).forEach((item) =>{
+                            item.isShowMore = false;
+                        })
+
                         _this.refuseList = _this.refuseList.concat(res.lstResult || []);
                         _this.loading = false;
-                    },1000)
+                    },100)
                 }
                 
             })
+        },
+
+        /**
+         * 撤出小程序 
+         */
+        exportXCX(){
+
         }
   }
 }

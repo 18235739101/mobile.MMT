@@ -53,7 +53,6 @@ export default {
             finishLoading:false,
       }
   },
-  props:['isSwitch'],
   methods:{
 
       /**加载更多 */
@@ -85,7 +84,7 @@ export default {
                     setTimeout(() =>{
                         _this.checkList = _this.checkList.concat(res.lstResult || []);
                         _this.loading = false;
-                    },1000)
+                    },100)
                 }
                 
             })
