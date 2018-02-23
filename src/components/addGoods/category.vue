@@ -29,7 +29,6 @@ export default {
     checkCate(cate) {
       let _this = this,
           _cate= JSON.parse(JSON.stringify(cate));
-
         /**修改state中选择的类目 */
        _this.$store.commit('saveShopSet',{
          cate:_cate

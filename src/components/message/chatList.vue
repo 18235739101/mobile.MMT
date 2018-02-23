@@ -2,7 +2,7 @@
    <div class="tabBoxList">
        		<ul class="tabBoxListCon1">
             	<li v-for="(item,i) in chartData" :key="i">
-                	<a :href="'#/message/chatInfo?from='+username+'&to='+item.touserid" >
+                	<a :href="'#/message/chatInfo?from='+username+'&to='+ getToUser(item)" >
                         <div class="messImg"><em v-show="item.readstate==0"></em><div class="messImgCon"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div></div>
                         <dl>
                             <dt><h5></h5><span>{{timestampToTime(item.createtime)}}</span></dt>
@@ -19,13 +19,13 @@ export default {
   data(){
       return {
         chartData:[],
-        username:'cgl'
+        username:''
       }
   },
   methods:{
      getChatData(){
          let _this=this;
-         _this.$http('get','http://ydmmt.hc360.com/mobilechat/getchatlist/cgl/',{
+         _this.$http('get','http://ydmmt.hc360.com/mobilechat/getchatlist/'+_this.username+'/',{
              params:{
                  to:_this.username
              }
@@ -45,10 +45,19 @@ export default {
             m = date.getMinutes() + ':',
             s = date.getSeconds();
         return Y+M+D+h+m+s;
-     }
+     },
+     getToUser(item){
+          if(item.fromuserid==this.username){
+              return item.touserid
+          }else{
+              return item.fromuserid
+          }
+    }
   },
   created(){
-      this.getChatData();
+     let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
+         this.username=companInfo.username;
+         this.getChatData();
   }
 }
 </script>

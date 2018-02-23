@@ -15,7 +15,7 @@
                 	<li v-for="(imgs,i) in imgList" :key="i">
                         <div class="updateImg">
                         <img :src="imgs.url">
-                        <em class="delIco" @click="deleteImg"></em>
+                        <em class="delIco" @click="deleteImg(i)"></em>
                         </div>
                     </li>
                     <li v-show="imgList.length<8">
@@ -72,9 +72,9 @@ export default {
     productObj:'productObj',
   }),
   methods: {
-    /**@method
-      * 校验商品名称
-      */
+    /**
+     * @method 校验商品名称
+     */
     blurname(e) {
       let _this = this;
       if (_this.shopname.length == 0) {
@@ -118,28 +118,11 @@ export default {
           return;
         }
         /**获取picstr成功后**/
-        if (_this.picstr) {
-            _this.imgUpload(imgfile);
-            return;
+        if (!_this.picstr) {
+            _this.$toast("picstr为空！");
+            return; 
         }
-        // 获取图片上传需要的参数picStr
-        _this.$http("get","//wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
-              params: {
-                // 商机id，如果新发是0，修改是原有的商机id
-                bcid: 0
-              }
-            }
-          ).then(res => {
-            if (!res.picstr) {
-              _this.$toast("获取picstr失败");
-              return;
-            }
-            _this.picstr = res.picstr;
-            _this.$store.commit('saveShopSet',{
-               sessionid:res.sessionid
-            })
-            _this.imgUpload(imgfile);
-          });
+        _this.imgUpload(imgfile);
       }
     },
     /**@method
@@ -183,26 +166,17 @@ export default {
         });
     },
     /**
-      * 删除图片
-      */
-    deleteImg(imgInfo) {
+     * @method 删除图片
+     */
+    deleteImg(i) {
       let _this = this,
-          _imgList=JSON.parse(JSON.stringify(_this.imgList)),
-          deleteIndex=null;
+          _imgList=JSON.parse(JSON.stringify(_this.imgList));
       /**@method
        * 此方法上传完图片和点击图片删除都要调用，
        * 如果传入imgInfo表示要删除图片
        * 没有参数表示上传图片完成后要调用此接口
        */
-      if (imgInfo) {
-        _imgList.forEach((val, i) => {
-          if (val.url == imgInfo.url) {
-            _imgList.splice(i, 1);
-            deleteIndex=i;
-            return;
-          }
-        });
-      }
+      i?_imgList.splice(i, 1):'';
       _this.$http("get","http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChaceImgSaveAction/eventsubmit_dosavepic/doSavepic?callback=",
           {
             params: {
@@ -215,17 +189,17 @@ export default {
           res=res.slice(1,res.length-1);
           res=JSON.parse(res);
           /*如果删除成功，删除imgList里面的数据*/  
-          if(res.state=="true"&&imgInfo){
-              _this.imgList.splice(deleteIndex,1);
+          if(res.state=="true"&&i!=undefined){
+              _this.imgList.splice(i,1);
               _this.$store.commit('saveShopSet',{
                 imgList:_this.imgList
               })
           }
         });
     },
-    /**@method
-      * 添加商品下一步
-      */
+    /**
+     * @method 添加商品下一步
+     */
     next() {
       let _this = this;
       /** 验证商品名称为空 */
@@ -259,12 +233,76 @@ export default {
       _this.$router.push({
           path:'/addgoods/setPrice'
       })
+    },
+    /**
+     * @method 获取picstr
+     */
+    getPicstr(){
+       let _this=this;
+        // 获取图片上传需要的参数picStr
+        _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
+              params: {
+                // 商机id，如果新发是0，修改是原有的商机id
+                bcid: 0
+              }
+            }
+          ).then(res => {
+            if (!res.picstr) {
+              _this.$toast("获取picstr失败");
+              return;
+            }
+            _this.picstr = res.picstr;
+            _this.$store.commit('saveShopSet',{
+               sessionid:res.sessionid
+            })
+          });
+    },
+    /**
+     * @method 获取商机详细信息
+     * 
+     */
+    getProductInfo(){
+        let _this=this,
+            bcid=(this.$route.query||{}).bcid;
+         /* 如果存在bcid 则表示修改商机，调用获取商机接口 */ 
+         if(!bcid){
+           return;
+         }
+        _this.$http("get",'http://wsproduct.hc360.com/mBusinChance/obtainbusin',{
+          params:{
+            bcid:bcid
+          }
+        }).then((res)=>{
+            _this.$store.commit('saveShopSet',{
+                  //商品标题
+                  title: res.title,
+                  //图片列表
+                  imgList:[],
+                  // 商品描述
+                  desc: res.introduce,
+                   // 商品类目
+                  cate: {
+                    name:res.supcatname,
+                  }
+            })
+            // 保存价格设置
+           _this.$store.commit('savePrice',{
+                  // 价格类型
+                  ptype: res.pricerange1 ? priceObj.ptype=="onePrice" : 'negotiable',
+                  //商品价格
+                  price: res.pricerange1,
+                  // 库存量
+                  inventory:res.num
+           })
+        })
     }
-  },
+  },  
   beforeMount(){
      this.shopname=this.productObj.title;
      this.imgList=this.productObj.imgList;
-  }
+     this.getPicstr();   
+     this.getProductInfo();
+  },
 };
 </script>
 
