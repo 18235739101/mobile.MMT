@@ -13,8 +13,44 @@
 export default {
   data(){
       return {
-          
+         username:'',
+         socket:null,
+         isNews:false
       }
+  },
+  methods:{
+    createsocket(){
+        let _this=this,
+            host='http://ydmmt.hc360.com/chatpoint/greeting/hcgztmonitor/'+_this.username+'/';
+         if ('WebSocket' in window) {
+              _this.socket = new WebSocket(host);
+            } else if ('MozWebSocket' in window) {
+              _this.socket = new MozWebSocket(host);
+            } else {
+               console.log('Error: WebSocket is not supported by this browser.');
+              return;
+            }  
+             //接收到消息的回调函数
+         _this.socket.onmessage = function(event) {
+            let data=event.data;
+            if(data){
+               _this.isNews=true;
+            }
+              
+         };  
+    }
+  },
+  created(){
+    let _this=this,
+        companyInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
+      /**@description 获取用户名*/  
+      _this.username=companyInfo.username;
+      /**@description 查询是否有新消息 */   
+      _this.$http('get','http://ydmmt.hc360.com/mobilechat/getisnew/'+_this.username+'/').then((res)=>{
+          if(res){
+             _this.isNews=true;
+          }
+      })
   }
 }
 </script>
