@@ -3,7 +3,7 @@
       <componentHead :head-name="headName" />  
        <section>
        <div class="chatBox">
-			    <div class="timeCon"><span>今天 10：52</span></div>
+                <!-- 历史留言消息 -->
                 <div :class="{'chatRig':item.fromuserid==messageUser.from,'chatLeft':item.fromuserid!=messageUser.from}" v-for="(item,i) in messageList" :key="i">
                     <div class="chatLeftCon">
                         <div class="chatLeftImg"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div>
@@ -24,17 +24,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="timeCon"><span>今天 {{time}}</span></div>
                  <!-- 商品详情 -->
-                 <div class="chatLeftPro" v-if="proDetail.title">
-                        <a href="#">
-                                <div class="chatLeftProImg"><img :src="proDetail.imgurl"></div>
-                                <div class="chatLeftProRig">
-                                        <div class="chatProName">{{ proDetail.title }}</div>
-                                        <p><b>¥</b>{{ proDetail.price }}.<b>00</b></p>
-                                </div>
-                        </a>
-                        <button @click="sendShop()">发送商品</button>
-                 </div>
+                   <div class="chatProCon" v-if="proDetail.title">
+                    <a href="#">
+                        <div class="chatLeftProImg"><img :src="proDetail.imgurl"></div>
+                        <div class="chatLeftProRig">
+                            <div class="chatProName">{{ proDetail.title }}</div>
+                            <p><b>&yen;</b>{{ proDetail.price }}<b>00</b></p>
+                        </div>
+                    </a>
+                    <button type="button" @click="sendShop()">发送商品</button>
+                </div>
+                <!-- 当前留言列表 -->
+                <div :class="{'chatRig':item.fromuserid==messageUser.from,'chatLeft':item.fromuserid!=messageUser.from}" v-for="(item,j) in newMessageList" :key="item.id">
+                    <div class="chatLeftCon">
+                        <div class="chatLeftImg"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div>
+                        <div class="chatLeftImgRig">
+                            <em></em>
+                            <div class="chatLeftImgRigCon" v-show="item.type==0">
+                                <p>{{item.content}}</p>
+                            </div>
+                            <div class="chatLeftPro" v-show="item.type==1">
+                                <a href="#">
+                                    <div class="chatLeftProImg"><img :src="item.content.imgurl"></div>
+                                    <div class="chatLeftProRig">
+                                        <div class="chatProName">{{ item.content.title }}</div>
+                                        <p><b>¥</b>{{ item.content.price }}.<b>00</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
        </div>
        <div class="chatBoxBot">
        		<input type="text" v-model="message" @keyup.enter="sendMessage">
@@ -51,16 +73,27 @@ export default {
         headName:'询价留言',
         //留言用户信息
         messageUser:{ },
-        // 留言列表
-        messageList:[],        
+        // 历史留言列表
+        messageList:[],  
+        // 当前留言列表
+        newMessageList:[],      
         // 留言消息
         message:'',
         // 即时通信的对象
         socket:null,
+        // socket是否打开
         socketIsOpen:false,
         // 图文消息详情
         proDetail:{}
       }
+  },
+  computed:{
+    time(){
+            let d=new Date(),
+                hours=d.getHours()<10 ? '0'+d.getHours() : d.getHours(),
+                minutes=d.getMinutes()<10 ? '0'+d.getMinutes() : d.getMinutes();
+            return hours+':'+minutes
+    }
   },
   methods:{
      /**
@@ -77,13 +110,15 @@ export default {
                         val.content=JSON.parse(val.content);
                     }
                 })
-                console.log(res);
                 _this.messageList=_this.messageList.concat(res);
                 // 将消息修改为已读状态
                 _this.$http('get',messageStateUrl).then((res)=>{
                    if(res==false){
                        console.log('修改消息状态失败！')
                    }
+                })
+                _this.$nextTick(()=>{
+                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
                 })
             }
          })
@@ -108,12 +143,15 @@ export default {
              params:mesInfo
          }).then((res)=>{
            if(res==true){
-               _this.messageList.push({
+               _this.newMessageList.push({
                    fromuserid:_this.messageUser.from,
                    type:1,
                    content:_this.proDetail
                });  
-           }
+               _this.$nextTick(()=>{
+                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
+                })
+            }
          })
      },
      /**
@@ -121,7 +159,6 @@ export default {
       */
      sendMessage(){
          let _this=this,
-             _wrap=document.getElementsByClassName('chatBox')[0],
              saveMessageUrl='http://ydmmt.hc360.com/mobilechat/savechat/'+_this.messageUser.from+'/'+_this.messageUser.to+'/',
              mesInfo={
               content:_this.message,
@@ -137,13 +174,15 @@ export default {
              params:mesInfo
          }).then((res)=>{
            if(res==true){
-                _this.messageList.push({
+                _this.newMessageList.push({
                     content:_this.message,
                     type:0,
                     fromuserid:_this.messageUser.from
                 });  
                 _this.message='';
-                _wrap.scrollTop=_wrap.offsetHeight;
+                _this.$nextTick(()=>{
+                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
+                })
            }
          })
      },
@@ -165,10 +204,13 @@ export default {
          _this.socket.onmessage = function(event) {
             let data=JSON.parse(event.data);
             if(data.content){
-               _this.messageList.push({
+               _this.newMessageList.push({
                     fromuserid:_this.messageUser.to,
                     ...data
                 }); 
+                _this.$nextTick(()=>{
+                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
+                })
             }
               
          };
@@ -177,11 +219,18 @@ export default {
             _this.socketIsOpen=true;
             // 如果是从终极页进入的买家界面弹出商品详情的浮层
             if(_this.messageUser.type=='buy'){
-               _this.proDetail={
-                     imgurl:'https://style.org.hc360.com/images/microMall/pro/img1.png',
-                     title:'韩版新款春季宽松套头针织衫半高领毛韩版新款春季宽松套头针织衫半高领毛',
-                     price:38  
-              }
+                if(!_this.messageUser.bcid){
+                   _this.$toast('缺少bicd');
+                   return;
+                }
+                _this.$http('get','https://wsdetail.b2b.hc360.com/xcx/supply/'+_this.messageUser.bcid).then((res)=>{
+                     _this.proDetail={
+                        imgurl:res.picUrls[0].picUrl,
+                        title:res.title,
+                        price:res.price||'面议' 
+                    }
+                })
+              
             }
         }
         //连接关闭后的回调函数

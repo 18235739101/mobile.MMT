@@ -29,7 +29,7 @@
   
 </template>
 
-<script scoped>
+<script>
 import logoTip from 'components/v-logoTip'
 import footerContent from 'components/footer.vue'
 export default {
