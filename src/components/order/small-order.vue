@@ -43,7 +43,7 @@
 export default {
   data() {
     return {
-      username:'tyc5010',
+      username:'',
       /**
         * 订单状态集合
         */
@@ -122,6 +122,12 @@ export default {
               sign:2
          }
       }).then(res=>{
+         // 无订单
+         if(res.errcode==1){
+             _this.finisheLoaded = true;
+             _this.loading = false;
+             return;
+          }
           let data = (res.data||{}).orderlist;
           if (data && data.length > 0) {
             /**服务器返回数据小于请求的条数大小， 数据加载完毕*/
@@ -149,6 +155,10 @@ export default {
 
       this.loadMore();
     }
+  },
+  created(){
+    let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
+    this.username=companInfo.username;
   }
 };
 </script>

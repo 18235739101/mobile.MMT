@@ -41,7 +41,7 @@ let store = new Vuex.Store({
         componentname: 'ShopOrder',
 
         // 留言组件状态
-        messageValue: 'messageList',
+        messageValue: 'chatList',
 
         // 图片上传
         productObj:{...productObj},
