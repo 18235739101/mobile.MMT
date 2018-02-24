@@ -13,6 +13,7 @@
        <div class="proBotAdd">
        		<a href="#/addgoods">添加商品</a>
        </div> 
+       
     </section>
 </template>
 
@@ -78,6 +79,7 @@ export default {
         _this.activeTabIndex = i;
 
       }
+      
   },
 
   mounted(){

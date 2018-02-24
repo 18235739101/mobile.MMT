@@ -22,10 +22,11 @@
                     </div>
                     <div class="moreCon" v-show="pro.isShowMore">
                         <ul>
-                            <li><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
+                            <li v-show="!pro.weChat" @click='importXCX(pro)' ><a href="javascript:void(0)"><em class="proIco1"></em><p>导入小程序</p></a></li>
+                            <li v-show="pro.weChat" @click='exportXCX(pro.bcid)'><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
                             <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
-                            <li><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
-                            <li><a href="javascript:void(0)"><em class="proIco7"></em><p>查看</p></a></li>
+                            <li @click="deletePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                            <li @click="toFindReason(pro.bcid)"><a href="javascript:void(0)"><em class="proIco7"></em><p>查看</p></a></li>
                         </ul>
                     </div>
                 </div>
@@ -35,6 +36,66 @@
                     加载中...
                 </p>  
             </div>
+
+            <!--导入小程序弹框-->
+            <div class="wxSetUp" style="display:block" v-if="isShowImportXCXAlert">
+                <div class="wxSetUpCon">
+                    <h5>小程序商品设置</h5>
+                    <a class="closeBtn" @click="importXCX()">×</a>
+                    <ul>
+                        <li>
+                            <span class="wxSetUpLeft">是否支持在线交易</span>
+                            <div class="wxSetUpRig">
+                                <div class="redioBox"><input type="radio" id="radio-1-1" ref="supportTradeOnline" name="radio-1-set" class="regular-radio" checked=""><label for="radio-1-1"></label><span>是</span></div>
+                                <div class="redioBox"><input type="radio" id="radio-1-2" ref="unsupportTradeOnline" name="radio-1-set" class="regular-radio"><label for="radio-1-2"></label><span>否</span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="wxSetUpLeft">一口价</span>
+                            <div class="wxSetUpRig"><input type="text" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
+                        </li>
+                    </ul>
+                    <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
+                    <div class="wxSetUpBtn">
+                        <button type="submit" class="leftRedBtn" @click="confirmImportXCX()">确定</button>
+                        <button type="button" @click="importXCX()">取消</button>
+                    </div>
+                </div>
+            </div>
+
+            <!--撤出小程序弹框-->
+            <div class="proAlertBox" style="display:block" v-if="isShowExportXCXAlert">
+                <div class="proAlertBoxCon">
+                    <a class="closeBtn" @click="exportXCX()">×</a>
+                    <dl>
+                        <dt>您确定将商品<br>从小程序商铺下架吗？</dt>
+                        <dd><button type="button" class="leftRedBtn" @click="confirmExportXCX()">确定</button><button type="button" @click="exportXCX()">取消</button></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!--删除商机弹框-->
+            <div class="proAlertBox" style="display:block" v-if="isShowDeleteProAlert">
+                <div class="proAlertBoxCon">
+                    <a class="closeBtn" @click='deletePro()'>×</a>
+                    <dl>
+                        <dt>确定要删除这个商品吗？</dt>
+                        <dd><button type="button" class="leftRedBtn" @click='confirmDeletePro()'>确定</button><button type="button" @click='deletePro()'>取消</button></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 查看拒申原因弹框 -->
+            <div class="proAlertBox" style="display:block" v-if="isShowReasonAlert">
+                <div class="proAlertBoxCon">
+                    <a class="closeBtn" @click="toFindReason()">×</a>
+                    <dl>
+                        <dd><h5>拒审理由</h5><p>含有违禁词</p></dd>
+                    </dl>
+                    <button type="button" class="closeBot" @click="toFindReason()">关闭</button>
+                </div>
+            </div>
+
        </div>
 </template>
 
@@ -64,6 +125,40 @@ export default {
          * 是否完成加载
          */
         finishLoading:false,
+
+        /**
+         * 当前操作商机的bcid
+         */
+        currentBcid:'',
+
+        /**
+         * 导入小程序接口参数
+         */
+        setXCXparams:{
+            bcid:'',
+            price:'',
+            type:''      //1导入  2撤出
+        },
+
+        /**
+         * 是否显示删除商机弹框
+         */
+        isShowDeleteProAlert:false,
+
+        /**
+         * 是否显示导入小程序弹框
+         */
+        isShowImportXCXAlert:false,
+
+        /**
+         * 是否显示撤出小程序弹框
+         */
+        isShowExportXCXAlert:false,
+
+        /**@augments
+         * 是否显示拒申原因弹框
+         */
+        isShowReasonAlert:false
       }
   },
 
@@ -112,11 +207,140 @@ export default {
         },
 
         /**
-         * 撤出小程序 
+         * 显示更多 
          */
-        exportXCX(){
+        showMore(proItem){
+            proItem.isShowMore = !proItem.isShowMore
+        },
 
+        /**
+         * 导入小程序 
+         */
+        importXCX(proItem){
+            let _this = this;
+            _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
+            if(proItem){
+                _this.setXCXparams.bcid = proItem.bcid;
+                _this.setXCXparams.type = 1;
+            }
+        },
+
+        /**
+         * 确定导入小程序 
+         */
+        confirmImportXCX(){
+            let _this = this;
+            if(_this.$refs.supportTradeOnline.checked){//支持在线交易
+                if(_this.$refs.priceOnline.value && _this.$refs.priceOnline.value.length>0){
+                    _this.setXCXparams.price = _this.$refs.priceOnline.value;
+                }else{
+                    _this.$toast('请填写价格！');
+                    return false;
+                }
+            }else{
+                _this.setXCXparams.price = '0.00'   //后台要求0.00
+            }
+
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
+                params:_this.setXCXparams
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.refuseList.length;i++){
+                        if(_this.refuseList[i].bcid == _this.setXCXparams.bcid){
+                            //导入小程序将wechat值改为true
+                            _this.refuseList[i].weChat = true;
+                            _this.$toast('导入小程序成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
+                }else{
+                    _this.$toast(res.returnMsg || '导入小程序失败！');
+                }
+            })
+        },
+
+        /**
+         * 撤出小程序
+         */
+        exportXCX(bcid){
+            let _this = this;
+            _this.isShowExportXCXAlert = !_this.isShowExportXCXAlert;
+            if(bcid){
+                _this.setXCXparams.bcid = bcid;
+                _this.setXCXparams.type = 2;
+                _this.setXCXparams.price = '0.00';  //后台要求
+            }
+        },
+
+        /**
+         * 确定撤出小程序
+         */
+        confirmExportXCX(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
+                params:_this.setXCXparams
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.refuseList.length;i++){
+                        if(_this.refuseList[i].bcid == _this.setXCXparams.bcid){
+                            //撤出小程序将wechat值改为false
+                            _this.refuseList[i].weChat = false;
+                            _this.$toast('撤出小程序成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowExportXCXAlert = !_this.isShowExportXCXAlert;
+                }else{
+                    _this.$toast(res.returnMsg || '撤出小程序失败！');
+                }
+            })
+        },
+
+        /**
+         * 删除商机
+         */
+        deletePro(bcid){
+            let _this = this;
+            _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+
+            if(bcid){
+                _this.currentBcid = bcid;
+            }
+        },
+
+        /**
+         * 确定删除商机
+         */
+        confirmDeletePro(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/removebusin',{
+                params:{
+                    bcid:_this.currentBcid
+                }
+            }).then(res =>{
+                if(res && res.success){
+                    for(var i=0;i<_this.refuseList.length;i++){
+                        if(_this.refuseList[i].bcid == _this.currentBcid){
+                            _this.refuseList.splice(i,1);
+                            _this.$toast('删除商机成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+                }else{
+                    _this.$toast('删除商机失败！');
+                }
+            })
+        },
+
+        /**
+         * 查看拒申原因
+         */
+        toFindReason(bcid){
+            this.isShowReasonAlert = !this.isShowReasonAlert;
         }
+
   }
 }
 </script>

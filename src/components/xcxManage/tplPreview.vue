@@ -62,7 +62,7 @@ export default {
                   Toast({
                     message: '启用模板失败，请稍后重试！',
                     position: 'middle',
-                    duration: 5000
+                    duration: 1500
                   });
               }
           })

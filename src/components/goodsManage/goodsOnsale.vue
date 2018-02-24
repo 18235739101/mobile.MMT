@@ -29,7 +29,7 @@
                         <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
                         <li @click='deletePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
                         <li @click='unShelvePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco5"></em><p>下架</p></a></li>
-                        <li><a href="javascript:void(0)"><em class="proIco6"></em><p>推广</p></a></li>
+                        <li v-show="isPopularize" @click="popularizePro(pro)"><a href="javascript:void(0)"><em class="proIco6"></em><p>推广</p></a></li>
                     </ul>
                 </div>
             </div>
@@ -102,11 +102,22 @@
                 </dl>
             </div>
         </div>
+        
+        <!--一键重发-->
+        <a href="javascript:void(0)" class="resendBtn" @click="OneKeyResend()">一键重发</a>
+
+        <mt-popup :modal=false v-model="popupVisible"  position="bottom">
+           <div id="nativeShare"></div>  
+        </mt-popup>
 
     </div>
 </template>
 
 <script>
+import "../../common/nativeShare/nativeShare.css"
+import nativeShare from '../../common/nativeShare/nativeShare'
+
+import {Popup} from 'mint-ui'
 export default {
 
     data(){
@@ -167,9 +178,33 @@ export default {
             /**
              * 正在操作的商机bcid
              */
-            currentBcid:''
+            currentBcid:'',
+
+            /**
+             * 是否显示推广
+             */
+            isPopularize:true,
+
+            //popup是否显示
+            popupVisible:false,
+
+            /**
+             * 分享的配置参数值 
+             */
+            shareConfig : {
+                url:'',
+                title:'',
+                img:''
+                //desc:'王俊锋的个人博客',
+                // img_title:'王俊锋的个人博客',
+                // from:'王俊锋的博客'
+            }
 
         }
+    },
+
+    components:{
+        "mt-popup":Popup
     },
 
     methods:{
@@ -239,6 +274,7 @@ export default {
                     _this.setXCXparams.price = _this.$refs.priceOnline.value;
                 }else{
                     _this.$toast('请填写价格！');
+                    return false;
                 }
             }else{
                 _this.setXCXparams.price = '0.00'   //后台要求0.00
@@ -250,6 +286,7 @@ export default {
                 if(res && res.success){
                     for(var i=0;i<_this.onSaleList.length;i++){
                         if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
+                            //导入小程序将wechat值改为true
                             _this.onSaleList[i].weChat = true;
                             _this.$toast('导入小程序成功！');
                             break;
@@ -286,6 +323,7 @@ export default {
                 if(res && res.success){
                     for(var i=0;i<_this.onSaleList.length;i++){
                         if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
+                            //撤出小程序将wechat值改为false
                             _this.onSaleList[i].weChat = false;
                             _this.$toast('撤出小程序成功！');
                             break;
@@ -322,8 +360,8 @@ export default {
             }).then(res =>{
                 if(res && res.success){
                     for(var i=0;i<_this.onSaleList.length;i++){
-                        if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
-                            _this.onSaleList[i].weChat = false;
+                        if(_this.onSaleList[i].bcid == _this.currentBcid){
+                            _this.onSaleList.splice(i,1);
                             _this.$toast('删除商机成功！');
                             break;
                         }
@@ -371,18 +409,71 @@ export default {
                 }
             })
         },
+        
+        /**
+         * 浏览器识别（只有手机QQ浏览器和UC浏览器才支持店铺分享）
+         */
+        browserIdenty(){
+            var bLevel = {
+                qq: {forbid: 0, lower: 1, higher: 2},
+                uc: {forbid: 0, allow: 1}
+            };
+            let UA = navigator.appVersion;
+            let isqqBrowser = (UA.split("MQQBrowser/").length > 1) ? bLevel.qq.higher : bLevel.qq.forbid;
+            let isucBrowser = (UA.split("UCBrowser/").length > 1) ? bLevel.uc.allow : bLevel.uc.forbid;
+
+            if((isqqBrowser && isqqBrowser>0) || (isucBrowser && isucBrowser>0)){
+                this.isPopularize = true;
+            }
+        },
+
+        /**
+         * 推广商机
+         */
+        popularizePro(pro){
+            let _this = this;
+            _this.popupVisible = !_this.popupVisible;
+
+            if(pro){
+                _this.shareConfig.url = '//m.hc360.com/supplyself/'+ pro.bcid +'.html';
+                _this.shareConfig.title = pro.title;
+                _this.shareConfig.img = pro.picpath
+                new nativeShare('nativeShare',_this.shareConfig);
+            }
+            
+            
+        },
+
+        /**
+         * 一键重发
+         */
+        OneKeyResend(){
+            let _this = this;
+            _this.$http('get','//wsproduct.hc360.com/mBusinChance/oneKeyRepeated',{
+            params:{
+                sort:'A'
+            }
+            }).then(res =>{
+            if(res && res.success){
+                _this.$toast("您成功重发了"+ res.returnMsg +"条");
+            }else{
+                _this.$toast(res.returnMsg || "一键重发失败！");
+            }
+            })
+        },
 
         /**
          * 显示更多 
          */
         showMore(proItem){
-            proItem.isShowMore = !proItem.isShowMore
+            proItem.isShowMore = !proItem.isShowMore;
         }
     },
 
     mounted(){
         let _this = this;
         _this.$nextTick(() =>{
+            _this.browserIdenty()
             
         })
     }
@@ -403,6 +494,11 @@ export default {
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
+}
+.mint-popup-bottom{
+  bottom:100px;
+  width:100%;
+  height:200px;
 }
 </style>
 
