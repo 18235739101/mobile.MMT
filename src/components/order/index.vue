@@ -2,14 +2,15 @@
     <div>
       <section>
           <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="backPrePage()"></a><h3>订单管理</h3></header>
-          <div class="orderTab">
+          <!-- <div class="orderTab">
             <dl>
                 <dd @click="checkComponent(nav.componentName)" :class="{'tabCur':nav.componentName==currentView}" v-for="(nav,i) in navList" :key="i"><a>{{nav.name}}</a></dd>
             </dl>
-          </div>
-          <keep-alive>
+          </div> -->
+          <!-- <keep-alive>
             <component :is="currentView"></component>
-          </keep-alive>  
+          </keep-alive>   -->
+          <SmallOrder></SmallOrder>
     </section>
      <footerContent/>
   </div> 

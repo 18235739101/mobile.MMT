@@ -90,7 +90,7 @@
                 <div class="proAlertBoxCon">
                     <a class="closeBtn" @click="toFindReason()">×</a>
                     <dl>
-                        <dd><h5>拒审理由</h5><p>含有违禁词</p></dd>
+                        <dd><h5>拒审理由</h5><p v-html="refuseReason"></p></dd>
                     </dl>
                     <button type="button" class="closeBot" @click="toFindReason()">关闭</button>
                 </div>
@@ -155,10 +155,15 @@ export default {
          */
         isShowExportXCXAlert:false,
 
-        /**@augments
+        /**
          * 是否显示拒申原因弹框
          */
-        isShowReasonAlert:false
+        isShowReasonAlert:false,
+
+        /**
+         * 拒申原因
+         */
+        refuseReason:''
       }
   },
 
@@ -338,7 +343,26 @@ export default {
          * 查看拒申原因
          */
         toFindReason(bcid){
-            this.isShowReasonAlert = !this.isShowReasonAlert;
+            let _this = this;
+            _this.isShowReasonAlert = !_this.isShowReasonAlert;
+
+            if(bcid){
+                _this.$http('get','//wsproduct.hc360.com/mBusinChance/obtainBusinRefuse',{
+                    params:{
+                        bcid:bcid
+                    }
+                }).then(res =>{
+                    if(res && res.length>0){
+                        (res||[]).forEach((item,i) =>{
+                            if(i>0){
+                                _this.refuseReason += "<br>"+(i+1)+"、"+ item.fieldname + "中" + item.refusecase
+                            }else{
+                                _this.refuseReason = (i+1) + "、" +item.fieldname + "中" + item.refusecase;
+                            }
+                        })
+                    }
+                })
+            }
         }
 
   }

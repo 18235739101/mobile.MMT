@@ -17,7 +17,9 @@
                         <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                         <div class="proBotConRig">
                             <a href="javascript:void(0)" :class="{programIco:pro.weChat}"></a>
-                            <a href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
+                            <a v-if="pro.checked && pro.checked == '0'" href="javascript:void(0)">已修改审核中...</a>
+                            <a v-else href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
+                            
                         </div>
                     </div>
                 </div>
