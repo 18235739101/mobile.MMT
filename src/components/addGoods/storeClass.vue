@@ -89,9 +89,10 @@ export default {
        this.$store.commit('saveSort',this.storeObject);
        this.classInfo=store.seriesName;
        setTimeout(()=>{
-           this.$router.go(-1);
-       },1500)
-      
+           this.$router.push({
+               path:'/addgoods/setPrice'
+           })
+       },1200)
     }
   },
   created(){

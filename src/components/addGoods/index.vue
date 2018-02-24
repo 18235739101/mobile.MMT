@@ -61,7 +61,8 @@ export default {
         mes:''
       },
       // 图片列表
-      imgList:[]
+      imgList:[],
+      bcid:0
     };
   },
   components: {
@@ -105,9 +106,10 @@ export default {
           });
       }
     },
-    /**@method
-      * 图片上传
-      */
+    /**
+     * @method
+     * 图片上传
+     */
     inputchange(event) {
       let _this = this,
           _files = event.target.files;
@@ -236,17 +238,22 @@ export default {
     },
     /**
      * @method 获取picstr
+     * 
      */
     getPicstr(){
-       let _this=this;
-        // 获取图片上传需要的参数picStr
-        _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
+        let _this=this,
+            bcid=(this.$route.query||{}).bcid;
+        
+         bcid ? _this.bcid=bcid : '';
+
+         // 获取picstr
+         _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
               params: {
                 // 商机id，如果新发是0，修改是原有的商机id
-                bcid: 0
+                bcid: _this.bcid
               }
             }
-          ).then(res => {
+          ).then((res)=>{
             if (!res.picstr) {
               _this.$toast("获取picstr失败");
               return;
@@ -255,54 +262,79 @@ export default {
             _this.$store.commit('saveShopSet',{
                sessionid:res.sessionid
             })
-          });
+            if(_this.bcid!=0){
+               _this.getShopDetail();
+            }
+         })
+        
     },
-    /**
-     * @method 获取商机详细信息
+    /**@method 获取商机详细信息 
      * 
      */
-    getProductInfo(){
+    getShopDetail(){
         let _this=this,
-            bcid=(this.$route.query||{}).bcid;
-         /* 如果存在bcid 则表示修改商机，调用获取商机接口 */ 
-         if(!bcid){
-           return;
-         }
-        _this.$http("get",'http://wsproduct.hc360.com/mBusinChance/obtainbusin',{
+            getShopDetailUrl='http://wsproduct.hc360.com/mBusinChance/obtainbusin',
+            getShopImgUrl='http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.GetBusinChanceImgListAction/eventsubmit_dogetpic/doGetpic';
+        // 获取商机详细信息
+        _this.$http("get",getShopDetailUrl,{
           params:{
-            bcid:bcid
+            bcid:_this.bcid
           }
         }).then((res)=>{
-            _this.$store.commit('saveShopSet',{
-                  //商品标题
-                  title: res.title,
-                  //图片列表
-                  imgList:[],
-                  // 商品描述
-                  desc: res.introduce,
-                   // 商品类目
-                  cate: {
-                    name:res.supcatname,
-                  }
-            })
-            // 保存价格设置
-           _this.$store.commit('savePrice',{
-                  // 价格类型
-                  ptype: res.pricerange1 ? priceObj.ptype=="onePrice" : 'negotiable',
+          let shopDetail={
+                 //商品标题
+                 title: res.title,
+                 //图片列表
+                 imgList:[],
+                 // 商品描述
+                 desc: res.introduce,
+                 // 商品类目
+                 cate: {
+                      name:res.supcatname,
+                 }
+              },
+              shopPrice={
+                 // 价格类型
+                   ptype: res.pricerange1 ? "onePrice" : 'negotiable',
                   //商品价格
-                  price: res.pricerange1,
-                  // 库存量
-                  inventory:res.num
-           })
+                   price: res.pricerange1,
+                   // 库存量
+                   inventory:res.num
+              }
+           this.shopname=res.title;
+          //获取修改商机的图片
+           _this.$http('get',getShopImgUrl,{
+              params:{
+                picstr:_this.picstr,
+                callback:''
+              }
+            }).then((res)=>{
+                res=JSON.parse(res.slice(1,res.length-1)||'{}');
+                if(res.result.length>0){
+                  _this.imgList=[...res.result];
+                  shopDetail.imgList=[...res.result];
+                  // 保存商品标题图片描述和类目
+                   _this.$store.commit('saveShopSet',{
+                        ...shopDetail
+                  })
+                  // 保存价格设置
+                  _this.$store.commit('savePrice',{
+                        ...shopPrice
+                  })
+                }
+               
+            })
+           
         })
+     
     }
   },  
   beforeMount(){
      this.shopname=this.productObj.title;
+     console.log(this.productObj.imgList);
      this.imgList=this.productObj.imgList;
-     this.getPicstr();   
-     this.getProductInfo();
-  },
+     this.getPicstr();  
+  }
 };
 </script>
 

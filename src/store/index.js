@@ -89,13 +89,29 @@ let store = new Vuex.Store({
         //清除发布商机的state
         clearProduct(state) {
              // 图片上传
-             state.productObj={...productObj};
-        
+             state.productObj={
+                title: '',
+                sessionid: '',
+                imgList: [],
+                desc: '',
+                cate: {}
+            };
              //价格设置
-             state.priceObj={...priceObj};
+             state.priceObj={
+                ptype: 'negotiable',
+                price: '',
+                inventory: ''
+             };
         
              //炫铺分类
-             state.storeObj={...storeObj} 
+             state.storeObj={
+                name: '全部',
+                bsid: '',
+                child: {
+                    name: '',
+                    seriesid: ''
+                }
+             } 
         }
     }
 })
