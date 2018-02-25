@@ -198,6 +198,18 @@ const routeConfig = [
       }
     },
     {
+      name: '工作台更多',
+      path: '/manage/more',
+      meta: { 
+        requireAuth: true
+      },
+      component: resolve => {
+        require.ensure(['../components/manage/more.vue'], () => {
+          resolve(require('../components/manage/more.vue'))
+        })
+      }
+    },
+    {
       name:'宣传页',
       path:'/notice',
       component:resolve => {
@@ -407,7 +419,6 @@ const routeConfig = [
         })
       }
     }
-
     
   ];
   
