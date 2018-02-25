@@ -7,7 +7,7 @@
             <p>恭喜您商品发布成功</p>
             <div class="succBoxBtn">
                 <a href="javascript:;" class="succLeftBtn" @click="continueRelease">继续发布</a>
-                <a href="#">管理商品</a>
+                <a href="/goodsManage" >管理商品</a>
             </div>
         </div>
     </section>

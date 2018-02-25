@@ -97,11 +97,7 @@ let store = new Vuex.Store({
                 cate: {}
             };
              //价格设置
-             state.priceObj={
-                ptype: 'negotiable',
-                price: '',
-                inventory: ''
-             };
+             state.priceObj={...priceObj};
         
              //炫铺分类
              state.storeObj={
