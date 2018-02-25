@@ -6,8 +6,8 @@
             <em></em>
             <p>恭喜您商品发布成功</p>
             <div class="succBoxBtn">
-                <a href="javascript:;" class="succLeftBtn" @click="continueRelease">继续发布</a>
-                <a href="/goodsManage" >管理商品</a>
+                <a href="javascript:;" class="succLeftBtn" @click="continueRelease('addgoods')">继续发布</a>
+                <a href="javascript:;" @click="continueRelease('goodsManage')" >管理商品</a>
             </div>
         </div>
     </section>
@@ -23,9 +23,9 @@ export default {
   },
   methods:{
      // 跳转到商机发布页  
-     continueRelease(){
+     continueRelease(path){
          this.$store.commit('clearProduct');
-         this.$router.push('/addgoods')
+         this.$router.push('/'+path)
      }
   },
   components:{
