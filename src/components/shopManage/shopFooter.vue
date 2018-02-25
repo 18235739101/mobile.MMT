@@ -29,7 +29,7 @@ export default {
      username:JSON.parse(localStorage.getItem('companyInfo')).username,
 
      //是否显示店铺分享
-     isShare:false,
+     isShare:true,
 
      /**分享的配置参数值 */
      config : {

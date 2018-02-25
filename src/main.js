@@ -36,7 +36,7 @@ Vue.prototype.$toast=(mes)=>{
   Toast({
     message: mes,
     position: "middle",
-    duration: 5000
+    duration: 1500
   });
 },
 

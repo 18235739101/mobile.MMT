@@ -3,7 +3,6 @@ const routeConfig = [
       name: '根',
       path: '/',
       redirect:'/manage',
-      //redirect:'/addgoods?bcid=47372256',
       hidden: true
     },{      
       name:'订单管理',
