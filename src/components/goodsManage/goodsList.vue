@@ -1,4 +1,6 @@
 <template>
+<div>
+  <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>商品管理</h3></header>
   <section>
        <div class="proTitBox">
        		<ul>
@@ -15,6 +17,7 @@
        </div> 
        
     </section>
+</div>
 </template>
 
 <script>

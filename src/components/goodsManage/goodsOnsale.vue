@@ -28,9 +28,9 @@
                     <ul>
                         <li v-show="!pro.weChat" @click='importXCX(pro)' ><a href="javascript:void(0)"><em class="proIco1"></em><p>导入小程序</p></a></li>
                         <li v-show="pro.weChat" @click='exportXCX(pro.bcid)'><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
-                        <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
-                        <li @click='deletePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
-                        <li @click='unShelvePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco5"></em><p>下架</p></a></li>
+                        <li v-if="pro.pubtype == 10"><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
+                        <li v-if="pro.pubtype == 10" @click='deletePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                        <li v-if="pro.pubtype == 10" @click='unShelvePro(pro.bcid)'><a href="javascript:void(0)"><em class="proIco5"></em><p>下架</p></a></li>
                         <li v-show="isPopularize" @click="popularizePro(pro)"><a href="javascript:void(0)"><em class="proIco6"></em><p>推广</p></a></li>
                     </ul>
                 </div>
