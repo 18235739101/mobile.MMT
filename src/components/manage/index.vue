@@ -7,7 +7,9 @@
             <div class="personalInfo">
             	<div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username'><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/manage/hImg.png'"></a></div>
                 <div class="comName">
-                	<a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
+                	<a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">
+                     <span>{{companyInfo.name}}</span>
+                    </a>
                 </div>
             </div>
             <div class="manageContent">
