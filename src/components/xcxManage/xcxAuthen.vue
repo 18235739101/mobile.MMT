@@ -1,6 +1,6 @@
 <template>
 <div>
- <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>小程序管理</h3></header>
+ <header class="mHeaderBox"><h3>小程序管理</h3></header>
  <section>
         <div class="personalInfoNew">
             <div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>

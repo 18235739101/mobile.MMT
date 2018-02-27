@@ -22,8 +22,8 @@
                     </div>
                     <div class="moreCon" v-show="pro.isShowMore">
                         <ul>
-                            <li><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
-                            <li @click="deletePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
+                            <li v-if="pro.pubtype == 10"><a :href="'#/addgoods?bcid='+pro.bcid"><em class="proIco3"></em><p>编辑</p></a></li>
+                            <li v-if="pro.pubtype == 10" @click="deletePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco4"></em><p>删除</p></a></li>
                             <li @click="shelvePro(pro.bcid)"><a href="javascript:void(0)"><em class="proIco8"></em><p>上架</p></a></li>
                         </ul>
                     </div>
