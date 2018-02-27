@@ -57,12 +57,12 @@ export default {
                        }
                    }).then((res)=>{
                        if(res.errcode==0){
+                           
                            console.log('发货成功')
                        }
                    })
                }
             })
-           console.log(this.logisticsCom,this.courierNum,this.note)
         },
         backPrePage(){
             this.$router.go(-1);

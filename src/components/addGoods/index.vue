@@ -138,7 +138,7 @@ export default {
       formData.append("watermark_showCompanyName", 1);
       formData.append("watermark_showCompanyURL", 1);
       formData.append("watermark_showPosition", 1);
-      formData.append("uptype", 1);
+      formData.append("uptype", 5);
       formData.append("id", "WU_FILE_0");
       formData.append("name", imgfile.name);
       formData.append("type", imgfile.type);

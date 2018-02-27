@@ -2,7 +2,7 @@
     <div class="orderListBox">
         	<div class="wxOrderTit">
             	<ul>
-                	<li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" >{{orderVal.name}}</li>                            
+                	<li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" @click="clickTabs(orderVal)">{{orderVal.name}}</li>                            
                 </ul>
             </div>
             <div ref="wrapper" :style="{ height: wrapperHeight + 'px' }" class="orderContent">
@@ -144,6 +144,7 @@ export default {
      * @param item 点击的订单状态 
      */
     clickTabs(item) {
+      console.log(item);
       // 修改订单状态对象
       this.orderStatus = item;
       //清空订单列表
