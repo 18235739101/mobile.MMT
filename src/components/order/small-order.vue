@@ -1,48 +1,59 @@
 <template>
-    <div class="orderListBox">
-        	<div class="wxOrderTit">
-            	<ul>
-                	<li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" @click="clickTabs(orderVal)">{{orderVal.name}}</li>                            
-                </ul>
-            </div>
-            <div ref="wrapper" :style="{ height: wrapperHeight + 'px' }" class="orderContent">
-            	<div class="orderNo" v-show="finisheLoaded&&orderContent.length==0"><p>暂无订单</p></div>
-                 <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
-                    <div class="orderListCon" v-show="orderContent.length>0" v-for="(ol,i) in orderContent" :key="i" >
-                        <div class="orderConTit">
-                            <h2>
-                                <a href="javascript:;" class="wxImgIco"><img :src="ol.order.headImg"></a>
-                                <a href="javascript:;" class="cName">{{ol.order.nickname}}</a>
-                            </h2>
-                            <em class="orderState">{{ deliveryStatus[parseInt(ol.order.orderStatus)] }}</em>
-                        </div> 
-                        <dl>
-                            <dd v-for="(order,i) in ol.prodList" :key="i">
-                                <div class="orderImg">
-                                    <a :href="'#/smallOrder/detail?orderid='+ol.order.orderCode"><img :src="order.bcPic"></a>
-                                </div> 
-                                <div class="orderImgRig">
-                                    <a :href="'#/smallOrder/detail?orderid='+ol.order.orderCode">
-                                        <div class="orderName"><p class="oName">{{ order.bcName }}</p> </div> 
-                                        <div class="oListPrice"><p>&yen;{{ order.bcUnitPrice }}</p><p>X{{ order.bcNumber }}</p></div>
-                                    </a>
-                                </div>
-                            </dd>
-                        </dl>
-                        <div class="orderBot">
-                            <div class="wxOrderBot"><p>共{{ ol.prodList.length }}件商品 合计：<span>&yen;{{ol.order.orderTotalAmout}}</span>（含运费￥{{ol.order.orderFareAmount}}）</p></div>
-                            <div class="logisticsBtn" v-show="getOrderStatus(ol.order.orderStatus)"><a :href="'#/smallOrder/delivery?orderid='+ol.order.orderCode">发货</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div>
+    <section>
+      <headerTop :head-name="headName"></headerTop>
+      <div class="orderListBox">
+            <div class="wxOrderTit">
+                <ul>
+                    <li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" @click="clickTabs(orderVal)">{{orderVal.name}}</li>                            
+                  </ul>
+              </div>
+              <div ref="wrapper" :style="{ height: wrapperHeight + 'px' }" class="orderContent">
+                <div class="orderNo" v-show="finisheLoaded&&orderContent.length==0"><p>暂无订单</p></div>
+                  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
+                      <div class="orderListCon" v-show="orderContent.length>0" v-for="(ol,i) in orderContent" :key="i" >
+                          <div class="orderConTit">
+                              <h2>
+                                  <a href="javascript:;" class="wxImgIco"><img :src="ol.order.headImg"></a>
+                                  <a href="javascript:;" class="cName">{{ol.order.nickname}}</a>
+                              </h2>
+                              <em class="orderState">{{ deliveryStatus[parseInt(ol.order.orderStatus)] }}</em>
+                          </div> 
+                          <dl>
+                              <dd v-for="(order,i) in ol.prodList" :key="i">
+                                  <div class="orderImg">
+                                      <a :href="'#/smallOrder/detail?orderid='+ol.order.orderCode"><img :src="order.bcPic"></a>
+                                  </div> 
+                                  <div class="orderImgRig">
+                                      <a :href="'#/smallOrder/detail?orderid='+ol.order.orderCode">
+                                          <div class="orderName"><p class="oName">{{ order.bcName }}</p> </div> 
+                                          <div class="oListPrice"><p>&yen;{{ order.bcUnitPrice }}</p><p>X{{ order.bcNumber }}</p></div>
+                                      </a>
+                                  </div>
+                              </dd>
+                          </dl>
+                          <div class="orderBot">
+                              <div class="wxOrderBot"><p>共{{ ol.prodList.length }}件商品 合计：<span>&yen;{{ol.order.orderTotalAmout}}</span>（含运费￥{{ol.order.orderFareAmount}}）</p></div>
+                              <div class="logisticsBtn" v-show="getOrderStatus(ol.order.orderStatus)"><a :href="'#/smallOrder/delivery?orderid='+ol.order.orderCode">发货</a></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </section> 
+    <footerContent/>
+   </div>
 </template>
 
 <script>
+import footerContent from '../footer.vue';
+import headerTop from '../header.vue';
 export default {
   data() {
     return {
+      // 顶部导航
+      headName:'订单管理', 
+      // 登录的用户名
       username:'',
       /**
         * 订单状态集合
@@ -53,15 +64,15 @@ export default {
           name: "全部"
         },
         {
-          state: 300,
+          state: 1,
           name: "待发货"
         },
         {
-          state: 400,
+          state: 2,
           name: "待收货"
         },
         {
-          state: 800,
+          state: 3,
           name: "已完成"
         }
       ],
@@ -92,6 +103,10 @@ export default {
          3:"已完成"
       }
     };
+  },
+  components: {
+    headerTop,
+    footerContent
   },
   methods: {
      getOrderStatus(status){
@@ -144,7 +159,6 @@ export default {
      * @param item 点击的订单状态 
      */
     clickTabs(item) {
-      console.log(item);
       // 修改订单状态对象
       this.orderStatus = item;
       //清空订单列表
@@ -158,6 +172,7 @@ export default {
     }
   },
   created(){
+    // 获取本地存储的用户状态
     let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
     this.username=companInfo.username;
   }

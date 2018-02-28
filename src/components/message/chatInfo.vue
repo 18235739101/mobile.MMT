@@ -146,6 +146,8 @@ export default {
                _this.newMessageList.push({
                    fromuserid:_this.messageUser.from,
                    type:1,
+                   // 卖家保存消息添加此状态
+                   readstate:_this.messageUser.type ? 1 : "",
                    content:_this.proDetail
                });  
                _this.$nextTick(()=>{

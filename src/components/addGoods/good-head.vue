@@ -13,11 +13,21 @@
        },
        methods:{
            gotoback(){
+            let _this=this;   
+            if(this.routerPath){
+               this.$router.push({
+                   path:_this.routerPath
+               }) 
+               return;  
+            }   
             this.$router.go(-1);
            }
        },
        props:{
            headName:{
+               type:String
+           },
+           routerPath:{
                type:String
            }
        }

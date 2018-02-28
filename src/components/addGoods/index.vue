@@ -331,7 +331,6 @@ export default {
   },  
   beforeMount(){
      this.shopname=this.productObj.title;
-     console.log(this.productObj.imgList);
      this.imgList=this.productObj.imgList;
      this.getPicstr();  
   }

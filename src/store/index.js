@@ -37,9 +37,6 @@ let productObj = {
 
 let store = new Vuex.Store({
     state: {
-        // 订单组件状态
-        componentname: 'ShopOrder',
-
         // 留言组件状态
         messageValue: 'chatList',
 
@@ -53,10 +50,7 @@ let store = new Vuex.Store({
         storeObj:{...storeObj} 
     },
     mutations: {
-        /**切换店铺订单和小程序订单 */
-        changeComponent(state, name) {
-            state.componentname = name;
-        },
+        
         /**即时沟通和留言列表*/
         changeMessage(state, name) {
             state.messageValue = name;

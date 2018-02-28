@@ -1,7 +1,7 @@
 <template>
   <div>
        <section>
-        <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="gotoBack()"></a><h3>订单详情</h3></header>
+        <headerTop :head-name="headName"></headerTop>
         <div class="orderListBox" >
             <div v-if="orderDetail.order">
                 <div class="orderNum">
@@ -30,7 +30,7 @@
                                     <div class="orderName"><p class="oName">{{item.bcName}}</p> </div> 
                                     <div class="oListPrice"><p>&yen;{{item.bcUnitPrice}}</p><p>X{{item.bcNumber}}</p></div>
                                 </a>
-                               <span v-if="orderDetail.order" >
+                               <span v-if="orderDetail.order&&orderDetail.order.orderStatus==1" >
                                    <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" class="fhBtn">发货</a>
                                </span>
                             </div>
@@ -69,22 +69,23 @@
 </template>
 <script>
 import footerContent from '../footer.vue';
+import headerTop from '../header.vue';
 export default {
     data(){
        return {
-          orderDetail:{} 
-       }
-    },
-    methods:{
-       /**@method
-        * 返回上一级
-        */
-       gotoBack(){
-          this.$router.go(-1);
+          headName:'订单详情',
+          orderDetail:{},
+          // 订单状态码
+          orderState:{
+              '1':'待发货',
+              '2':'待收货',
+              '3':'已完成'
+          }
        }
     },
     components: {
-        footerContent
+        footerContent,
+        headerTop
     },
     created(){
        let _this=this;              
