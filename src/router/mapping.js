@@ -4,45 +4,10 @@ const routeConfig = [
       path: '/',
       redirect:'/manage',
       hidden: true
-    },{      
-      name:'订单管理',
-      path:'/order',
-      meta: { 
-        requireAuth: true
-      },
-      component:resolve => {
-        require.ensure(['../components/order'], () => {
-          resolve(require('../components/order'));
-        });
-      }
-    },
-    {
-      name:'店铺订单',
-      path:'/shopOrder',
-      meta: { 
-        requireAuth: true
-      },
-      component:resolve => {
-        require.ensure(['../components/order/shop-order.vue'], () => {
-          resolve(require('../components/order/shop-order.vue'));
-        });
-      }
-    },   
-    {
-      name:'店铺订单详情页',
-      path:'/shopOrder/detail',
-      meta: { 
-        requireAuth: true
-      },
-      component:resolve => {
-        require.ensure(['../components/order/shop-order-detail.vue'], () => {
-          resolve(require('../components/order/shop-order-detail.vue'));
-        });
-      }
-    },
+    },    
     {
       name:'小程序订单',
-      path:'/smallOrder',
+      path:'/order',
       meta: { 
         requireAuth: true
       },

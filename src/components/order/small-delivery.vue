@@ -1,7 +1,7 @@
 <template>
      <div>
          <section>
-            <header class="mHeaderBox"><a href="javascript:;" class="arrowLeft" @click="backPrePage()"></a><h3>订单发货</h3></header>
+            <headerTop :head-name="headName"></headerTop>
             <div class="courierContent">
                 <ul>
                     <li>
@@ -27,28 +27,31 @@
 </template>
 <script>
 import footerContent from '../footer.vue';
+import headerTop from '../header.vue';
 export default {
     data(){
       return {
+         headName:'订单发货',
          logisticsCom:'',
          courierNum:'',
          note:'',
          orderCode:''
-
       }   
     },
     methods:{
         submit(){
             let _this=this;
+            // 保存物流信息
             _this.$http('get','http://madata.hc360.com/mobileapp/order/saveAppPost',{
                 params:{
                     orderCode:_this.orderCode,
-                    post_code:_this.courierNum,
-                    post_company:_this.logisticsCom,
-                    post_remark:_this.note,
+                    post_code:encodeURIComponent(_this.courierNum),
+                    post_company:encodeURIComponent(_this.logisticsCom),
+                    post_remark:encodeURIComponent(_this.note),
                 }
             }).then((res)=>{
                if(res.errcode==0){
+                   //修改订单状态
                    _this.$http('get','http://madata.hc360.com/mobileapp/order/orderSendOrRec',{
                        params:{
                           orderCode:_this.orderCode,
@@ -57,19 +60,16 @@ export default {
                        }
                    }).then((res)=>{
                        if(res.errcode==0){
-                           
-                           console.log('发货成功')
+                           _this.$router.go('-1'); 
                        }
                    })
                }
             })
-        },
-        backPrePage(){
-            this.$router.go(-1);
         }
     },
     components: {
-        footerContent
+        footerContent,
+        headerTop
     },
     created(){
         this.orderCode=this.$route.query.orderid;

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <goodhead :head-name="headname"></goodhead>
+      <goodhead :head-name="headname" :router-path="routerPath" ></goodhead>
       <div class="addProBox">
         	<div class="priceCon">
             	<span class="proAddLeft">价格设置</span>
@@ -11,12 +11,12 @@
             </div>
             <div class="inventoryCon" v-show="priceType=='onePrice'">
             	<span class="inventoryLeft">价格</span>
-                <div class="inventoryRig"><input type="text" placeholder="请输入商品价格" v-model.trim="priceNum" @keyup="priceNum=priceNum.replace(/(\D|\.)/g,'');" @blur="checkPrice"></div>
+                <div class="inventoryRig"><input type="text" placeholder="请输入商品价格" v-model.trim="priceNum" @keyup="priceNum=priceNum.replace(/[^\d\.]*/,'')"  @blur="checkPrice"></div>
             </div>
 
             <div class="inventoryCon" >
             	<span class="inventoryLeft">库存</span>
-                <div class="inventoryRig"><input type="text" placeholder="请输入商品库存" v-model.trim="proInventory" @keyup="proInventory=proInventory.replace(/\D+/ig,'');" @blur="checkInventory"></div>
+                <div class="inventoryRig"><input type="text" placeholder="请输入商品库存" v-model.trim="proInventory" @keyup="proInventory=proInventory.replace(/^\D*/,'')" @blur="checkInventory"></div>
             </div>
             <div class="addList3" @click="gotoRelease">
             	<span class="proAddLeft" >店铺分类</span>
@@ -25,7 +25,7 @@
                 </div>
             </div>       
         </div>
-        <button type="submit" class="releasedBtn" @click="submitShop">发布</button>
+        <button type="submit"  :class="[ buttonHtml=='发布' ? 'releasedBtn' : 'releasedBtnGray' ]" @click="submitShop">{{ buttonHtml }}</button>
   </div>    
 </template>
 <script>
@@ -33,7 +33,10 @@ import goodhead from './good-head.vue';
 export default {
    data(){
        return {
+            // 头部标题
             headname:'添加商品',
+            // 返回按钮跳转链接
+            routerPath:'/addgoods',
              // 价格类型
             priceType:'negotiable',
              //商品价格
@@ -49,7 +52,8 @@ export default {
             inventory:{
                 isCheck:false,
                 mes:'' 
-            }
+            },
+            buttonHtml:'发布'
        }
    },
    components:{
@@ -97,7 +101,10 @@ export default {
               _this.$toast(_this.inventory.mes);
               return;
            }
-
+      
+           // 修改发布按钮显示状态
+           _this.buttonHtml='发布中'
+         
            // 发布商机
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
@@ -143,42 +150,37 @@ export default {
         * 校验价格
         */
        checkPrice(){
-         let  reg=/^[1-9]+(.*[0-9]{0,2})$/ig,
-              maxPrice=9999999999.99;    
+         let  reg=/^\d{1,10}(.*\d{0,2})$/ig;    
          //非空校验  
          if(this.priceNum==''){
             return;
          }
          this.priceNum=(this.priceNum-0).toFixed(2);
-         if(Number(this.priceNum)==0){
+         if(this.priceNum=='0.00'){
                 this.price={
                      isCheck:true,
-                     mes:'商品单价必须大于0'
+                     mes:'价格不能为0'
                 }
-            }else if(this.priceNum>maxPrice){
-                this.price={
-                     isCheck:true,
-                     mes:'单价不能超过999999999.99'
-                }
-            }else if(!reg.test(this.priceNum)){
+         }else if(!reg.test(this.priceNum)){
                 this.price={
                      isCheck:true,
                      mes:'请输入合法的价格'
                 }
-            }
-            this.price.isCheck ? this.$toast(this.price.mes) : '';
+           }
+
+         this.price.isCheck ? this.$toast(this.price.mes) : '';
        },
        /**@method
         * 校验库存量
         */
        checkInventory(){
-           let reg=/^[1-9]{1}[0-9]{0,4}$/ig;
+           let reg=/^[1-9]{1}\d{0,4}$/ig;
            if(!this.proInventory){
                return;
            }
            // 验证库存量是否正确
            if(!reg.test(this.proInventory)){
-                this.price={
+                this.inventory={
                      isCheck:true,
                      mes:'请输入合法的库存量'
                 }
