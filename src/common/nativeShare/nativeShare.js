@@ -149,6 +149,7 @@ export default function nativeShare (elementNode, config) {
             }
         }
         this.isloadqqApi();
+        //上线记得去掉if注释
         // if (isqqBrowser || isucBrowser) {
             this.html();
         // }

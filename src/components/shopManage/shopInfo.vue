@@ -14,7 +14,7 @@
                     <p>{{companyInfo.name}}</p>
                 </dd>
                 <dd>
-                	<span>主营产品</span>
+                	<span>主营行业</span>
                     <p>{{companyInfo.areaName}}</p>
                 </dd>
                 <dd>

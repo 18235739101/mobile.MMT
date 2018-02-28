@@ -43,13 +43,13 @@ export default {
           tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg'
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_2.jpg'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg'
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_3.jpg'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg'
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_4.jpg'
         }
       ],
 
