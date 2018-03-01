@@ -61,6 +61,15 @@ export default {
                    }).then((res)=>{
                        if(res.errcode==0){
                            _this.$router.go('-1'); 
+                           // 发送小程序模板消息
+                           _this.$http('get','http://madata.hc360.com/mobileapp/appManager/sendTemplateMessage',{
+                               params:{
+                                   //0-支付成功模板  1-确认收货模板 2-发货模板
+                                   sign:2
+                               }
+                           }).then((res)=>{
+
+                           })
                        }
                    })
                }

@@ -20,7 +20,9 @@
                     </li>
                     <li v-show="imgList.length<8">
                       <div class="addImgBtn">
-                       <input type="file" @change="inputchange" accept="image/*" name="upload" multiple capture="camera">
+                        <form ref="imgForm">
+                          <input type="file"  @change="inputchange" accept="image/*" name="upload" multiple capture="camera">
+                        </form>   
                       </div>
                     </li>
                 </ul>
@@ -44,75 +46,80 @@
 </template>
 
 <script>
-import goodhead from "./good-head.vue";
+import goodhead from "../header.vue";
 import { Toast } from "mint-ui";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       headname: "添加商品",
       // 商品名称
-      shopname: "",
-      //上传图片需要的picstr
-      picstr: "",
-      //商品图片是否有违禁词
-      title:{
-        isCheck:false,
-        mes:''
-      },
+      shopname: "",     
       // 图片列表
-      imgList:[],
-      bcid:0
+      imgList: [],
+      // 新发和修改的商品bcid
+      bcid: 0
     };
   },
   components: {
     goodhead
   },
-  computed:mapState({
+  computed: mapState({
     //图片上传配置对象
-    productObj:'productObj',
+    productObj: "productObj",
+
+    // 标题是否验证通过的配置
+    titleConfig: "titleConfig",
+
+    // 上传图片所需要的picstr
+    picstr: "picstr"
   }),
   methods: {
     /**
      * @method 校验商品名称
      */
     blurname(e) {
-      let _this = this;
+      let _this = this,
+        titleConfig = {
+          isCheck: false,
+          mes: ""
+        };
       if (_this.shopname.length == 0) {
-          _this.$toast("请填写商品名称");
+        _this.$toast("请填写商品名称");
       } else {
-        _this.$store.commit('saveShopSet',{
-          title:_this.shopname
-        }) 
-        _this.$http("get", "//wsproduct.hc360.com/mBusinChance/alfWarnCheck", {
+        _this.$store.commit("saveShopSet", {
+          title: _this.shopname
+        });
+        _this
+          .$http("get", "//wsproduct.hc360.com/mBusinChance/alfWarnCheck", {
             params: {
               title: _this.shopname
             }
-          }).then(res => {
+          })
+          .then(res => {
             // 标题包含广告词，违禁词，则把错误信息保存起来，点击下一步校验使用
             if (!res.success) {
-               _this.title={
-                 isCheck:true,
-                 mes:res.returnMsg
-               }
-               //提示错误信息
-               _this.$toast(res.returnMsg);
-            }else{
-               _this.title={
-                 isCheck:false,
-                 mes:''
-               }
+              //保存标题是否通过验证
+              _this.$store.commit("saveTitle", {
+                isCheck: true,
+                mes: res.returnMsg
+              });
+              //提示错误信息
+              _this.$toast(res.returnMsg);
+            } else {
+              //保存标题是否通过验证
+              _this.$store.commit("saveTitle", titleConfig);
             }
           });
       }
     },
     /**
-     * @method
-     * 图片上传
+     * @method 图片上传
      */
     inputchange(event) {
       let _this = this,
-          _files = event.target.files;
+        _files = event.target.files;
+
       if (_files.length > 0) {
         let imgfile = _files[0];
         if (imgfile.type.split("/")[0] != "image") {
@@ -121,14 +128,15 @@ export default {
         }
         /**获取picstr成功后**/
         if (!_this.picstr) {
-            _this.$toast("picstr为空！");
-            return; 
+          _this.$toast("picstr为空！");
+          return;
         }
         _this.imgUpload(imgfile);
       }
     },
-    /**@method
-     * 调用imgup接口,上传图片
+    /**
+     * @method  调用imgup接口,上传图片
+     * 
      */
     imgUpload(imgfile) {
       let _this = this,
@@ -146,7 +154,11 @@ export default {
       formData.append("size", imgfile.size);
       formData.append("upFile", imgfile);
       /**调用imgup接口 */
-      _this.$http("post","http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChanceImgUploadFileAction/eventsubmit_doupload/doUpload",formData,
+      _this
+        .$http(
+          "post",
+          "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChanceImgUploadFileAction/eventsubmit_doupload/doUpload",
+          formData,
           {
             headers: {
               "Content-Type": "multipart/form-data"
@@ -158,13 +170,15 @@ export default {
             let imgObj = res.result;
             imgObj.url = imgObj.url.replace(/(\.\.)(\d+x\d+)/g, "$1220x220a");
             _this.imgList.push(res.result);
-            _this.$store.commit('saveShopSet',{
-               imgList:_this.imgList
-            })
+            _this.$store.commit("saveShopSet", {
+              imgList: _this.imgList
+            });
             _this.deleteImg();
           } else {
             _this.$toast(res.error.message);
           }
+          // 清空上次图片上传的input值，修复上传同一张图片，不触发onchange事件
+          _this.$refs.imgForm.reset();
         });
     },
     /**
@@ -172,30 +186,35 @@ export default {
      */
     deleteImg(i) {
       let _this = this,
-          _imgList=JSON.parse(JSON.stringify(_this.imgList));
+        _imgList = JSON.parse(JSON.stringify(_this.imgList));
       /**@method
        * 此方法上传完图片和点击图片删除都要调用，
        * 如果传入imgInfo表示要删除图片
        * 没有参数表示上传图片完成后要调用此接口
        */
-      i?_imgList.splice(i, 1):'';
-      _this.$http("get","http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChaceImgSaveAction/eventsubmit_dosavepic/doSavepic?callback=",
+      i ? _imgList.splice(i, 1) : "";
+      _this
+        .$http(
+          "get",
+          "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChaceImgSaveAction/eventsubmit_dosavepic/doSavepic?callback=",
           {
             params: {
               picstr: _this.picstr,
               piclist: JSON.stringify(_imgList)
             }
           }
-        ).then(res => {
+        )
+        .then(res => {
           /* 这里后台返回的数据是jsonp的格式，多了一个括号，去除括号并且转换为json */
-          res=res.slice(1,res.length-1);
-          res=JSON.parse(res);
-          /*如果删除成功，删除imgList里面的数据*/  
-          if(res.state=="true"&&i!=undefined){
-              _this.imgList.splice(i,1);
-              _this.$store.commit('saveShopSet',{
-                imgList:_this.imgList
-              })
+          res = res.slice(1, res.length - 1);
+          res = JSON.parse(res);
+          /*如果删除成功，删除imgList里面的数据*/
+
+          if (res.state == "true" && i != undefined) {
+            _this.imgList.splice(i, 1);
+            _this.$store.commit("saveShopSet", {
+              imgList: _this.imgList
+            });
           }
         });
     },
@@ -209,130 +228,144 @@ export default {
         _this.$toast("请填写商品名称");
         return;
       }
-      if(_this.title.isCheck){
-         _this.$toast(_this.title.mes);
-         return;
-      }
-       /** 验证商品图片 */
-      if(_this.imgList.length==0){
-         _this.$toast("请上传图片！");
+      if (_this.titleConfig.isCheck) {
+        _this.$toast(_this.titleConfig.mes);
         return;
       }
-        /** 验证商品描述 */
-      if(_this.productObj.desc.length<15){
-         _this.$toast("商品描述长度不能小于15个字,请重新填写！");
+      /** 验证商品图片 */
+      if (_this.imgList.length == 0) {
+        _this.$toast("请上传图片！");
         return;
       }
-       /** 验证商品类目为空 */
+      /** 验证商品描述 */
+      if (_this.productObj.desc.length < 15) {
+        _this.$toast("商品描述长度不能小于15个字,请重新填写！");
+        return;
+      }
+      /** 验证商品类目为空 */
       if (!_this.productObj.cate.name) {
         _this.$toast("请选择类目！");
         return;
-      }else if(_this.productObj.cate.hasNext=='1'){
+      } else if (_this.productObj.cate.hasNext == "1") {
         _this.$toast("请选择一个终极类目！");
         return;
       }
       // 跳转的设置价格页面
       _this.$router.push({
-          path:'/addgoods/setPrice'
-      })
+        path: "/addgoods/setPrice"
+      });
     },
     /**
      * @method 获取picstr
      * 
      */
-    getPicstr(){
-        let _this=this,
-            bcid=(this.$route.query||{}).bcid;
-        
-         bcid ? _this.bcid=bcid : '';
+    getPicstr() {
+      let _this = this,
+        bcid = (this.$route.query || {}).bcid;
 
-         // 获取picstr
-         _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",{
-              params: {
-                // 商机id，如果新发是0，修改是原有的商机id
-                bcid: _this.bcid
-              }
+      bcid ? (_this.bcid = bcid) : "";
+      
+      // 如果有picstr,不调用获取picstr接口
+      if(_this.picstr){
+        if(_this.bcid != 0){
+          _this.getShopDetail();
+        }
+        return;
+      }
+
+      // 获取picstr
+      _this.$http(
+          "get",
+          "http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",
+          {
+            params: {
+              // 商机id，如果新发是0，修改是原有的商机id
+              bcid: _this.bcid
             }
-          ).then((res)=>{
-            if (!res.picstr) {
-              _this.$toast("获取picstr失败");
-              return;
-            }
-            _this.picstr = res.picstr;
-            _this.$store.commit('saveShopSet',{
-               sessionid:res.sessionid
-            })
-            if(_this.bcid!=0){
-               _this.getShopDetail();
-            }
-         })
-        
+          }
+        )
+        .then(res => {
+          if (!res.picstr) {
+            _this.$toast("获取picstr失败");
+            return;
+          }
+          _this.$store.commit('savePicStr',res.picstr)
+          _this.$store.commit("saveShopSet", {
+            sessionid: res.sessionid
+          });
+          if (_this.bcid != 0) {
+            _this.getShopDetail();
+          }
+        });
     },
     /**@method 获取商机详细信息 
      * 
      */
-    getShopDetail(){
-        let _this=this,
-            getShopDetailUrl='http://wsproduct.hc360.com/mBusinChance/obtainbusin',
-            getShopImgUrl='http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.GetBusinChanceImgListAction/eventsubmit_dogetpic/doGetpic';
-        // 获取商机详细信息
-        _this.$http("get",getShopDetailUrl,{
-          params:{
-            bcid:_this.bcid
+    getShopDetail() {
+      let _this = this,
+        getShopDetailUrl =
+          "http://wsproduct.hc360.com/mBusinChance/obtainbusin",
+        getShopImgUrl =
+          "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.GetBusinChanceImgListAction/eventsubmit_dogetpic/doGetpic";
+      // 获取商机详细信息
+      _this
+        .$http("get", getShopDetailUrl, {
+          params: {
+            bcid: _this.bcid
           }
-        }).then((res)=>{
-          let shopDetail={
-                 //商品标题
-                 title: res.title,
-                 //图片列表
-                 imgList:[],
-                 // 商品描述
-                 desc: res.introduce,
-                 // 商品类目
-                 cate: {
-                      name:res.supcatname,
-                 }
-              },
-              shopPrice={
-                 // 价格类型
-                   ptype: res.pricerange1 ? "onePrice" : 'negotiable',
-                  //商品价格
-                   price: res.pricerange1,
-                   // 库存量
-                   inventory:res.num
-              }
-           this.shopname=res.title;
-          //获取修改商机的图片
-           _this.$http('get',getShopImgUrl,{
-              params:{
-                picstr:_this.picstr,
-                callback:''
-              }
-            }).then((res)=>{
-                res=JSON.parse(res.slice(1,res.length-1)||'{}');
-                if(res.result.length>0){
-                  _this.imgList=[...res.result];
-                  shopDetail.imgList=[...res.result];
-                  // 保存商品标题图片描述和类目
-                   _this.$store.commit('saveShopSet',{
-                        ...shopDetail
-                  })
-                  // 保存价格设置
-                  _this.$store.commit('savePrice',{
-                        ...shopPrice
-                  })
-                }
-               
-            })
-           
         })
-     
+        .then(res => {
+          let shopDetail = {
+              //商品标题
+              title: res.title,
+              //图片列表
+              imgList: [],
+              // 商品描述
+              desc: res.introduce,
+              // 商品类目
+              cate: {
+                name: res.supcatname
+              }
+            },
+            shopPrice = {
+              // 价格类型
+              ptype: res.pricerange1 ? "onePrice" : "negotiable",
+              //商品价格
+              price: res.pricerange1,
+              // 库存量
+              inventory: res.num
+            };
+          this.shopname = res.title;
+          //获取修改商机的图片
+          _this
+            .$http("get", getShopImgUrl, {
+              params: {
+                picstr: _this.picstr,
+                callback: ""
+              }
+            })
+            .then(res => {
+              res = JSON.parse(res.slice(1, res.length - 1) || "{}");
+              if (res.result.length > 0) {
+                _this.imgList = [...res.result];
+                shopDetail.imgList = [...res.result];
+                // 保存商品标题图片描述和类目
+                _this.$store.commit("saveShopSet", {
+                  ...shopDetail
+                });
+                // 保存价格设置
+                _this.$store.commit("savePrice", {
+                  ...shopPrice
+                });
+              }
+            });
+        });
     }
-  },  
-  beforeMount(){
-     this.shopname=this.productObj.title;
-     this.imgList=this.productObj.imgList;
-     this.getPicstr();  
+  },
+  beforeMount() {
+    this.shopname = this.productObj.title;
+    this.imgList = this.productObj.imgList;
+    this.getPicstr();
   }
 };
 </script>

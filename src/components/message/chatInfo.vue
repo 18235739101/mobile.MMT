@@ -70,7 +70,7 @@ import componentHead from '../header.vue';
 export default {
   data(){
       return {
-        headName:'询价留言',
+        headName:'即时沟通',
         //留言用户信息
         messageUser:{ },
         // 历史留言列表
@@ -218,6 +218,7 @@ export default {
          };
         //连接成功后的回调函数
         _this.socket.onopen=function(){
+            console.log('socket open!')
             _this.socketIsOpen=true;
             // 如果是从终极页进入的买家界面弹出商品详情的浮层
             if(_this.messageUser.type=='buy'){

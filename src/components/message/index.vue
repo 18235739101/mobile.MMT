@@ -13,6 +13,7 @@
      <keep-alive>
             <component :is="messageValue"></component>
      </keep-alive>  
+     <footerContent/>
   </div>    
       
 </template>
@@ -20,6 +21,7 @@
 import messageList from "./messageList.vue";
 import chatList from './chatList.vue';
 import componentHead from '../header.vue';
+import footerContent from '../footer.vue';
 export default {
   data(){
     return {
@@ -39,7 +41,8 @@ export default {
   components:{
       componentHead,
       messageList,
-      chatList
+      chatList,
+      footerContent
   },
   methods: {
     /***

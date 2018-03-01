@@ -20,7 +20,7 @@
   
 </template>
 <script>
-import goodhead from './good-head.vue';
+import goodhead from "../header.vue";
 export default {
   data(){
       return {

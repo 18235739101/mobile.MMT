@@ -47,10 +47,29 @@ let store = new Vuex.Store({
         priceObj:{...priceObj},
 
         //炫铺分类
-        storeObj:{...storeObj} 
+        storeObj:{...storeObj},
+
+        //商品标题是否有违禁词
+        titleConfig:{
+            isCheck:false,
+            mes:''
+        },
+
+        // 上传图片所需要的picstr
+        picstr:''
+        
     },
     mutations: {
+        /** 保存标题设置 **/
+        saveTitle(state,titleSetUp){
+            state.titleConfig={...titleSetUp}
+        }, 
         
+        /** 保存picstr **/
+        savePicStr(state,picstr){
+            state.picstr=picstr;
+        },
+
         /**即时沟通和留言列表*/
         changeMessage(state, name) {
             state.messageValue = name;

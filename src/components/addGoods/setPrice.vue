@@ -29,7 +29,7 @@
   </div>    
 </template>
 <script>
-import goodhead from './good-head.vue';
+import goodhead from "../header.vue";
 export default {
    data(){
        return {
@@ -103,7 +103,7 @@ export default {
            }
       
            // 修改发布按钮显示状态
-           _this.buttonHtml='发布中'
+           _this.buttonHtml='发布中...'
          
            // 发布商机
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
@@ -132,7 +132,7 @@ export default {
                     // 报价方式
                     priceType:'0',
                     // 区间单价
-                    pricerange1:this.priceObj.ptype=="onePrice" ?this.priceObj.price: 0,
+                    pricerange1:this.priceObj.ptype=="onePrice" ? this.priceObj.price: 0,
                     // 供货总量
                     num:this.priceObj.inventory
                }
@@ -205,7 +205,7 @@ export default {
        storeName(){
            let storeClass=this.storeObj;
            if(storeClass.child.seriesid){
-               return  storeClass.child.name
+               return storeClass.child.name
            }else{
                return storeClass.name;
            }           
@@ -221,3 +221,6 @@ export default {
    }
 }
 </script>
+<style>
+@import "https://style.org.hc360.com/css/microMall/releasedStyle.css";
+</style>
