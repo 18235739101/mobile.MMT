@@ -25,10 +25,10 @@ export default {
     return {
       //模板对应预览的大图数据集合
       tmps:[
+        'https://style.org.hc360.com/images/microMall/program/modex_a.jpg',
         'https://style.org.hc360.com/images/microMall/program/modex_b.jpg',
-        'https://style.org.hc360.com/images/microMall/program/modex_b.jpg',
-        'https://style.org.hc360.com/images/microMall/program/modex_b.jpg',
-        'https://style.org.hc360.com/images/microMall/program/modex_b.jpg'
+        'https://style.org.hc360.com/images/microMall/program/modex_c.jpg',
+        'https://style.org.hc360.com/images/microMall/program/modex_d.jpg'
       ],
 
       enableSuccess:false

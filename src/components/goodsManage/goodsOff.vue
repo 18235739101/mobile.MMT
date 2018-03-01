@@ -1,5 +1,6 @@
 <template>
   <!--已下架商品-->
+  <div>
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && offList.length == 0">没有任何商品哦~</div>
             <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="10">
@@ -35,6 +36,18 @@
                 </p>  
        		</div>
        </div>
+
+       <!--删除商机弹框-->
+        <div class="proAlertBox" style="display:block" v-if="isShowDeleteProAlert">
+            <div class="proAlertBoxCon">
+                <a class="closeBtn" @click='deletePro()'>×</a>
+                <dl>
+                    <dt>确定要删除这个商品吗？</dt>
+                    <dd><button type="button" class="leftRedBtn" @click='confirmDeletePro()'>确定</button><button type="button" @click='deletePro()'>取消</button></dd>
+                </dl>
+            </div>
+        </div>
+ </div>
 </template>
 
 <script>
@@ -63,6 +76,16 @@ export default {
          * 是否完成加载
          */
         finishLoading:false,
+
+        /**
+         * 是否显示删除商机弹框
+         */
+        isShowDeleteProAlert:false,
+
+        /**
+         * 正在操作的商机bcid
+         */
+        currentBcid:''
       }
   },
   methods:{
@@ -106,15 +129,40 @@ export default {
             })
         },
         
-        /**删除商机事件 */
+        /**
+         * 删除商机
+         */
         deletePro(bcid){
+            let _this = this;
+            _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+
+            if(bcid){
+                _this.currentBcid = bcid;
+            }
+        },
+
+        /**
+         * 确定删除商机
+         */
+        confirmDeletePro(){
             let _this = this;
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/removebusin',{
                 params:{
-                    bcid:bcid
+                    bcid:_this.currentBcid
                 }
             }).then(res =>{
-
+                if(res && res.success){
+                    for(var i=0;i<_this.offList.length;i++){
+                        if(_this.offList[i].bcid == _this.currentBcid){
+                            _this.offList.splice(i,1);
+                            _this.$toast('删除商机成功！');
+                            break;
+                        }
+                    }
+                    _this.isShowDeleteProAlert = !_this.isShowDeleteProAlert;
+                }else{
+                    _this.$toast('删除商机失败！');
+                }
             })
         },
 
