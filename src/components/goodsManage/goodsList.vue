@@ -5,7 +5,7 @@
        <div class="proTitBox">
        		<ul>
                    <li v-for="(tab,i) in tabs" :key="i" :class="{titCur:activeTabIndex==i}" @click="tabToggle($event,i,tab.view)"><a href="javascript:void(0)">{{tab.name}}</a></li>
-            </ul>
+          </ul>
        </div>
 
         <transition name="component-fade" mode="out-in">

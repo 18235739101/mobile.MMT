@@ -6,10 +6,10 @@
           <div class="modelBox">
 
             <div class="modelCon" v-for="(item,i) in templates" :key='i'>
-              <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+(i+1)"><img class="modelImg" :src="item.tplUrl"></a></div>
-              <p class="name">推荐模板{{i+1}}</p>
-              <div class="mdetailCur" v-if="(i+1)==currentTplId" :hj="currentTplId"><label class="curIcon"></label>正在使用</div>
-              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+(i+1)">点击查看</a></div>
+              <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId"><img class="modelImg" :src="item.tplUrl"></a></div>
+              <p class="name">{{item.name}}</p>
+              <div class="mdetailCur" v-if="item.stateDes!='点击查看'"><label class="curIcon"></label>正在使用</div>
+              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId">点击查看</a></div>
             </div>
 
           </div>
@@ -40,26 +40,63 @@ export default {
     return {
       templates:[
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg'
+          tempId:1,
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_1.jpg',
+          name:'推荐模板1',
+          stateDes:'点击查看'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_2.jpg'
+          tempId:2,
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_2.jpg',
+          name:'推荐模板2',
+          stateDes:'点击查看'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_3.jpg'
+          tempId:3,
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_3.jpg',
+          name:'推荐模板3',
+          stateDes:'点击查看'
         },
         {
-          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_4.jpg'
+          tempId:4,
+          tplUrl:'https://style.org.hc360.com/images/microMall/program/modex_4.jpg',
+          name:'推荐模板4',
+          stateDes:'点击查看'
         }
       ],
 
-      /**当前启用的模板id */
-      currentTplId:0
+      /**
+       * 当前启用的模板id
+       */
+      currentTplId:null,
+
+      /**
+       * 审核中的模板id
+       */
+      reviewId:null,
+      
+      /** 
+       * 小程序审核状态码
+       */
+      telInfo:{
+        0:'未发布',
+        1:'审核中',
+        2:'审核失败',
+        3:'发布成功',
+        4:'发布失败'
+      },
+
+      /**
+       * 是否可以更改模板
+       */
+      enabled:true
     }
   },
 
   methods:{
-
+    /**
+     * 获取当前小程序启用的模板
+     */
     getConfigInfo(){
       let _this = this;
       _this.$http('get','//madata.hc360.com/mobileapp/wx/getAppConfigInfo?callback=',{
@@ -67,9 +104,45 @@ export default {
           imid:JSON.parse(localStorage.getItem('companyInfo')).username
         }
       }).then(res =>{
-
-        _this.currentTplId = (res.appConfig || {}).templateid || 0
-
+         let appConfig= (res.appConfig || {}),
+             state=appConfig.publishstate,
+             desc='正在使用',
+             _stateInfo=_this.telInfo[state];
+         /**
+          *  publishstate发布状态
+          *  0-未发布  1-审核中  2-审核失败 3-发布成功  4-发布失败
+          */
+         if(state==3){
+           _this.currentTplId =appConfig.templateid;
+         }else{
+           /**
+            * 审核中的状态，不能修改模板
+            */
+           if(state==1){
+             _this.enabled=false;
+           }
+           /**
+            * 如果存在上一次的模板id
+            */
+           if(appConfig.pretemplateid){
+              _this.currentTplId =appConfig.pretemplateid;
+              _this.reviewId =appConfig.templateid;
+           }else{
+              _this.currentTplId=appConfig.templateid;
+              desc+='('+_stateInfo+')';
+           }
+        }
+        /***
+         *  如果有在审核的id
+         */
+        if(_this.reviewId){
+           _this.templates[_this.reviewId-1].stateDes=_stateInfo; 
+        }
+        if(_this.currentTplId){
+          _this.templates[_this.currentTplId-1].stateDes=desc;
+        }
+        
+        
       })
     }
   },

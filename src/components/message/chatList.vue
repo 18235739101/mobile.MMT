@@ -23,6 +23,9 @@ export default {
       }
   },
   methods:{
+     /*
+      * 获取及时沟通列表
+      */  
      getChatData(){
          let _this=this;
          _this.$http('get','http://ydmmt.hc360.com/mobilechat/getchatlist/'+_this.username+'/',{
@@ -35,7 +38,10 @@ export default {
              }
          })
      },
-     // 时间戳转换为时间
+
+     /**
+      * 时间戳转换为时间
+      */
      timestampToTime(timestamp) {
         let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
         let Y = date.getFullYear() + '-',
@@ -46,6 +52,10 @@ export default {
             s = date.getSeconds();
         return Y+M+D+h+m+s;
      },
+     
+     /**
+      *  获取消息接收者,不为登录用户名的就是消息接收者
+      */
      getToUser(item){
           if(item.fromuserid==this.username){
               return item.touserid
@@ -57,7 +67,10 @@ export default {
   created(){
      let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
          this.username=companInfo.username;
-         this.getChatData();
+     /*
+      * 获取及时沟通列表
+      */      
+     this.getChatData();
   }
 }
 </script>

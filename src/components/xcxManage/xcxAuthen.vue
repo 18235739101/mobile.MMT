@@ -20,6 +20,7 @@
                 	<dl>
                     	<dd class="mallDecorate"><a href="#/xcxManage/decorate">小程序店铺装修</a></dd>
                     	<dd class="wxMallAdd"><a href="#/xcxManage/code">浏览小程序店铺</a></dd>
+                        <dd class="proOrderManage"><a href="#/order">小程序订单管理</a></dd>
                     </dl>
                 </li>
             	<li>

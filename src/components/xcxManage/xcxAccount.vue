@@ -6,7 +6,7 @@
             <div class="hostingBoxImg"><img :src="xcxInfo.headimg? xcxInfo.headimg:'https://style.org.hc360.com/images/microMall/program/wxProgramLogo.png'"/></div>
         	<dl>
                 <dd><span>小程序：</span>{{xcxInfo.nickname}}</dd>
-                <dd><span>线上版本：</span>{{xcxInfo.version}}</dd>
+                <dd v-show="xcxInfo.version"><span>线上版本：</span>{{xcxInfo.version}}</dd>
                 <dd><span>主体名称：</span>{{xcxInfo.principalname}}</dd>
                 <dd v-if="xcxInfo.publishtime"><span>更新时间：</span>{{xcxInfo.publishtime}}</dd>
                 <dd><span>更新状态：</span>{{states[xcxInfo.publishstate] || '无'}}</dd>

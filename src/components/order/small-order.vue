@@ -8,7 +8,7 @@
                     <li :class="{orderCur:orderVal.name==orderStatus.name}" v-for="(orderVal,i) in statusList" :key="i" @click="clickTabs(orderVal)">{{orderVal.name}}</li>                            
                   </ul>
               </div>
-              <div ref="wrapper" :style="{ height: wrapperHeight + 'px' }" class="orderContent">
+              <div ref="wrapper"  class="orderContent">
                 <div class="orderNo" v-show="finisheLoaded&&orderContent.length==0"><p>暂无订单</p></div>
                   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
                       <div class="orderListCon" v-show="orderContent.length>0" v-for="(ol,i) in orderContent" :key="i" >
@@ -51,13 +51,19 @@ import headerTop from '../header.vue';
 export default {
   data() {
     return {
-      // 顶部导航
-      headName:'订单管理', 
-      // 登录的用户名
-      username:'',
       /**
-        * 订单状态集合
-        */
+       * 导航名称
+       */
+      headName:'订单管理', 
+
+      /**
+       * 登录用户名
+       */
+      username:'',
+
+      /**
+       * 订单状态
+       */
       statusList: [
         {
           state: "",
@@ -76,27 +82,42 @@ export default {
           name: "已完成"
         }
       ],
-      /*
-      *分页属性 
-      */
+
+      /**
+       * 分页属性
+       */
       searchCondition: {
         pageNo: 0,
         pageSize: 5
       },
-      /** 订单状态对象 */
+
+
+      /**
+       * 当前订单状态对象
+       */
       orderStatus: {
         name: "全部",
         state: ""
       },
-      /**订单列表集合 */
+
+      /**
+       * 订单列表集合
+       */
       orderContent: [],
-      /**是否显示加载中按钮 */
+
+      /**
+       * 是否显示加载
+       */
       loading: false,
-      /**滚动区域的高度 */
-      wrapperHeight: 0,
-      /**订单数据是否加载完毕 */
+     
+      /**
+       * 订单数据是否加载完毕
+       */
       finisheLoaded: false,
-       /**发货状态码 */
+
+      /**
+       * 发货状态码
+       */
       deliveryStatus:{
          1:"待发货",
          2:"待收货",
@@ -109,12 +130,16 @@ export default {
     footerContent
   },
   methods: {
+     /**
+      * 订单状态
+      */
      getOrderStatus(status){
       let  orderContext=this.deliveryStatus[parseInt(status)];
       return orderContext=="代发货"
-     },    
+     },  
+       
     /**
-     * @method 滚动事件分页加载订单列表
+     *  滚动事件分页加载订单列表
      */
     loadMore() {
       let _this = this;
@@ -122,9 +147,7 @@ export default {
          return;
       }
       _this.loading = true;
-        //当前页数加1
       _this.searchCondition.pageNo++;
-
       _this.$http('get','http://madata.hc360.com/mobileapp/order/getAppOrderList',{
          params: {
               //用户名
@@ -137,7 +160,9 @@ export default {
               sign:2
          }
       }).then(res=>{
-         // 无订单
+         /**
+          * 没有订单数据
+          */ 
          if(res.errcode==1){
              _this.finisheLoaded = true;
              _this.loading = false;
@@ -159,20 +184,33 @@ export default {
      * @param item 点击的订单状态 
      */
     clickTabs(item) {
-      // 修改订单状态对象
+      /**
+       * 修改订单状态对象
+       */
       this.orderStatus = item;
-      //清空订单列表
+
+      /**
+       * 清空订单列表
+       */
       this.orderContent = [];
-      // 修改当前页码
+
+      /**
+       * 修改当前页码
+       */
       this.searchCondition.pageNo = 0;
-      // 修改是否已经加载完所有订单的状态
+
+      /**
+       * 修改是否已经加载完所有订单的状态
+       */ 
       this.finisheLoaded = false;
 
       this.loadMore();
     }
   },
   created(){
-    // 获取本地存储的用户状态
+    /**
+     * 获取本地存储的用户状态
+     */
     let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
     this.username=companInfo.username;
   }

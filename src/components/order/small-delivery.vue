@@ -39,41 +39,74 @@ export default {
       }   
     },
     methods:{
-        submit(){
+        /**
+         * 保存物流信息
+         */
+        saveLogistics(){
+           let _this=this; 
+           return new Promise(function(resovle,reject){
+               _this.$http('get','http://madata.hc360.com/mobileapp/order/saveAppPost',{
+                    params:{
+                        orderCode:_this.orderCode,
+                        post_code:encodeURIComponent(_this.courierNum),
+                        post_company:encodeURIComponent(_this.logisticsCom),
+                        post_remark:encodeURIComponent(_this.note),
+                    }
+               }).then((res)=>{
+                   if(res.errcode==0){
+                       resovle(res);
+                   }
+               })
+           })
+        },
+        /**
+         * 修改订单状态
+         */
+        changeOrder(){
             let _this=this;
-            // 保存物流信息
-            _this.$http('get','http://madata.hc360.com/mobileapp/order/saveAppPost',{
-                params:{
-                    orderCode:_this.orderCode,
-                    post_code:encodeURIComponent(_this.courierNum),
-                    post_company:encodeURIComponent(_this.logisticsCom),
-                    post_remark:encodeURIComponent(_this.note),
-                }
-            }).then((res)=>{
-               if(res.errcode==0){
-                   //修改订单状态
-                   _this.$http('get','http://madata.hc360.com/mobileapp/order/orderSendOrRec',{
+            return new Promise((resolve,reject)=>{
+                _this.$http('get','http://madata.hc360.com/mobileapp/order/orderSendOrRec',{
                        params:{
                           orderCode:_this.orderCode,
                           //确认发货 
                           status:2
                        }
-                   }).then((res)=>{
-                       if(res.errcode==0){
-                           _this.$router.go('-1'); 
-                           // 发送小程序模板消息
-                           _this.$http('get','http://madata.hc360.com/mobileapp/appManager/sendTemplateMessage',{
-                               params:{
-                                   //0-支付成功模板  1-确认收货模板 2-发货模板
-                                   sign:2
-                               }
-                           }).then((res)=>{
-
-                           })
-                       }
-                   })
-               }
+                }).then((res)=>{
+                    if(res.errcode==0){
+                        resolve(res);
+                    }
+                })
             })
+        },
+        /**
+         * 发送模板消息
+         */
+        sendTemplateMess(){
+             let _this=this;
+             return new Promise((resovle,reject)=>{
+               _this.$http('get','http://madata.hc360.com/mobileapp/appManager/sendTemplateMessage',{
+                    params:{
+                       //0-支付成功模板  1-确认收货模板 2-发货模板                                   
+                        sign:2
+                    }
+                }).then((res)=>{})
+             })
+        },
+        /**
+         * 提交物流信息
+         */
+        submit(){
+            let _this=this;
+
+            _this.saveLogistics().then((data)=>{
+                return _this.changeOrder();
+            }).then(res=>{
+                if(res.errcode==0){
+                   _this.$router.go('-1');
+                   return _this.sendTemplateMess(); 
+                }
+            })
+           
         }
     },
     components: {

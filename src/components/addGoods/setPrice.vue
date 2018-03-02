@@ -78,6 +78,7 @@ export default {
                path:'/addgoods/storeClass'
            })
        },
+       
        /**@method
         * 发布商机
         */
@@ -166,7 +167,12 @@ export default {
                      isCheck:true,
                      mes:'请输入合法的价格'
                 }
-           }
+         }else{
+             this.price={
+                     isCheck:false,
+                     mes:''
+             }
+         }
 
          this.price.isCheck ? this.$toast(this.price.mes) : '';
        },
@@ -183,6 +189,11 @@ export default {
                 this.inventory={
                      isCheck:true,
                      mes:'请输入合法的库存量'
+                }
+           }else{
+               this.inventory={
+                     isCheck:false,
+                     mes:''
                 }
            }
            this.inventory.isCheck ? this.$toast(this.inventory.mes) : '';

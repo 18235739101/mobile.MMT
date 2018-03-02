@@ -61,7 +61,7 @@
                     </li>
                     <li>
                         <span class="wxSetUpLeft">一口价</span>
-                        <div class="wxSetUpRig"><input type="text" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
+                        <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur" @keyup="priceValue=priceValue.replace(/[^\d\.]*/,'')" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
                     </li>
                 </ul>
                 <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
@@ -77,7 +77,7 @@
             <div class="proAlertBoxCon">
                 <a class="closeBtn" @click="exportXCX()">×</a>
                 <dl>
-                    <dt>您确定将商品<br>从小程序商铺下架吗？</dt>
+                    <dt>您确定将商品<br>从小程序商铺撤出吗？</dt>
                     <dd><button type="button" class="leftRedBtn" @click="confirmExportXCX()">确定</button><button type="button" @click="exportXCX()">取消</button></dd>
                 </dl>
             </div>
@@ -129,6 +129,11 @@ export default {
              * 在售列表对象
              */
             onSaleList:[],
+
+            /**
+             * 一口价的value值
+             */
+            priceValue:'',
 
             /**
              * 分页属性
@@ -267,14 +272,34 @@ export default {
         },
 
         /**
+         * 一口价失去焦点
+         */
+        priceOnlineBlur(){
+            let  reg=/^[1-9]\d{1,9}\.\d{1,2}$/;
+            if(this.$refs.supportTradeOnline.checked){
+               if(this.priceValue==''){
+                    this.$toast('请填写价格！');
+                    return false;
+                }
+                this.priceValue=(this.priceValue-0).toFixed(2);
+                if(this.priceValue=='0.00'){
+                        this.$toast('价格不能为0！');
+                        return false;
+                }else if(!reg.test(this.priceValue)){
+                        this.$toast('请输入合法价格');
+                }else{
+                    this.setXCXparams.price=this.priceValue
+                }
+            }
+        },
+
+        /**
          * 确定导入小程序 
          */
         confirmImportXCX(){
             let _this = this;
             if(_this.$refs.supportTradeOnline.checked){//支持在线交易
-                if(_this.$refs.priceOnline.value && _this.$refs.priceOnline.value.length>0){
-                    _this.setXCXparams.price = _this.$refs.priceOnline.value;
-                }else{
+                if(!_this.setXCXparams.price){
                     _this.$toast('请填写价格！');
                     return false;
                 }

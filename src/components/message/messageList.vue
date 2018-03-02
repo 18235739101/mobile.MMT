@@ -26,21 +26,26 @@
 export default {
   data(){
       return {
-      /**是否显示加载中按钮 */
+      /**
+       * 是否显示加载中按钮
+       */
       loading: false,
-      /**滚动区域的高度 */
-      wrapperHeight: 0,
-      /**订单数据是否加载完毕 */
+      
+      /**
+       * 订单数据是否加载完毕
+       */
       finisheLoaded:false,
-      /*
-      *分页属性 
-      */
+      
+      /**
+       * 分页属性
+       */
       searchCondition: {
-       //当前页码  
+        //当前页码  
         pageNo: 0,
         //一页显示多少条
         pageSize:10
       },
+
       /**
        * 留言列表
        */
@@ -51,27 +56,28 @@ export default {
 
   },
   methods:{
-      /**
-     * @method 滚动事件分页加载订单列表
+    /**
+     * 滚动事件分页加载订单列表
      */
     loadMore() {
-      let _this = this;
+      let _this = this,
+          _url = '//my.b2b.hc360.com/my/turbine/action/outerinf.MsiteBusnoteAction/eventsubmit_doGetbusnotes/doGetbusnotes?callback';
       if(_this.finisheLoaded){
         return false;
       }
-       _this.loading = true;
-      //当前页数加1
+      _this.loading = true;
       _this.searchCondition.pageNo++;
-      /***调用订单接口 */
-      _this.$http('get','//my.b2b.hc360.com/my/turbine/action/outerinf.MsiteBusnoteAction/eventsubmit_doGetbusnotes/doGetbusnotes?callback',
-      {
+
+       /**
+        * 获取留言接口
+        */
+      _this.$http('get',_url,{
           params:{
               pageSize:_this.searchCondition.pageSize,
               pageNo: _this.searchCondition.pageNo
               }
      }).then((res)=>{
-             res=JSON.parse(res.slice(1,res.length-1));
-             res=res.data;
+             res=JSON.parse(res.slice(1,res.length-1)).data;
              if(!res){
                 _this.finisheLoaded=true;
                 return;
@@ -83,7 +89,7 @@ export default {
                 }
                  _this.loading = false;
                 _this.messageList = _this.messageList.concat(data);
-             }
+            }
       })  
      
     }

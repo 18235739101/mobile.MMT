@@ -1,6 +1,6 @@
 <template>
   <div>
-      <goodhead :head-name="headname"></goodhead>
+      <goodhead :head-name="headname" :router-path="routerPath"></goodhead>
       <section>
 		<div class="addProBox">
         	<div class="proName">
@@ -14,7 +14,7 @@
             	<ul>
                 	<li v-for="(imgs,i) in imgList" :key="i">
                         <div class="updateImg">
-                        <img :src="imgs.url">
+                        <a><img :src="imgs.url"></a>
                         <em class="delIco" @click="deleteImg(i)"></em>
                         </div>
                     </li>
@@ -53,12 +53,25 @@ export default {
   data() {
     return {
       headname: "添加商品",
-      // 商品名称
+      /*
+       * 商品名称
+       */ 
       shopname: "",     
-      // 图片列表
+      
+      /**
+       * 图片列表
+       */
       imgList: [],
-      // 新发和修改的商品bcid
-      bcid: 0
+
+      /**
+       * 新发和修改的商品bcid
+       */
+      bcid: 0,
+
+      /**
+       * 返回跳转的路由
+       */
+      routerPath:'/goodsManage'
     };
   },
   components: {
@@ -76,14 +89,14 @@ export default {
   }),
   methods: {
     /**
-     * @method 校验商品名称
+     *  校验商品名称
      */
     blurname(e) {
       let _this = this,
-        titleConfig = {
-          isCheck: false,
-          mes: ""
-        };
+          titleConfig = {
+            isCheck: false,
+            mes: ""
+          };
       if (_this.shopname.length == 0) {
         _this.$toast("请填写商品名称");
       } else {
@@ -113,8 +126,9 @@ export default {
           });
       }
     },
+
     /**
-     * @method 图片上传
+     *  图片上传
      */
     inputchange(event) {
       let _this = this,
@@ -134,9 +148,9 @@ export default {
         _this.imgUpload(imgfile);
       }
     },
+
     /**
-     * @method  调用imgup接口,上传图片
-     * 
+     * 调用imgup接口,上传图片
      */
     imgUpload(imgfile) {
       let _this = this,
@@ -182,7 +196,7 @@ export default {
         });
     },
     /**
-     * @method 删除图片
+     * 删除图片
      */
     deleteImg(i) {
       let _this = this,
@@ -193,23 +207,18 @@ export default {
        * 没有参数表示上传图片完成后要调用此接口
        */
       i ? _imgList.splice(i, 1) : "";
-      _this
-        .$http(
-          "get",
-          "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChaceImgSaveAction/eventsubmit_dosavepic/doSavepic?callback=",
+      _this.$http("get","http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.BusinChaceImgSaveAction/eventsubmit_dosavepic/doSavepic?callback=",
           {
             params: {
               picstr: _this.picstr,
               piclist: JSON.stringify(_imgList)
             }
           }
-        )
-        .then(res => {
+        ).then(res => {
           /* 这里后台返回的数据是jsonp的格式，多了一个括号，去除括号并且转换为json */
           res = res.slice(1, res.length - 1);
           res = JSON.parse(res);
           /*如果删除成功，删除imgList里面的数据*/
-
           if (res.state == "true" && i != undefined) {
             _this.imgList.splice(i, 1);
             _this.$store.commit("saveShopSet", {
@@ -218,8 +227,9 @@ export default {
           }
         });
     },
+
     /**
-     * @method 添加商品下一步
+     * 添加商品下一步
      */
     next() {
       let _this = this;
@@ -256,7 +266,7 @@ export default {
       });
     },
     /**
-     * @method 获取picstr
+     * 获取picstr
      * 
      */
     getPicstr() {
@@ -268,23 +278,19 @@ export default {
       // 如果有picstr,不调用获取picstr接口
       if(_this.picstr){
         if(_this.bcid != 0){
-          _this.getShopDetail();
+          _this.initBusiness();
+          return;
         }
-        return;
       }
 
       // 获取picstr
-      _this.$http(
-          "get",
-          "http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",
+      _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",
           {
             params: {
-              // 商机id，如果新发是0，修改是原有的商机id
               bcid: _this.bcid
             }
           }
-        )
-        .then(res => {
+        ).then(res => {
           if (!res.picstr) {
             _this.$toast("获取picstr失败");
             return;
@@ -294,57 +300,67 @@ export default {
             sessionid: res.sessionid
           });
           if (_this.bcid != 0) {
-            _this.getShopDetail();
+             _this.initBusiness();
           }
         });
     },
-    /**@method 获取商机详细信息 
-     * 
+    /**
+     * 获取商机详情
      */
-    getShopDetail() {
-      let _this = this,
-        getShopDetailUrl =
-          "http://wsproduct.hc360.com/mBusinChance/obtainbusin",
-        getShopImgUrl =
-          "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.GetBusinChanceImgListAction/eventsubmit_dogetpic/doGetpic";
-      // 获取商机详细信息
-      _this
-        .$http("get", getShopDetailUrl, {
-          params: {
-            bcid: _this.bcid
-          }
-        })
-        .then(res => {
-          let shopDetail = {
-              //商品标题
-              title: res.title,
-              //图片列表
-              imgList: [],
-              // 商品描述
-              desc: res.introduce,
-              // 商品类目
-              cate: {
-                name: res.supcatname
-              }
-            },
-            shopPrice = {
-              // 价格类型
-              ptype: res.pricerange1 ? "onePrice" : "negotiable",
-              //商品价格
-              price: res.pricerange1,
-              // 库存量
-              inventory: res.num
-            };
-          this.shopname = res.title;
-          //获取修改商机的图片
-          _this
-            .$http("get", getShopImgUrl, {
-              params: {
+    getShopInfo(){
+        let _this=this,
+            getShopDetailUrl = "http://wsproduct.hc360.com/mBusinChance/obtainbusin";
+        return new Promise((resolve,reject)=>{
+           _this.$http('get',getShopDetailUrl,{
+             params:{
+                bcid: _this.bcid
+             }
+           }).then((res)=>{
+              resolve(res);
+           })
+        }) 
+    },
+    /**
+     * 获取商机图片
+     */
+    getShopImg(){
+        let _this=this,
+            _url = "http://imgup.b2b.hc360.com/imgup/turbine/action/imgup.businchance.GetBusinChanceImgListAction/eventsubmit_dogetpic/doGetpic";
+        return new Promise((resolve,reject)=>{
+           _this.$http('get',_url,{
+             params:{
                 picstr: _this.picstr,
                 callback: ""
-              }
-            })
-            .then(res => {
+             }
+           }).then((res)=>{
+              resolve(res);
+           })
+        }) 
+    },
+    /**
+     * 初始化商机默认信息 
+     */
+    initBusiness() {
+      let _this = this;
+          _this.getShopInfo().then((res)=>{
+               let shopDetail = {
+                     title: res.title,
+                     desc: res.introduce,
+                     cate: {
+                        name: res.supcatname
+                      }
+                    },
+                    shopPrice = {
+                      // 价格类型
+                      ptype: res.pricerange1&&res.pricerange1!='0' ? "onePrice" : "negotiable",
+                      price: res.pricerange1,
+                      // 库存量
+                      inventory: res.num
+                    };
+              // 初始化商品名称
+              _this.shopname = res.title;
+             
+             _this.getShopImg().then((res)=>{
               res = JSON.parse(res.slice(1, res.length - 1) || "{}");
               if (res.result.length > 0) {
                 _this.imgList = [...res.result];
@@ -358,8 +374,9 @@ export default {
                   ...shopPrice
                 });
               }
-            });
-        });
+             }) 
+        })
+        
     }
   },
   beforeMount() {

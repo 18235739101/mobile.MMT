@@ -31,6 +31,7 @@ Vue.prototype.$http = http
  */
 Vue.prototype.$echarts = echarts;
 
+
 // 全局注册提示信息的方法
 Vue.prototype.$toast=(mes)=>{
   Toast({
@@ -45,8 +46,9 @@ Vue.prototype.$toast=(mes)=>{
  * 切换路由之前先验证权限
  */
 router.beforeEach((to,from,next) =>{
-  if(to.meta && to.meta.requireAuth){
-
+    /**
+     * 调用接口判断是否登录
+     */
     http('get','https://mlogin.hc360.com/get/ssohelper',{
       
     }).then((res) =>{
@@ -55,10 +57,8 @@ router.beforeEach((to,from,next) =>{
           if(res.isbuy && res.isbuy>0){
             //给路由传递参数（用户级别）
             to.query.level = res.usersession.userlevel;
-            
             //是否需要小程序授权
             if(to.meta.requireXCXAuth){
-              
               http('get','//madata.hc360.com/mobileapp/wx/isAuth?callback=',{
                 params:{
                   imid:res.usersession.username
@@ -70,11 +70,9 @@ router.beforeEach((to,from,next) =>{
                       location.href='#/xcxManage/unAuthen'
                   }
               })
-
             }else{
               next()
             }
-            
           }else{
             //未购买进入宣传页
             location.href="#/notice"
@@ -83,9 +81,7 @@ router.beforeEach((to,from,next) =>{
           location.href="https://mlogin.hc360.com/mobilemmt/login.html"
         }
     })
-  }else{
-    next();
-  }
+  
 })
 
 /* eslint-disable no-new */

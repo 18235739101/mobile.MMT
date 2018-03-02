@@ -30,6 +30,7 @@
                                     <div class="orderName"><p class="oName">{{item.bcName}}</p> </div> 
                                     <div class="oListPrice"><p>&yen;{{item.bcUnitPrice}}</p><p>X{{item.bcNumber}}</p></div>
                                 </a>
+                                <!-- 订单状态 1代发货 2待收货  3 已完成 -->
                                <span v-if="orderDetail.order&&orderDetail.order.orderStatus==1" >
                                    <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" class="fhBtn">发货</a>
                                </span>
@@ -74,13 +75,7 @@ export default {
     data(){
        return {
           headName:'订单详情',
-          orderDetail:{},
-          // 订单状态码
-          orderState:{
-              '1':'待发货',
-              '2':'待收货',
-              '3':'已完成'
-          }
+          orderDetail:{}         
        }
     },
     components: {
@@ -95,10 +90,6 @@ export default {
                      orderCode:_this.$route.query.orderid
                  }
         }).then(res=>{
-            //  if(data.errno!=0){
-            //      return;
-            //  }
-
            res=(res.data || {}).orderDetail;
            if(res){
               _this.orderDetail= res;
