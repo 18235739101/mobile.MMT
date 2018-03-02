@@ -1,15 +1,14 @@
 <template>
   <div>
-
-      <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>店铺模板</h3></header>
+      <headerTop :head-name="headName"></headerTop>  
       <section>
           <div class="modelBox">
 
             <div class="modelCon" v-for="(item,i) in templates" :key='i'>
-              <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId"><img class="modelImg" :src="item.tplUrl"></a></div>
+              <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled"><img class="modelImg" :src="item.tplUrl"></a></div>
               <p class="name">{{item.name}}</p>
               <div class="mdetailCur" v-if="item.stateDes!='点击查看'"><label class="curIcon"></label>正在使用</div>
-              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId">点击查看</a></div>
+              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled">点击查看</a></div>
             </div>
 
           </div>
@@ -34,10 +33,12 @@
 </template>
 
 <script>
+import headerTop from '../header.vue'
 export default {
 
   data(){
     return {
+      headName:'店铺模板',
       templates:[
         {
           tempId:1,
@@ -89,7 +90,7 @@ export default {
       /**
        * 是否可以更改模板
        */
-      enabled:true
+      enabled:1
     }
   },
 
@@ -119,7 +120,7 @@ export default {
             * 审核中的状态，不能修改模板
             */
            if(state==1){
-             _this.enabled=false;
+             _this.enabled=0;
            }
            /**
             * 如果存在上一次的模板id
@@ -146,7 +147,9 @@ export default {
       })
     }
   },
-
+  components:{
+    headerTop
+  },
   mounted(){
     let _this = this;
     _this.$nextTick(() =>{

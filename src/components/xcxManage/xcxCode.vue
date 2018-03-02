@@ -1,6 +1,6 @@
 <template>
   <div>
-      <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>小程序码</h3></header>
+        <XCXHead :head-name="headName" />
         <section>
             <div class="sProgramCode">
                 <h5>{{companyInfo.name}}</h5>
@@ -17,17 +17,15 @@
 
 <script>
 import footerContent from 'components/footer.vue'
+import XCXHead from '../header.vue'
 export default {
 
     data(){
         return {
+            headName:'小程序码',
             companyInfo:JSON.parse(localStorage.getItem('companyInfo')),
             xcxImgUrl : ''
         }
-    },
-
-    created(){
-        
     },
 
     methods:{
@@ -54,7 +52,8 @@ export default {
         })
     },
     components:{
-        footerContent
+        footerContent,
+        XCXHead
     }
 }
 </script>

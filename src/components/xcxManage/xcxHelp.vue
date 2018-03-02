@@ -1,7 +1,6 @@
 <template>
   <div>
-      <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>小程序管理</h3></header>
-
+      <XCXHead :head-name="headName" />
       <section>
     	<div class="telBox">
             <dl>
@@ -23,15 +22,18 @@
 
 <script>
 import footerContent from 'components/footer.vue'
+import XCXHead from '../header.vue'
 export default {
     data(){
         return {
+            headName:'小程序管理',
             /**常见问题对象 */
             questions:{}
         }
     },
   components:{
-      footerContent
+      footerContent,
+      XCXHead
   },
 
   methods:{

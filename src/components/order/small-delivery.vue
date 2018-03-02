@@ -86,6 +86,7 @@ export default {
              return new Promise((resovle,reject)=>{
                _this.$http('get','http://madata.hc360.com/mobileapp/appManager/sendTemplateMessage',{
                     params:{
+                        orderCode:_this.orderCode,
                        //0-支付成功模板  1-确认收货模板 2-发货模板                                   
                         sign:2
                     }

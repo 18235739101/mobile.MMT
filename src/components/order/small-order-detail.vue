@@ -6,7 +6,7 @@
             <div v-if="orderDetail.order">
                 <div class="orderNum">
                     <p>{{orderDetail.order.orderCode}}</p>
-                    <span>{{orderDetail.order.orderStatus}}</span>
+                    <span>{{statusList[orderDetail.order.orderStatus]}}</span>
                 </div>
                 <div class="wxAddressBox">
                     <div class="addressLeft">
@@ -75,7 +75,15 @@ export default {
     data(){
        return {
           headName:'订单详情',
-          orderDetail:{}         
+          orderDetail:{},
+          /**
+             * 订单状态
+             */
+            statusList:{
+                1:'待发货',
+                2:'待收货',
+                3:'已完成'
+            }          
        }
     },
     components: {

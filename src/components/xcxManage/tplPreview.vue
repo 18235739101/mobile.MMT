@@ -1,13 +1,13 @@
 <template>
   <div>
-      <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>店铺模板</h3></header>
+      <XCXHead :head-name="headName" />
       <section>
         <div class="container">
           <div class="modelCon2">
             <div class="modelImg"><img :src="tmps[$route.query.tplId-1]"></div>
             <div class="modelBtn2" v-if="$route.query.tplId == $route.query.currentTplId">正在使用</div>
 
-            <div class="modelBtn1" v-else-if="!enableSuccess"  @click="enableModule">启用该模板</div>
+            <div class="modelBtn1"  :class="[ enabled==0 ? 'modelBtn2':'modelBtn1']"  v-else-if="!enableSuccess"  @click="enableModule">启用该模板</div>
 
             <div class="modelBtn2" v-else-if="enableSuccess"  @click="enableModule">审核中...</div>
           </div>
@@ -19,10 +19,12 @@
 <script>
 import { MessageBox } from 'mint-ui';
 import { Toast } from 'mint-ui';
+import XCXHead from '../header.vue'
 export default {
 
   data(){
     return {
+      headName:'店铺模板',
       //模板对应预览的大图数据集合
       tmps:[
         'https://style.org.hc360.com/images/microMall/program/modex_a.jpg',
@@ -43,6 +45,10 @@ export default {
     enableModule(){
 
       let _this = this;
+
+      if(_this.enabled=='0'){
+        return false;
+      }
 
       MessageBox({
         title: '提示',
@@ -70,6 +76,14 @@ export default {
       })
       
     }
+  },
+
+  created(){
+     // 该模板是否可以启用
+     this.enabled=_this.$route.query.enabled
+  },
+  components:{
+    XCXHead
   }
   
   

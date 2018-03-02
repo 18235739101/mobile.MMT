@@ -1,6 +1,6 @@
 <template>
 <div>
-  <header class="mHeaderBox"><a href="javascript:history.go(-1)" class="arrowLeft"></a><h3>商品管理</h3></header>
+  <goodHead :head-name='headName' :router-path="routerPath" />
   <section>
        <div class="proTitBox">
        		<ul>
@@ -25,11 +25,14 @@ import goodsOnsale from 'components/goodsManage/goodsOnsale';
 import goodsForCheck from 'components/goodsManage/goodsForCheck';
 import goodsRefuse from 'components/goodsManage/goodsRefuse';
 import goodsOff from 'components/goodsManage/goodsOff';
+import goodHead from '../header';
 
 export default {
   
   data(){
       return {
+          headName:'商品管理',
+          routerPath:'/manage',
           tabs: [
           {
             name:'在售商品',
@@ -63,6 +66,7 @@ export default {
   },
 
   components:{
+      goodHead,
       goodsOnsale,
       goodsForCheck,
       goodsRefuse,
