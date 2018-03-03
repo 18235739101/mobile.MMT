@@ -21,7 +21,7 @@ export default {
   methods:{
     createsocket(){
         let _this=this,
-            host='http://ydmmt.hc360.com/chatpoint/greeting/hcgztmonitor/'+_this.username+'/';
+            host='ws://ydmmt.hc360.com/chatpoint/greeting/hcgztmonitor/'+_this.username+'/';
          if ('WebSocket' in window) {
               _this.socket = new WebSocket(host);
             } else if ('MozWebSocket' in window) {
@@ -36,21 +36,33 @@ export default {
             if(data){
                _this.isNews=true;
             }
-              
          };  
     }
   },
   created(){
     let _this=this,
         companyInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
-      /**@description 获取用户名*/  
+
+      /**
+       * @description 
+       * 获取用户名
+       * */  
       _this.username=companyInfo.username;
-      /**@description 查询是否有新消息 */   
+
+      /**@description
+       *  查询是否有新消息 
+       */   
       _this.$http('get','http://ydmmt.hc360.com/mobilechat/getisnew/'+_this.username+'/').then((res)=>{
           if(res){
              _this.isNews=true;
           }
       })
+      
+      /**
+       * @description 
+       * 建立长连接
+       * */
+      _this.createsocket();
   }
 }
 </script>

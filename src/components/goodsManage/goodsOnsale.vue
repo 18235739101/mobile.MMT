@@ -275,7 +275,7 @@ export default {
          * 一口价失去焦点
          */
         priceOnlineBlur(){
-            let  reg=/^[1-9]\d{1,9}\.\d{1,2}$/;
+            let  reg=/^[1-9]\d{0,8}\.\d{1,2}$/;
             if(this.$refs.supportTradeOnline.checked){
                if(this.priceValue==''){
                     this.$toast('请填写价格！');

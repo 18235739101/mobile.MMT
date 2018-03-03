@@ -47,10 +47,6 @@ export default {
                 className:'ico2',
                 linkUrl:'#/goodsManage'
             },{
-                name:'订单管理',
-                className:'ico3',
-                linkUrl:'#/order'
-            },{
                 name:'经营分析',
                 className:'ico4',
                 linkUrl:'#/operationDaily?level='+ this.$route.query.level

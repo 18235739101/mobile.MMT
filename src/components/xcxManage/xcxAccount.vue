@@ -9,7 +9,7 @@
                 <dd><span>主体名称：</span>{{xcxInfo.principalname}}</dd>
                 <dd><span>线上版本：</span>{{ version ||'无' }}</dd>
                 <dd><span>更新状态：</span>{{ appState ||'无' }}</dd>
-                <dd ><span>更新时间：</span>{{xcxInfo.publishtime || '无'}}</dd>
+                <dd ><span>更新时间：</span>{{ time || '无'}}</dd>
                 <dd><span>商户号：</span>{{xcxInfo.mchid}}</dd>
             </dl>    
         </div>
@@ -30,10 +30,12 @@ export default {
             xcxInfo:{},
             /**更新状态值 */
             states:["未发布","审核中","审核失败","发布成功","发布失败"],
-
+            /** 线上版本 */
             version:'',
-
+            /** 更新状态 */
             appState:'',
+            /** 更新时间 */
+            time:''
         }
     },
 
@@ -52,20 +54,27 @@ export default {
                    _this.xcxInfo =  res.appConfig;
                    _this.version=_this.getVersion();
                    _this.appState=_this.getAppState();
+                   _this.time=_this.getUpdataTime();
                 }
             })
         },
+        /**
+        * 线上版本
+        */
         getVersion(){
            if(this.xcxInfo.publishstate==3){
-               return this.version
+               return this.xcxInfo.version
            }else{
               if(this.xcxInfo.preversion){
                  return this.xcxInfo.preversion
                }else{
-                   return this.version
+                   return this.xcxInfo.version
                }
            } 
        },
+       /**
+        * 更新状态
+        */
        getAppState(){
            if(this.xcxInfo.publishstate!=3){
                if(this.xcxInfo.preversion){
@@ -73,8 +82,23 @@ export default {
                }else{
                    return this.states[this.xcxInfo.publishstate]
                }
+           }else{
+               return '发布成功'
            }
-       }
+        },
+        /**
+         * 更新时间
+         */
+        getUpdataTime(){
+           var date=new Date(this.xcxInfo.publishtime),
+               year=date.getFullYear(),
+               month=date.getMonth()+1,
+               _date=date.getDate(),
+               hours=date.getHours(),
+               minutes=date.getMinutes(),
+               seconds=date.getSeconds();
+          return  year+'-'+month+'-'+_date+'  '+hours+':'+ minutes+':'+seconds;
+        } 
     },
 
     created(){

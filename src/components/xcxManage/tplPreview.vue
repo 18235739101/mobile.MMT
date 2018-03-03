@@ -80,7 +80,7 @@ export default {
 
   created(){
      // 该模板是否可以启用
-     this.enabled=_this.$route.query.enabled
+     this.enabled=this.$route.query.enabled
   },
   components:{
     XCXHead

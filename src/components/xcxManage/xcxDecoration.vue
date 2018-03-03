@@ -7,7 +7,7 @@
             <div class="modelCon" v-for="(item,i) in templates" :key='i'>
               <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled"><img class="modelImg" :src="item.tplUrl"></a></div>
               <p class="name">{{item.name}}</p>
-              <div class="mdetailCur" v-if="item.stateDes!='点击查看'"><label class="curIcon"></label>正在使用</div>
+              <div class="mdetailCur" v-if="item.stateDes!='点击查看'"><label class="curIcon"></label>{{item.stateDes}}</div>
               <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled">点击查看</a></div>
             </div>
 

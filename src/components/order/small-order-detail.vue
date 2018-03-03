@@ -18,23 +18,26 @@
             <div class="orderContent">
                 <div class="orderListCon">
                     <div class="orderConTit" v-if="orderDetail.order">
-                        <h2><a href="javascript:;" class="wxImgIco"><img :src="orderDetail.order.headImg"></a><a href="javascript:;" class="cName">{{orderDetail.order.nickname}}</a></h2>
+                        <h2>
+                            <a href="javascript:;" class="wxImgIco"><img :src="orderDetail.order.headImg"></a>
+                            <a href="javascript:;" class="cName">{{orderDetail.order.nickname}}</a>
+                             <!-- 订单状态 1代发货 2待收货  3 已完成 -->
+                            <span v-if="orderDetail.order.orderStatus==1" >
+                               <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" >发货</a>
+                            </span>
+                        </h2>
                     </div> 
                     <dl>
                         <dd v-show="orderDetail.prodList" v-for="(item,i) in orderDetail.prodList" :key="i">
-                            <div class="orderImg">
-                                <a href="javascript:;"><img :src="item.bcPic"></a>
-                            </div> 
-                            <div class="orderImgRig">
-                                <a href="javascript:;">
+                            <a :href="'https://m.hc360.com/supplyself/'+item.bcId+'.html' ">
+                                <div class="orderImg">
+                                    <span><img :src="item.bcPic"></span>
+                                </div> 
+                                <div class="orderImgRig">
                                     <div class="orderName"><p class="oName">{{item.bcName}}</p> </div> 
-                                    <div class="oListPrice"><p>&yen;{{item.bcUnitPrice}}</p><p>X{{item.bcNumber}}</p></div>
-                                </a>
-                                <!-- 订单状态 1代发货 2待收货  3 已完成 -->
-                               <span v-if="orderDetail.order&&orderDetail.order.orderStatus==1" >
-                                   <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" class="fhBtn">发货</a>
-                               </span>
-                            </div>
+                                    <div class="oListPrice"><p>&yen;{{item.bcUnitPrice}}</p><p>X{{item.bcNumber}}</p></div>                                   
+                                </div>
+                            </a>
                         </dd>
                         <dt v-if="orderDetail.order">
                         	<div class="orderDetail">

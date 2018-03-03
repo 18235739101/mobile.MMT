@@ -1,6 +1,9 @@
 <template>
   <div>
-       <componentHead :head-name="headName" />  
+       <header class="mHeaderBox">
+        <a href="javascript:;" class="arrowLeft" @click="gotoback()"></a>
+         <h3>即时沟通</h3>
+      </header>
        <section>
            <div class="chatBox">
                     <!-- 历史留言消息 -->
@@ -70,7 +73,6 @@
     </div>      
 </template>
 <script>
-import componentHead from '../header.vue';
 export default {
   data(){
       return {
@@ -103,10 +105,6 @@ export default {
          */
         socket:null,
 
-        /*
-         * socket是否打开
-         */  
-        socketIsOpen:false,
         
         /**
          * 图文消息详情
@@ -175,9 +173,13 @@ export default {
               type:1,
               // 如果是买家添加此字段
               readstate:_this.messageUser.type ? "" : 1,
-            };  
-        if(!_this.socketIsOpen){
-            return;
+            }; 
+        /**
+         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。 
+         */    
+        if(_this.socket.readyState!=1){
+            _this.createdSocket();
+            //return;
         }
          /**
           * 发送消息
@@ -216,8 +218,12 @@ export default {
               type:0,
               readstate:_this.messageUser.type ? "" : 1,
              };  
-          if(_this.message.length==0||_this.socketIsOpen==false){
+          if(_this.message.length==0){
+              _this.$toast('发送的消息不能为空！')
               return;
+          }
+          if(_this.socket.readyState!=1){
+              _this.createdSocket();
           } 
          /**
           * 发送消息 
@@ -281,7 +287,6 @@ export default {
          */
         _this.socket.onopen=function(){
             console.log('socket open!')
-            _this.socketIsOpen=true;
             // 如果是从终极页进入的买家界面弹出商品详情的浮层
             if(_this.messageUser.type=='buy'){
                 if(!_this.messageUser.bcid){
@@ -289,8 +294,11 @@ export default {
                    return;
                 }
                 _this.$http('get','https://wsdetail.b2b.hc360.com/xcx/supply/'+_this.messageUser.bcid).then((res)=>{
+                     if(res.errmsg){
+                         return;
+                     }  
                      _this.proDetail={
-                        imgurl:res.picUrls[0].picUrl,
+                        imgurl:res.picUrls&&res.picUrls[0].picUrl,
                         title:res.title,
                         price:res.price||'面议' 
                     }
@@ -303,12 +311,17 @@ export default {
          * 连接关闭后的回调函数
          */
         _this.socket.onclose=function(){
-
+           console.log('连接已经关闭！')
         }
      },
-  },
-  components:{
-      componentHead
+     gotoback(){
+         let _this=this;
+         /**
+          * 返回到消息列表页面之前，关闭socket
+          */
+         _this.socket.close();
+         _this.$router.go(-1);
+     }
   },
   created(){
       this.messageUser=this.$route.query;

@@ -279,8 +279,8 @@ export default {
       if(_this.picstr){
         if(_this.bcid != 0){
           _this.initBusiness();
-          return;
         }
+        return;
       }
 
       // 获取picstr
@@ -347,7 +347,8 @@ export default {
                      title: res.title,
                      desc: res.introduce,
                      cate: {
-                        name: res.supcatname
+                        name: res.supcatname,
+                        sid:res.supcatid
                       }
                     },
                     shopPrice = {
