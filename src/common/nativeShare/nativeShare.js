@@ -23,6 +23,8 @@ export default function nativeShare (elementNode, config) {
         qq: ""
     };
     var isWeixin = false;
+    var platform_os;
+
 
     config = config || {};
     this.elementNode = elementNode;
@@ -111,7 +113,7 @@ export default function nativeShare (elementNode, config) {
     };
 
     this.getPlantform = function () {
-        ua = window.navigator.userAgent;
+        var ua = window.navigator.userAgent;
         if ((ua.indexOf("iPhone") > -1 || ua.indexOf("iPod") > -1)) {
             return "iPhone"
         }
@@ -133,7 +135,7 @@ export default function nativeShare (elementNode, config) {
     };
 
     this.init = function () {
-        //platform_os = this.getPlantform();
+        platform_os = this.getPlantform();
         version.qq = isqqBrowser ? this.getVersion(UA.split("MQQBrowser/")[1]) : 0;
         version.uc = isucBrowser ? this.getVersion(UA.split("UCBrowser/")[1]) : 0;
         isWeixin = this.is_weixin();

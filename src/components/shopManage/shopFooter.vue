@@ -78,7 +78,7 @@ export default {
     
 	  _this.$nextTick(() =>{
       _this.browserIdenty()
-        new nativeShare('nativeShare',_this.config);
+      new nativeShare('nativeShare',_this.config);
 	  })
   }
 }

@@ -315,12 +315,16 @@ export default {
                         if(_this.onSaleList[i].bcid == _this.setXCXparams.bcid){
                             //导入小程序将wechat值改为true
                             _this.onSaleList[i].weChat = true;
+                            // 修改一口价的默认值
+                            _this.priceValue='';
                             _this.$toast('导入小程序成功！');
                             break;
                         }
                     }
                     _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
                 }else{
+                    // 修改一口价的默认值
+                     _this.priceValue='';
                     _this.$toast(res.returnMsg || '导入小程序失败！');
                 }
             })
@@ -493,6 +497,10 @@ export default {
          * 显示更多 
          */
         showMore(proItem){
+            // 隐藏其他的更多操作
+            this.onSaleList.forEach((item)=>{
+              item.isShowMore=false;
+            })
             proItem.isShowMore = !proItem.isShowMore;
         }
     },

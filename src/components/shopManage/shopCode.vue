@@ -7,8 +7,8 @@
                 <div class="storeImg"><img :src="companyInfo.logoUrl ? companyInfo.logoUrl : 'https://style.org.hc360.com/images/microMall/store/tImg.png'"></div>
                 <h5>{{companyInfo.name}}</h5>
                 <div class="codeImg">
-                    <canvas id="canvas"></canvas>
-                    <!-- <img src="https://style.org.hc360.com/images/microMall/store/codeImg.png"> -->
+                    <!-- <canvas id="canvas"></canvas> -->
+                    <img id="imgWrap" src="https://style.org.hc360.com/images/microMall/store/codeImg.png">
                 </div>
                 <p>请长按图片保存店铺二维码</p>
             </div>
@@ -38,12 +38,16 @@ export default {
   methods:{
 
       drawQrcode(){
-        let canvas = document.getElementById('canvas')
-
-        QRCode.toCanvas(canvas, "https://m.hc360.com/b2b/"+JSON.parse(localStorage.getItem('companyInfo')).username, function (error) {
-            if (error) console.error(error)
-            console.log('success!');
-        })
+        let opts = {
+                type: 'image/jpeg',
+                rendererOpts: {
+                    quality: 0.3
+                }
+            } 
+       QRCode.toDataURL("https://m.hc360.com/b2b/"+JSON.parse(localStorage.getItem('companyInfo')).username+"/?id=1", opts, function (err, url) {
+            if (err) throw err
+            document.getElementById('imgWrap').src = url
+       })
       }
   },
   mounted(){
