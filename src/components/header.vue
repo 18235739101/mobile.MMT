@@ -13,13 +13,14 @@
        },
        methods:{
            gotoback(){
-            let _this=this;   
+            let _this=this;  
+            this.$emit('beforeGoTo'); 
             if(_this.routerPath){
                _this.$router.push({
                    path:_this.routerPath
                }) 
                return;  
-            }   
+            } 
             _this.$router.go(-1);
            }
        },

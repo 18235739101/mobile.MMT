@@ -174,13 +174,8 @@ export default {
               // 如果是买家添加此字段
               readstate:_this.messageUser.type ? "" : 1,
             }; 
-        /**
-         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。 
-         */    
-        if(_this.socket.readyState!=1){
-            _this.createdSocket();
-            //return;
-        }
+
+         _this.initialize();
          /**
           * 发送消息
           */
@@ -222,9 +217,7 @@ export default {
               _this.$toast('发送的消息不能为空！')
               return;
           }
-          if(_this.socket.readyState!=1){
-              _this.createdSocket();
-          } 
+          _this.initialize();
          /**
           * 发送消息 
           */ 
@@ -312,7 +305,32 @@ export default {
          */
         _this.socket.onclose=function(){
            console.log('连接已经关闭！')
+           _this.initialize();
         }
+
+       /**
+         * 连接失败后的回调函数
+         */
+        _this.socket.onerror=function(){
+            console.log('连接error！')
+             _this.initialize();
+        }
+     },
+     /**
+      * 断开后重新连接
+      */
+     initialize(){
+         let _this=this;
+         /**
+         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。 
+         */ 
+         if(_this.socket.readyState==1){
+             return;
+         }
+         //没连接上会一直重连，设置延迟避免请求过多
+         setTimeout(function(){
+           _this.createdSocket();
+         },2000)  
      },
      gotoback(){
          let _this=this;

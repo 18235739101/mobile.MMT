@@ -43,14 +43,26 @@ export default {
       * 时间戳转换为时间
       */
      timestampToTime(timestamp) {
+        let _this=this; 
         let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        let Y = date.getFullYear() + '-',
-            M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-',
-            D = date.getDate() + ' ',
-            h = date.getHours() + ':',
-            m = date.getMinutes() + ':',
-            s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        let Y = date.getFullYear(),
+            M = _this.formateDate(date.getMonth()+1),
+            D = _this.formateDate(date.getDate()) ,
+            h = _this.formateDate(date.getHours()),
+            m = _this.formateDate(date.getMinutes()),
+            s =_this.formateDate(date.getSeconds());
+        return Y+'-'+M+'-'+D+' '+h+':'+m+':'+s;
+     },
+  
+     /**@augments
+      * 格式化时间日期，如果小于两位数补0
+      */
+     formateDate(d){
+         if(d<10){
+            return '0'+d
+         }else{
+            return d
+         }
      },
      
      /**

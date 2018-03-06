@@ -7,6 +7,7 @@ import App from './App'
 import router from './router'
 import echarts from 'echarts'
 import http from './common/http';
+import vueAwesomeSwiper from 'vue-awesome-swiper';
 import store from './store';
 
 /**引入mint ui组件库和样式 */
@@ -15,6 +16,10 @@ Vue.use(InfiniteScroll);
 Vue.component(Spinner.name, Spinner);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
+
+/**swiper组件 */
+import 'swiper/dist/css/swiper.css'
+Vue.use(vueAwesomeSwiper);
 Vue.config.productionTip = false;
 
 

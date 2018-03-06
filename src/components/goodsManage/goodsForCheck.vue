@@ -4,11 +4,11 @@
         <div  v-else v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
        		<div class="proListCon" v-for="(pro,i) in checkList" :key="i">
             	<div class="proImgBox">
-                	<div class="proImgBoxCon"><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
+                	<div class="proImgBoxCon"><a href="javascript:;"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
                 </div>
                 <div class="proImgBoxRig">
                     <div class="proName">
-                        <p><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'">{{pro.title}}</a></p>
+                        <p><a href="javascript:;">{{pro.title}}</a></p>
                         <span>{{new Date(parseInt(pro.pubdate)).toLocaleString().replace(/:\d{1,2}$/,'').split(/\s/g)[0]}}</span>
                     </div>
                     <div class="proBotCon">

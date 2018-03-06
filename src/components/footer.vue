@@ -21,7 +21,7 @@ export default {
   methods:{
     createsocket(){
         let _this=this,
-            host='ws://ydmmt.hc360.com/chatpoint/greeting/hcgztmonitor/'+_this.username+'/';
+            host='ws://ydmmt.hc360.com/chatpoint/hcgztmonitor/'+_this.username+'/';
          if ('WebSocket' in window) {
               _this.socket = new WebSocket(host);
             } else if ('MozWebSocket' in window) {
@@ -37,6 +37,30 @@ export default {
                _this.isNews=true;
             }
          };  
+
+         _this.socket.onclose=function(){
+           _this.initialize();
+         }
+
+         _this.socket.onerror=function(){
+            _this.initialize();
+         }
+    },
+    /**
+      * 断开后重新连接
+      */
+    initialize(){
+         let _this=this;
+         /**
+         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。 
+         */ 
+         if(_this.socket.readyState==1){
+             return;
+         }
+         //没连接上会一直重连，设置延迟避免请求过多
+         setTimeout(function(){
+           _this.createsocket();
+         },2000)  
     }
   },
   created(){

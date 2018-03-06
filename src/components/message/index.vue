@@ -10,9 +10,9 @@
           </ul>
        </div> 
    </section>
-     <keep-alive>
-            <component :is="messageValue"></component>
-     </keep-alive>  
+        <transition name="component-fade" mode="out-in">
+            <component :is="messageValue" keep-alive></component>
+        </transition>
      <footerContent/>
   </div>    
       
@@ -25,7 +25,7 @@ import footerContent from '../footer.vue';
 export default {
   data(){
     return {
-      headName:'即时沟通',
+      headName:'消息管理',
        navList: [
         {
           name: "即时沟通",
@@ -62,6 +62,12 @@ export default {
 
 <style>
 @import url('https://style.org.hc360.com/css/microMall/messageStyle.css');
+.component-fade-enter-active, .component-fade-leave-active {
+    transition: opacity .3s ;
+}
+.component-fade-enter, .component-fade-leave-to{
+    opacity: 0;
+}
 </style>
 
 

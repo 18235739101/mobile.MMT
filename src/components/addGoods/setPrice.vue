@@ -102,6 +102,11 @@ export default {
               _this.$toast(_this.inventory.mes);
               return;
            }
+
+           if(_this.buttonHtml=='发布中...'){
+               _this.$toast('商机发布中，请勿再次发布！');
+               return;
+           }
       
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
@@ -120,10 +125,11 @@ export default {
            })
        },
        // 获取字段
-        getProductParam(){
+       getProductParam(){
            var obj= {
                     //商机标题
                     title:this.productObj.title,
+                    bcid:this.productObj.bcid,
                     // 图片上传标识
                     sessionid:this.productObj.sessionid,
                     // 商机描述
@@ -229,7 +235,7 @@ export default {
        this.priceNum=this.priceObj.price;
        // 保存库存量
        this.proInventory=this.priceObj.inventory;
-   }
+   },
 }
 </script>
 <style>

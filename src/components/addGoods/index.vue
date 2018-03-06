@@ -1,46 +1,46 @@
 <template>
   <div>
-      <goodhead :head-name="headname" :router-path="routerPath"></goodhead>
+      <goodhead :head-name="headname" :router-path="routerPath" @beforeGoTo="clearShopConfig" ></goodhead>
       <section>
-		<div class="addProBox">
-        	<div class="proName">
-            	<span class="proAddLeft">商品名称</span>
-                <input type="text" placeholder="请输入商品名称" @blur="blurname" v-model="shopname" maxlength="60">
-                <section class="alertPrompt">情输入商品名称</section>
+        <div class="addProBox">
+              <div class="proName">
+                  <span class="proAddLeft">商品名称</span>
+                    <input type="text" placeholder="请输入商品名称" @blur="blurname" v-model="shopname" maxlength="60">
+                    <section class="alertPrompt">情输入商品名称</section>
+                </div>
+              
+              <div class="proAddImg">
+                  <h4>上传商品图片</h4>
+                  <ul>
+                      <li v-for="(imgs,i) in imgList" :key="i">
+                            <div class="updateImg">
+                            <a><img :src="imgs.url"></a>
+                            <em class="delIco" @click="deleteImg(i)"></em>
+                            </div>
+                        </li>
+                        <li v-show="imgList.length<8">
+                          <div class="addImgBtn">
+                            <form ref="imgForm">
+                              <input type="file"  @change="inputchange" accept="image/*" name="upload" multiple capture="camera">
+                            </form>   
+                          </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="addList1"><a href="#/addgoods/addDesc"><span class="listLeft">添加商品描述</span><p class="listRig" v-show="productObj.desc">已添加</p> </a></div>
+                <div class="addList2"><a href="#/addgoods/category?bicid=121324398"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
             </div>
-           
-        	<div class="proAddImg">
-            	<h4>上传商品图片</h4>
-            	<ul>
-                	<li v-for="(imgs,i) in imgList" :key="i">
-                        <div class="updateImg">
-                        <a><img :src="imgs.url"></a>
-                        <em class="delIco" @click="deleteImg(i)"></em>
-                        </div>
-                    </li>
-                    <li v-show="imgList.length<8">
-                      <div class="addImgBtn">
-                        <form ref="imgForm">
-                          <input type="file"  @change="inputchange" accept="image/*" name="upload" multiple capture="camera">
-                        </form>   
-                      </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="addList1"><a href="#/addgoods/addDesc"><span class="listLeft">添加商品描述</span><p class="listRig" v-show="productObj.desc">已添加</p> </a></div>
-            <div class="addList2"><a href="#/addgoods/category?bicid=121324398"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
-        </div>
-        <button type="submit" class="releasedBtn" @click="next()">下一步</button>
-        <!-- <div class="addImgAlert">
-            <div class="addImgAlertCon">
-                <dl>
-                    <dt>添加商品图片</dt>
-                    <dd><a href="#">拍照</a></dd>
-                    <dd><a href="#">从相册选择</a></dd>
-                </dl>
-                <button type="button">取消</button>
-            </div>
-        </div> -->
+            <button type="submit" class="releasedBtn" @click="next()">下一步</button>
+            <!-- <div class="addImgAlert">
+                <div class="addImgAlertCon">
+                    <dl>
+                        <dt>添加商品图片</dt>
+                        <dd><a href="#">拍照</a></dd>
+                        <dd><a href="#">从相册选择</a></dd>
+                    </dl>
+                    <button type="button">取消</button>
+                </div>
+            </div> -->
     </section>
   </div> 
 </template>
@@ -88,6 +88,12 @@ export default {
     picstr: "picstr"
   }),
   methods: {
+    /**
+    * 清除商机配置
+    */
+    clearShopConfig(){
+       this.$store.commit('clearProduct')
+    },
     /**
      *  校验商品名称
      */
@@ -271,17 +277,13 @@ export default {
      */
     getPicstr() {
       let _this = this,
-        bcid = (this.$route.query || {}).bcid;
+          bcid = (this.$route.query || {}).bcid;
 
       bcid ? (_this.bcid = bcid) : "";
-      
-      // 如果有picstr,不调用获取picstr接口
+     
       if(_this.picstr){
-        if(_this.bcid != 0){
-          _this.initBusiness();
-        }
         return;
-      }
+      } 
 
       // 获取picstr
       _this.$http("get","http://wsproduct.hc360.com/mBusinChance/getBcImgUploadParam",
@@ -297,9 +299,10 @@ export default {
           }
           _this.$store.commit('savePicStr',res.picstr)
           _this.$store.commit("saveShopSet", {
-            sessionid: res.sessionid
+            sessionid: res.sessionid,
+            bcid:_this.bcid
           });
-          if (_this.bcid != 0) {
+          if (_this.bcid != 0 ) {
              _this.initBusiness();
           }
         });
@@ -338,7 +341,7 @@ export default {
         }) 
     },
     /**
-     * 初始化商机默认信息 
+     * 修改商机点击进入，初始化商机默认信息 
      */
     initBusiness() {
       let _this = this;
@@ -381,8 +384,15 @@ export default {
     }
   },
   beforeMount() {
-    this.shopname = this.productObj.title;
-    this.imgList = this.productObj.imgList;
+    /** 
+     * 初始化默认图片列表和标题名称
+     */
+    this.imgList=this.productObj.imgList;
+    this.shopname=this.productObj.title;
+
+    /** 
+     * 获取picstr
+     */
     this.getPicstr();
   }
 };

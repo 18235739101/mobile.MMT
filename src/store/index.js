@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 // 图片上传
 let productObj = {
+        bcid:'',
         //商品标题
         title: '',
         //调用picstr返回的商品id
@@ -103,6 +104,7 @@ let store = new Vuex.Store({
         clearProduct(state) {
              // 图片上传
              state.productObj={
+                bcid:'', 
                 title: '',
                 sessionid: '',
                 imgList: [],
@@ -120,7 +122,10 @@ let store = new Vuex.Store({
                     name: '',
                     seriesid: ''
                 }
-             } 
+             };
+
+             state.picstr='';
+        
         }
     }
 })
