@@ -141,7 +141,7 @@ const routeConfig = [
       name:'聊天界面',
       path:'/message/chatInfo', 
       meta: { 
-        requireAuth: true
+        requireAuth: false
       },    
       component:resolve => {
         require.ensure(['../components/message/chatInfo.vue'], () => {
@@ -164,7 +164,7 @@ const routeConfig = [
     },
     {
       name: '工作台更多',
-      path: '/manage/more',
+      path: '/more',
       meta: { 
         requireAuth: true
       },
@@ -177,6 +177,9 @@ const routeConfig = [
     {
       name:'宣传页',
       path:'/notice',
+      meta: { 
+        requireAuth: false
+      },
       component:resolve => {
         require.ensure(['../components/manage/notice.vue'], () => {
           resolve(require('../components/manage/notice.vue'));

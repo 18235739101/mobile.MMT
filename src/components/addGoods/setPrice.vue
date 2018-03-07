@@ -35,24 +35,31 @@ export default {
        return {
             // 头部标题
             headname:'添加商品',
+
             // 返回按钮跳转链接
             routerPath:'/addgoods',
+
              // 价格类型
             priceType:'negotiable',
+
              //商品价格
             priceNum:'',
+
              // 库存量
             proInventory:'',
+
             //商品价格的校验
             price:{
                 isCheck:false,
                 mes:''
             },
+
             //商品库存的校验对象
             inventory:{
                 isCheck:false,
                 mes:'' 
             },
+
             buttonHtml:'发布'
        }
    },
@@ -60,31 +67,22 @@ export default {
       goodhead
    },
    methods:{
-       /**@method
+       /**
         * 店铺分类
         */
        gotoRelease(){
            let _this=this;
-           //保存价格类型，价格，库存量       
-           _this.$store.commit('savePrice',{
-                // 价格类型
-                ptype:_this.priceType,
-                //商品价格
-                price:_this.priceNum,
-                // 库存量
-                inventory:_this.proInventory,
-           })
            this.$router.push({
                path:'/addgoods/storeClass'
            })
        },
        
-       /**@method
+       /**
         * 发布商机
         */
        submitShop(){
            let _this=this;
-           // 如果价格类型为一口价，包含价格字段，则校验价格字段
+           // 判断价格类型为一口价，验证价格字段
            if(_this.priceType=='onePrice'){
               if(_this.priceNum.length==0){
                 this.$toast('请填写商品单价！');
@@ -124,23 +122,18 @@ export default {
                }
            })
        },
-       // 获取字段
+       /**
+        * 获取发布商机的字段
+        */
        getProductParam(){
            var obj= {
-                    //商机标题
                     title:this.productObj.title,
                     bcid:this.productObj.bcid,
-                    // 图片上传标识
                     sessionid:this.productObj.sessionid,
-                    // 商机描述
                     introduce:this.productObj.desc,
-                    // 商机分类
                     supcatid:this.productObj.cate.sid,
-                    // 报价方式
                     priceType:'0',
-                    // 区间单价
                     pricerange1:this.priceObj.ptype=="onePrice" ? this.priceObj.price: 0,
-                    // 供货总量
                     num:this.priceObj.inventory
                }
                if(this.storeObj.name!='全部'){
@@ -153,12 +146,11 @@ export default {
                }
                return obj;
         },
-       /**@method
+       /**
         * 校验价格
         */
        checkPrice(){
-         let  reg=/^\d{1,10}(.*\d{0,2})$/ig;    
-         //非空校验  
+         let  reg=/^\d{1,10}(.*\d{0,2})$/ig; 
          if(this.priceNum==''){
             return;
          }
@@ -178,11 +170,12 @@ export default {
                      isCheck:false,
                      mes:''
              }
+             this.commitPrice();
          }
 
          this.price.isCheck ? this.$toast(this.price.mes) : '';
        },
-       /**@method
+       /**
         * 校验库存量
         */
        checkInventory(){
@@ -190,7 +183,6 @@ export default {
            if(!this.proInventory){
                return;
            }
-           // 验证库存量是否正确
            if(!reg.test(this.proInventory)){
                 this.inventory={
                      isCheck:true,
@@ -201,8 +193,23 @@ export default {
                      isCheck:false,
                      mes:''
                 }
+                this.commitPrice();
            }
            this.inventory.isCheck ? this.$toast(this.inventory.mes) : '';
+       },
+       /**
+        * 保存价格设置
+        */
+       commitPrice(){
+           let _this=this;    
+           _this.$store.commit('savePrice',{
+                // 价格类型
+                ptype:_this.priceType,
+                //商品价格
+                price:_this.priceNum,
+                // 库存量
+                inventory:_this.proInventory,
+           })
        }
    },
    computed:{

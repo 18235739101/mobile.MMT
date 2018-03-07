@@ -15,26 +15,28 @@ export default {
   data() {
     return {
       headname: "商品类目",
-      //当前修改商机的商机id
+
+      /*当前修改商机的商机id */
       bcid: "",
+
       /*类目列表 */
       supcateArray: []
     };
   },
   methods: {
     /**
-       * @method切换类目
-       * @cate 当前类目对象
-       */
+      * 切换类目
+      * cate 当前类目对象
+      */
     checkCate(cate) {
       let _this = this,
           _cate= JSON.parse(JSON.stringify(cate));
-        /**修改state中选择的类目 */
+      /**修改state中选择的类目 */
        _this.$store.commit('saveShopSet',{
          cate:_cate
        });
           
-        //判断是否有下一级分类
+      //判断是否有下一级分类
       if(_this.cate.hasNext==1){
          _this.getCateData();
       }else{
@@ -42,7 +44,7 @@ export default {
       }
     },
     /**
-      * @method获取类目集合
+      * 获取类目集合
       */
     getCateData(){
       var _this = this;
@@ -59,7 +61,7 @@ export default {
         );
     },
      /**
-       * @method清除当前类目重新选择
+       * 清除当前类目重新选择
       */
     clearCate(){
        this.$store.commit('saveShopSet',{
@@ -73,7 +75,9 @@ export default {
   },
   created() {
     let _bcid=this.$route.query.bicid;
-    /**如果点击修改商机进来，清空类目对象，重新选择类目 */
+    /**
+     * 修改商机,清空类目,重新选择类目
+     */
     if(_bcid){
       this.bcid=_bcid;
       this.$store.commit('saveShopSet',{

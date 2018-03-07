@@ -2,14 +2,17 @@
   <div>
        <header class="mHeaderBox">
         <a href="javascript:;" class="arrowLeft" @click="gotoback()"></a>
-         <h3>即时沟通</h3>
+        <h3>{{headName}}</h3>
       </header>
        <section>
            <div class="chatBox">
                     <!-- 历史留言消息 -->
                     <div :class="{'chatRig':item.fromuserid==messageUser.from,'chatLeft':item.fromuserid!=messageUser.from}" v-for="(item,i) in messageList" :key="i">
+                       <div class="timeCon" v-show="i==messageList.length-1"><span>{{getPrevTime(item.createtime)}}</span></div>
+
                         <div class="chatLeftCon">
-                            <div class="chatLeftImg"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div>
+                            <div class="chatLeftImg"><img :src="getLogo(item)"></div>
+                            
                             <div class="chatLeftImgRig">
                                 <em></em>
                                 <div class="chatLeftImgRigCon" v-show="item.type==0">
@@ -124,6 +127,28 @@ export default {
     }
   },
   methods:{
+     /*
+      * 获取默认头像
+      */ 
+     getLogo(item){
+         let hclogo='https://style.org.hc360.com/images/microMall/manage/hImg.png',
+             defaultlogo='https://style.org.hc360.com/images/microMall/message/topImg.png';
+         if(item.fromuserid==this.messageUser.from) {
+             return defaultlogo;
+         } 
+         return hclogo;
+     },
+     /*
+      * 获取上一次聊天记录
+      */ 
+     getPrevTime(dataTime){
+         let date=new Date(parseInt(dataTime)),
+             mounth=date.getMonth()+1,
+             data=date.getDate(),
+             hours=date.getHours()<10 ? '0'+date.getHours() : date.getHours(),
+             minutes=date.getMinutes()<10 ? '0'+date.getMinutes() : date.getMinutes();
+        return mounth+'月'+data+'日'+'  '+hours+':'+minutes    
+     },
      /**
       * 获取消息列表
       */  
@@ -343,7 +368,11 @@ export default {
   },
   created(){
       this.messageUser=this.$route.query;
-       // 获取消息列表 
+      //买家查看显示为卖家公司名称
+      if(this.messageUser.type=='buy'&&this.messageUser.shop){
+        this.headName=decodeURIComponent(this.messageUser.shop);
+      }
+      // 获取消息列表 
       this.getMessageList();
       // 创建socket
       this.createdSocket();

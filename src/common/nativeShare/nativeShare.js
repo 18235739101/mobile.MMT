@@ -97,7 +97,7 @@ export default function nativeShare (elementNode, config) {
             '<span data-app="weixinFriend" class="nativeShare weixin_timeline"><i></i>微信朋友圈</span>'+
             '<span data-app="QQ" class="nativeShare qq"><i></i>QQ好友</span>'+
             '<span data-app="QZone" class="nativeShare qzone"><i></i>QQ空间</span>'+
-            '<span data-app="" class="nativeShare more"><i></i>更多</span>'+
+            // '<span data-app="" class="nativeShare more"><i></i>更多</span>'+
             '</div>';
         position.innerHTML = html;
     };
@@ -152,7 +152,7 @@ export default function nativeShare (elementNode, config) {
         }
         this.isloadqqApi();
         //上线记得去掉if注释
-        if (isqqBrowser || isucBrowser) {
+       if (isqqBrowser || isucBrowser) {
             this.html();
         }
     };

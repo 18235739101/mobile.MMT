@@ -11,7 +11,8 @@
                     <div class="proImgBoxRig">
                         <div class="proName">
                             <p><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'">{{pro.title}}</a></p>
-                            <span>{{new Date(parseInt(pro.pubdate)).toLocaleString().replace(/:\d{1,2}$/,'').split(/\s/g)[0]}}</span>
+                            <!-- <span>{{new Date(parseInt(pro.pubdate)).toLocaleString().replace(/:\d{1,2}$/,'').split(/\s/g)[0]}}</span> -->
+                            <span>{{ getTime(pro.pubdate) }}</span>
                         </div>
                         <div class="proBotCon">
                             <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
@@ -89,6 +90,16 @@ export default {
       }
   },
   methods:{
+        /**
+         * 获取商机时间
+         */
+        getTime(time){
+            let date=new Date(time),
+                year=date.getFullYear(),
+                month=(date.getMonth()+1)< 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1,
+                _data=date.getDate()<10 ? '0'+date.getDate() : date.getDate() ;
+            return year+'/'+month+'/'+_data; 
+        },
         /**加载更多 */
         loadMore(){
             let _this = this;

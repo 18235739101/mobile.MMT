@@ -23,7 +23,7 @@
                             <a href="javascript:;" class="cName">{{orderDetail.order.nickname}}</a>
                              <!-- 订单状态 1代发货 2待收货  3 已完成 -->
                             <span v-if="orderDetail.order.orderStatus==1" >
-                               <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" >发货</a>
+                               <a :href="'#/smallOrder/delivery?orderid='+orderDetail.order.orderCode" class="fhBtn">发货</a>
                             </span>
                         </h2>
                     </div> 

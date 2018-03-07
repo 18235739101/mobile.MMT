@@ -44,7 +44,9 @@ export default {
        goodhead
   },
   methods:{
-    // 获取炫铺分类
+    /**
+     * 获取炫铺分类
+     */
      getStoreClassData(){
          let _this=this;
          _this.$http('get','https://wsdetail.b2b.hc360.com/mobile/shopseries?callback').then((res)=>{
@@ -57,7 +59,10 @@ export default {
              }
          })
      },
-     // 点击显示二级分类
+     
+     /**
+      * 点击显示二级分类
+      */
      showChildren(i,e){
          let wrap=document.getElementsByClassName('addList4Box'),
              _classlist=wrap[i].className.split(' '),
@@ -71,7 +76,9 @@ export default {
              wrap[i].setAttribute('class',_classlist.join(' ')); 
         }        
     },
-    // 点击对应的分类
+    /**
+     * 点击对应的分类
+     */
     selectSort(store,level){
        if(level==1){
           Object.assign(this.storeObject,{
@@ -88,6 +95,9 @@ export default {
        } 
        this.$store.commit('saveSort',this.storeObject);
        this.classInfo=store.seriesName;
+       /**
+        * 延迟跳转路由
+        */
        setTimeout(()=>{
            this.$router.push({
                path:'/addgoods/setPrice'

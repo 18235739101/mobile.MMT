@@ -5,7 +5,9 @@
         <div class="personalInfoNew">
             <div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
             <div class="comName">
-                <a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
+                <span>
+                  <a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
+                </span> 
             </div>
             <div class="comCodeCon"><a href="#/xcxManage/code"></a></div>
         </div>

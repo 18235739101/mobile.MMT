@@ -52,13 +52,25 @@ Vue.prototype.$toast=(mes)=>{
  */
 router.beforeEach((to,from,next) =>{
     /**
+     * 如果不需要判断是否登录直接跳转路由
+     */
+    if(to.meta.requireAuth==false){
+      next()
+      return;
+    }
+    /**
      * 调用接口判断是否登录
      */
     http('get','https://mlogin.hc360.com/get/ssohelper',{
       
     }).then((res) =>{
+        /** 
+         * 判断是否登录
+         */
         if(res.islogin && res.islogin>0){
-          res.isbuy = 1;
+          /**
+           * 已经购买，判断是否需要小程序授权
+           */
           if(res.isbuy && res.isbuy>0){
             //给路由传递参数（用户级别）
             to.query.level = res.usersession.userlevel;
@@ -79,10 +91,15 @@ router.beforeEach((to,from,next) =>{
               next()
             }
           }else{
-            //未购买进入宣传页
-            location.href="#/notice"
+            /**
+             * 未购买进入宣传页
+             */
+            next('/notice')
           }
-        }else{//未登录进入登录页
+        }else{
+          /**
+           * 未登录进入登录页
+           */
           location.href="https://mlogin.hc360.com/mobilemmt/login.html"
         }
     })

@@ -13,7 +13,7 @@
                 </div> 
                 <div class="botBoxCon2">
                     <div class="titleCon">30日曝光数据</div> 
-                    <div class="dataBox2" ref="lineChartsBox" style="width:300px;height:180px;margin:0 auto;"></div>
+                    <div class="dataBox2" ref="lineChartsBox" style="width:600px;height:280px;margin:0 auto;"></div>
                 </div>
             
                 <div class="promptCon2" v-show="buyAbleOnline">根据您的曝光数据，建议您进行以下操作：</div> 
@@ -111,16 +111,24 @@ export default {
                     containLabel: true
                 },
                 tooltip: {
-                    trigger: "axis"
+                    trigger: "axis",
                 },
                 legend: {
-                    data: legendData
+                    data: legendData,
+                    textStyle:{
+                        fontSize:24
+                    }
                 },
                 xAxis: {
                     type: "category",
                     boundaryGap: false,
                     axisLine: {
                     show:false,
+                    },
+                    axisLabel : {
+                        textStyle : {
+                            fontSize : 24
+                        }
                     },
                     axisTick:{
                     show:false
@@ -138,7 +146,8 @@ export default {
                     },
                     type: "value",
                     axisLabel: {
-                    formatter: "{value}"
+                    formatter: "{value}",
+                    fontSize:24
                     }
                 },
                 series: seriesData
@@ -168,8 +177,14 @@ export default {
         let _this = this;
         _this.$nextTick(() =>{
             _this.getMyExposureDatas();
+           // _this.$refs.lineChartsBox.style.width=window.screen.width;
             _this.lineEchartsEntity = _this.$echarts.init(_this.$refs.lineChartsBox);
             _this.getExposureIn30Days();
+
+            window.onresize=function(){
+              _this.lineEchartsEntity.resize();
+            }
+
             if(_this.$route.query.level && _this.$route.query.level<4){
                 _this.getPermissionByUserLevel();
             }else{
