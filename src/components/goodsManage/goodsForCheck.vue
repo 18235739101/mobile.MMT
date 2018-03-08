@@ -23,10 +23,13 @@
                 加载中...
             </p>  
         </div>
+        <!-- 返回顶部 -->
+        <gotoTop></gotoTop>
   </div>
 </template>
 
 <script>
+import gotoTop from '../gotoTop.vue';
 export default {
   data(){
       return {
@@ -53,6 +56,9 @@ export default {
              */
             finishLoading:false,
       }
+  },
+  components:{
+      gotoTop
   },
   methods:{
        /**

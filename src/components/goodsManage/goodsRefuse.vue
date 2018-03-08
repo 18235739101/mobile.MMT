@@ -58,10 +58,13 @@
                 </div>
             </div>
 
+            <!-- 返回顶部 -->
+            <gotoTop></gotoTop>
        </div>
 </template>
 
 <script>
+import gotoTop from '../gotoTop.vue';
 export default {
   data(){
       return {
@@ -109,7 +112,9 @@ export default {
         refuseReason:''
       }
   },
-
+  components:{
+    gotoTop
+  },
   methods:{
         /**
          * 获取商机时间

@@ -93,14 +93,6 @@ export default {
 
 
       /**
-       * 当前订单状态对象
-       */
-      orderStatus: {
-        name: "全部",
-        state: ""
-      },
-
-      /**
        * 订单列表集合
        */
       orderContent: [],
@@ -128,6 +120,11 @@ export default {
   components: {
     headerTop,
     footerContent
+  },
+  computed:{
+    orderStatus(){
+      return this.$store.state.orderStatus
+    }
   },
   methods: {
     
@@ -178,10 +175,11 @@ export default {
      * @param item 点击的订单状态 
      */
     clickTabs(item) {
+
       /**
        * 修改订单状态对象
        */
-      this.orderStatus = item;
+      this.$store.commit('saveOrderState',item);
 
       /**
        * 清空订单列表

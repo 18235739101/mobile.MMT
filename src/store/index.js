@@ -3,80 +3,112 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-// 图片上传
-let productObj = {
-        bcid:'',
-        //商品标题
-        title: '',
-        //调用picstr返回的商品id
-        sessionid: '',
-        //图片列表
-        imgList: [],
-        // 商品描述
-        desc: '',
-        // 商品类目
-        cate: {}
-    },
-    //价格设置
-    priceObj = {
-        // 价格类型
-        ptype: 'negotiable',
-        //商品价格
-        price: '',
-        // 库存量
-        inventory: ''
-    },
-    //炫铺分类
-    storeObj = {
-        name: '全部',
-        bsid: '',
-        child: {
-            name: '',
-            seriesid: ''
-        }
-    };
 
 let store = new Vuex.Store({
     state: {
-        // 留言组件状态
+        /**
+         * 留言组件状态
+         */
         messageValue: 'chatList',
 
-        // 图片上传
-        productObj:{...productObj},
+        /**
+         * 订单状态
+         */
+        orderStatus:{
+            name: "全部",
+            state: ""
+        },
 
-        //价格设置
-        priceObj:{...priceObj},
+        /**
+         * 图片上传
+         */
+        productObj:{
+            bcid:'',
+            title: '',
+            sessionid: '',
+            imgList: [],
+            desc: '',
+            cate: {}
+        },
 
-        //炫铺分类
-        storeObj:{...storeObj},
+        /**
+         * 价格设置
+         */
+        priceObj:{
+            // 价格类型
+            ptype: 'negotiable',
+            price: '',
+            inventory: ''
+        },
 
-        //商品标题是否有违禁词
+        /**
+         * 炫铺分类
+         */
+        storeObj:{
+            name: '全部',
+            bsid: '',
+            child: {
+                name: '',
+                seriesid: ''
+            }
+        },
+
+        /**
+         * 商品标题是否有违禁词
+         */
         titleConfig:{
             isCheck:false,
             mes:''
         },
 
-        // 上传图片所需要的picstr
+        /**
+         * 上传图片的picstr
+         */
         picstr:''
         
     },
     mutations: {
-        /** 保存标题设置 **/
+        /**
+         * 保存商机标题校验配置
+         * @param {*} state 
+         * @param {*} titleSetUp 
+         */
         saveTitle(state,titleSetUp){
-            state.titleConfig={...titleSetUp}
+            state.titleConfig={...titleSetUp};
         }, 
         
-        /** 保存picstr **/
+        /**
+         * 保存小程序订单列表状态
+         * @param {*} state 
+         * @param {*} orderStete 
+         */
+        saveOrderState(state,orderStete){
+            state.orderStatus={...orderStete};
+        },
+
+        /**
+         * 保存picstr
+         * @param {*} state 
+         * @param {*} picstr 
+         */
         savePicStr(state,picstr){
             state.picstr=picstr;
         },
 
-        /**即时沟通和留言列表*/
+        /**
+         * 保存即时沟通和留言列表的标签切换
+         * @param {*} state 
+         * @param {*} name 
+         */
         changeMessage(state, name) {
             state.messageValue = name;
         },
 
-        // 保存商品设置
+        /**
+         * 保存商品设置
+         * @param {*} state 
+         * @param {*} proObj 
+         */
         saveShopSet(state, proObj) {
             state.productObj = {
                 ...state.productObj,
@@ -84,7 +116,11 @@ let store = new Vuex.Store({
             }
         },
 
-        // 保存价格设置
+        /**
+         * 保存价格设置
+         * @param {*} state 
+         * @param {*} priceObj 
+         */
         savePrice(state, priceObj) {
             state.priceObj = {
                 ...state.priceObj,
@@ -92,7 +128,11 @@ let store = new Vuex.Store({
             }
         },
 
-        /* 选择店铺分类 */
+        /**
+         * 保存选择的店铺分类
+         * @param {*} state 
+         * @param {*} storeObj 
+         */
         saveSort(state, storeObj) {
             state.storeObj = {
                 ...state.storeObj,
@@ -100,9 +140,11 @@ let store = new Vuex.Store({
             };
         },
 
-        //清除发布商机的state
+        /**
+         * 清除发布商机的存储信息 
+         * @param {*} state 
+         */
         clearProduct(state) {
-             // 图片上传
              state.productObj={
                 bcid:'', 
                 title: '',
@@ -111,21 +153,20 @@ let store = new Vuex.Store({
                 desc: '',
                 cate: {}
             };
-             //价格设置
-             state.priceObj={...priceObj};
-        
-             //炫铺分类
-             state.storeObj={
+            state.priceObj={
+                ptype: 'negotiable',
+                price: '',
+                inventory: ''
+            };
+            state.storeObj={
                 name: '全部',
                 bsid: '',
                 child: {
                     name: '',
                     seriesid: ''
                 }
-             };
-
-             state.picstr='';
-        
+            };
+            state.picstr='';
         }
     }
 })

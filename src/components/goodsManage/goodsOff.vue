@@ -48,10 +48,13 @@
                 </dl>
             </div>
         </div>
+        <!-- 返回顶部 -->
+        <gotoTop></gotoTop>
  </div>
 </template>
 
 <script>
+import gotoTop from '../gotoTop.vue';
 export default {
   data(){
       return {
@@ -214,7 +217,9 @@ export default {
             })
         }
   },
-
+  components:{
+      gotoTop
+  },
   mounted(){
       let _this = this;
       _this.$nextTick(() =>{

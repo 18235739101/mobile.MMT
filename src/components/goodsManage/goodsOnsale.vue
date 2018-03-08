@@ -196,7 +196,7 @@ export default {
             /**
              * 是否显示推广
              */
-            isPopularize:true,
+            isPopularize:false,
 
             //popup是否显示
             popupVisible:false,
@@ -303,7 +303,6 @@ export default {
         priceOnlineBlur(){
             let  reg=/^[1-9]\d{0,8}\.\d{1,2}$/,
                  max='9999999999.99';
-            if(this.$refs.supportTradeOnline.checked){
                if(this.priceValue==''){
                     this.pirceError='请填写价格！';
                     this.$toast(this.pirceError);
@@ -320,7 +319,7 @@ export default {
                     this.pirceError=null;
                 }
                 this.pirceError ?  this.$toast(this.pirceError) : this.setXCXparams.price=this.priceValue;                
-            }
+            
         },
 
         /**
@@ -328,16 +327,16 @@ export default {
          */
         confirmImportXCX(){
             let _this = this;
-            if(_this.$refs.supportTradeOnline.checked){//支持在线交易
-                if(this.pirceError){
-                    _this.$toast(this.pirceError);
-                    return false;
-                }
-            }else{
-                _this.setXCXparams.price = '0.00'   //后台要求0.00
+            if(this.pirceError){
+                 _this.$toast(this.pirceError);
+                 return false;
             }
-           
-
+          
+            // 不支持在线交易
+            if(_this.$refs.unsupportTradeOnline.checked){
+              _this.setXCXparams.price = '0.00'   //后台要求0.00
+            }
+            
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
                 params:_this.setXCXparams
             }).then(res =>{
