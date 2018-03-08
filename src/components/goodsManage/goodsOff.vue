@@ -18,7 +18,7 @@
                             <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                             <div class="proBotConRig">
                                 <a href="#" :class="{programIco:pro.weChat}"></a>
-                                <a href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
+                                <a href="javascript:void(0)" class="moreBtn" @click="showMore(i)"></a>
                             </div>
                         </div>
                     </div>
@@ -202,8 +202,16 @@ export default {
         },
 
         /**显示更多 */
-        showMore(proItem){
-            proItem.isShowMore = !proItem.isShowMore
+        showMore(i){
+           // 隐藏其他的更多操作
+            this.offList.forEach((item,index)=>{
+                if(index==i){
+                    item.isShowMore=!item.isShowMore;
+                    
+                }else{
+                   item.isShowMore=false;
+                }
+            })
         }
   },
 

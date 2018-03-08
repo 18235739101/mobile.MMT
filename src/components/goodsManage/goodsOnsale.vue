@@ -1,6 +1,7 @@
 <template>
   <!--在售商品-->
   <div>
+    <div>
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && onSaleList.length == 0">没有任何商品哦~</div>
             <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="10">
@@ -19,13 +20,13 @@
                         <div class="proBotConRig">
                             <a href="javascript:void(0)" :class="{programIco:pro.weChat}"></a>
                             <a v-if="pro.checked && pro.checked == '0'" href="javascript:void(0)">已修改审核中...</a>
-                            <a v-else href="javascript:void(0)" class="moreBtn" @click="showMore(pro)"></a>
+                            <a v-else href="javascript:void(0)" class="moreBtn" @click="showMore(i)"></a>
                             
                         </div>
                     </div>
                 </div>
 
-                <div class="moreCon" v-show="pro.isShowMore">
+                <div class="moreCon" v-show="pro.isShowMore==true">
                     <ul>
                         <li v-show="!pro.weChat" @click='importXCX(pro)' ><a href="javascript:void(0)"><em class="proIco1"></em><p>导入小程序</p></a></li>
                         <li v-show="pro.weChat" @click='exportXCX(pro.bcid)'><a href="javascript:void(0)"><em class="proIco1"></em><p>撤出小程序</p></a></li>
@@ -62,7 +63,7 @@
                     </li>
                     <li>
                         <span class="wxSetUpLeft">一口价</span>
-                        <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur" @keyup="priceValue=priceValue.replace(/[^\d\.]*/,'')" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
+                        <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur" @keyup="priceValue=priceValue.replace(/[^\d{1,9}\.]*/,'')" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
                     </li>
                 </ul>
                 <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
@@ -110,9 +111,12 @@
         <a href="javascript:void(0)" class="resendBtn" @click="OneKeyResend()">一键重发</a>
 
         <mt-popup :modal=false v-model="popupVisible"  position="bottom">
+           <div class="shareBox"><a class="closeBtn2" @click="closeShare">×</a></div>
            <div id="nativeShare"></div>  
-        </mt-popup>
-
+        </mt-popup>       
+    </div>
+     <!--返回顶部-->
+    <gotoTop></gotoTop>
     </div>
 </template>
 
@@ -121,6 +125,7 @@ import "../../common/nativeShare/nativeShare.css"
 import nativeShare from '../../common/nativeShare/nativeShare'
 
 import {Popup} from 'mint-ui'
+import gotoTop from '../gotoTop.vue'
 export default {
 
     data(){
@@ -191,7 +196,7 @@ export default {
             /**
              * 是否显示推广
              */
-            isPopularize:false,
+            isPopularize:true,
 
             //popup是否显示
             popupVisible:false,
@@ -206,13 +211,19 @@ export default {
                 //desc:'王俊锋的个人博客',
                 // img_title:'王俊锋的个人博客',
                 // from:'王俊锋的博客'
-            }
+            },
+
+            /**
+             * 一口价的错误提示信息
+             */
+            pirceError:null
 
         }
     },
 
     components:{
-        "mt-popup":Popup
+        "mt-popup":Popup,
+        gotoTop
     },
 
     methods:{
@@ -276,6 +287,10 @@ export default {
         importXCX(proItem){
             let _this = this;
             _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
+             //隐藏推广弹层
+            _this.popupVisible = false;
+            //清空一口价
+            _this.priceValue='';
             if(proItem){
                 _this.setXCXparams.bcid = proItem.bcid;
                 _this.setXCXparams.type = 1;
@@ -286,21 +301,25 @@ export default {
          * 一口价失去焦点
          */
         priceOnlineBlur(){
-            let  reg=/^[1-9]\d{0,8}\.\d{1,2}$/;
+            let  reg=/^[1-9]\d{0,8}\.\d{1,2}$/,
+                 max='9999999999.99';
             if(this.$refs.supportTradeOnline.checked){
                if(this.priceValue==''){
-                    this.$toast('请填写价格！');
+                    this.pirceError='请填写价格！';
+                    this.$toast(this.pirceError);
                     return false;
                 }
                 this.priceValue=(this.priceValue-0).toFixed(2);
                 if(this.priceValue=='0.00'){
-                        this.$toast('价格不能为0！');
-                        return false;
+                        this.pirceError='价格不能为0！';
+                }else if(this.priceValue-0>=max){
+                        this.pirceError='商品单价不能大于：9999999999.99';
                 }else if(!reg.test(this.priceValue)){
-                        this.$toast('请输入合法价格');
+                        this.pirceError='请输入合法价格';
                 }else{
-                    this.setXCXparams.price=this.priceValue
+                    this.pirceError=null;
                 }
+                this.pirceError ?  this.$toast(this.pirceError) : this.setXCXparams.price=this.priceValue;                
             }
         },
 
@@ -310,13 +329,14 @@ export default {
         confirmImportXCX(){
             let _this = this;
             if(_this.$refs.supportTradeOnline.checked){//支持在线交易
-                if(!_this.setXCXparams.price){
-                    _this.$toast('请填写价格！');
+                if(this.pirceError){
+                    _this.$toast(this.pirceError);
                     return false;
                 }
             }else{
                 _this.setXCXparams.price = '0.00'   //后台要求0.00
             }
+           
 
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
                 params:_this.setXCXparams
@@ -486,6 +506,13 @@ export default {
         },
 
         /**
+         * 关闭推广弹窗和遮罩
+         */
+        closeShare(){
+           this.popupVisible=false;
+        },
+
+        /**
          * 一键重发
          */
         OneKeyResend(){
@@ -506,12 +533,16 @@ export default {
         /**
          * 显示更多 
          */
-        showMore(proItem){
+        showMore(i){
             // 隐藏其他的更多操作
-            this.onSaleList.forEach((item)=>{
-              item.isShowMore=false;
+            this.onSaleList.forEach((item,index)=>{
+                if(index==i){
+                    item.isShowMore=!item.isShowMore;
+                    
+                }else{
+                   item.isShowMore=false;
+                }
             })
-            proItem.isShowMore = !proItem.isShowMore;
         }
     },
 

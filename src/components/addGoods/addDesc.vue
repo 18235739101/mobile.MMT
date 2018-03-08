@@ -50,3 +50,6 @@ export default {
    }
 }
 </script>
+<style>
+@import "https://style.org.hc360.com/css/microMall/releasedStyle.css";
+</style>

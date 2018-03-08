@@ -15,7 +15,7 @@
                     <dt>联系买家</dt>
                     <dd v-show="messgeInfo.contactInfo.corName"><span>公司：</span><p>{{messgeInfo.contactInfo.corName}}</p></dd>
                     <dd v-show="messgeInfo.contactInfo.address"><span>地址：</span><p>{{messgeInfo.contactInfo.address}}</p></dd>
-                    <dd v-show="messgeInfo.contactInfo.tel"><span>电话：</span><p>{{messgeInfo.contactInfo.tel}}<a :href="messgeInfo.contactInfo.tel"></a></p></dd>
+                    <dd v-show="messgeInfo.contactInfo.tel"><span>电话：</span><p>{{messgeInfo.contactInfo.tel}}<a :href="'tel:'+messgeInfo.contactInfo.tel"></a></p></dd>
                 </dl>
             </div>
        </div>

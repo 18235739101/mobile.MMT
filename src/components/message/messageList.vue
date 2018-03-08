@@ -1,6 +1,6 @@
 <template>
   <div>
-       <div class="tabBoxList" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="30">
+       <div class="tabBoxList" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <ul class="tabBoxListCon2">
             	<li v-show="messageList.length>0" v-for="(ol,i) in messageList" :key="i">
                 	<dl>
@@ -17,8 +17,8 @@
              <mt-spinner type="snake"></mt-spinner>
                     加载中...
          </p>   
-		<div class="massageBot" v-show="finisheLoaded" style="display:none">
-        	<p>没有更多啦</p>
+        <div class="massageBot" v-show="finisheLoaded" style="display:none">
+              <p>没有更多啦</p>
         </div>
   </div>    
 </template>

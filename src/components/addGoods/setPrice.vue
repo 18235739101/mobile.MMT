@@ -109,7 +109,7 @@ export default {
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
          
-           // 发布商机
+           // 发布商机   
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
            }).then((res)=>{
@@ -127,10 +127,10 @@ export default {
         */
        getProductParam(){
            var obj= {
-                    title:this.productObj.title,
+                    title:encodeURI(encodeURI(this.productObj.title)),
                     bcid:this.productObj.bcid,
                     sessionid:this.productObj.sessionid,
-                    introduce:this.productObj.desc,
+                    introduce:encodeURI(encodeURI(this.productObj.desc)),
                     supcatid:this.productObj.cate.sid,
                     priceType:'0',
                     pricerange1:this.priceObj.ptype=="onePrice" ? this.priceObj.price: 0,
@@ -179,11 +179,17 @@ export default {
         * 校验库存量
         */
        checkInventory(){
-           let reg=/^[1-9]{1}\d{0,4}$/ig;
+           let reg=/^[1-9]\d{0,8}$/ig,
+               maxLen=999999999;
            if(!this.proInventory){
                return;
            }
-           if(!reg.test(this.proInventory)){
+           if( this.proInventory-0>=maxLen){
+               this.inventory={
+                     isCheck:true,
+                     mes:'库存量不能大于999999999'
+               }
+           }else if(!reg.test(this.proInventory)){
                 this.inventory={
                      isCheck:true,
                      mes:'请输入合法的库存量'

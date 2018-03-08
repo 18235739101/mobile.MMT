@@ -34,7 +34,7 @@
                           </dl>
                           <div class="orderBot">
                               <div class="wxOrderBot"><p>共{{ ol.prodList.length }}件商品 合计：<span>&yen;{{ol.order.orderTotalAmout}}</span>（含运费￥{{ol.order.orderFareAmount}}）</p></div>
-                              <div class="logisticsBtn" v-show="getOrderStatus(ol.order.orderStatus)"><a :href="'#/smallOrder/delivery?orderid='+ol.order.orderCode">发货</a></div>
+                              <div class="logisticsBtn" v-show="ol.order.orderStatus==1"><a :href="'#/smallOrder/delivery?orderid='+ol.order.orderCode">发货</a></div>
                           </div>
                       </div>
                   </div>
@@ -130,13 +130,7 @@ export default {
     footerContent
   },
   methods: {
-     /**
-      * 订单状态
-      */
-     getOrderStatus(status){
-      let  orderContext=this.deliveryStatus[parseInt(status)];
-      return orderContext=="代发货"
-     },  
+    
        
     /**
      *  滚动事件分页加载订单列表

@@ -8,7 +8,7 @@
            <div class="chatBox">
                     <!-- 历史留言消息 -->
                     <div :class="{'chatRig':item.fromuserid==messageUser.from,'chatLeft':item.fromuserid!=messageUser.from}" v-for="(item,i) in messageList" :key="i">
-                       <div class="timeCon" v-show="i==messageList.length-1"><span>{{getPrevTime(item.createtime)}}</span></div>
+                       <div class="timeCon"><span>{{getPrevTime(item.createtime)}}</span></div>
 
                         <div class="chatLeftCon">
                             <div class="chatLeftImg"><img :src="getLogo(item)"></div>
@@ -19,8 +19,8 @@
                                     <p>{{item.content}}</p>
                                 </div>
                                 <div class="chatLeftPro" v-show="item.type==1">
-                                    <a href="#">
-                                        <div class="chatLeftProImg"><img :src="item.content.imgurl"></div>
+                                    <a href="javascript:;">
+                                        <div class="chatLeftProImg"><span><img :src="item.content.imgurl"></span></div>
                                         <div class="chatLeftProRig">
                                             <div class="chatProName">{{ item.content.title }}</div>
                                             <p><b>¥</b>{{ item.content.price }}.<b>00</b></p>
@@ -36,8 +36,8 @@
 
                    <!-- 商品详情 -->
                    <div class="chatProCon" v-if="proDetail.title">
-                        <a href="#">
-                            <div class="chatLeftProImg"><img :src="proDetail.imgurl"></div>
+                        <a href="javascript:;">
+                            <div class="chatLeftProImg"><span><img :src="proDetail.imgurl"></span></div>
                             <div class="chatLeftProRig">
                                 <div class="chatProName">{{ proDetail.title }}</div>
                                 <p><b>&yen;</b>{{ proDetail.price }}<b>00</b></p>
@@ -56,8 +56,8 @@
                                     <p>{{item.content}}</p>
                                 </div>
                                 <div class="chatLeftPro" v-show="item.type==1">
-                                    <a href="#">
-                                        <div class="chatLeftProImg"><img :src="item.content.imgurl"></div>
+                                    <a href="javascript:;">
+                                        <div class="chatLeftProImg"><span><img :src="item.content.imgurl"></span></div>
                                         <div class="chatLeftProRig">
                                             <div class="chatProName">{{ item.content.title }}</div>
                                             <p><b>¥</b>{{ item.content.price }}.<b>00</b></p>
@@ -201,6 +201,14 @@ export default {
             }; 
 
          _this.initialize();
+
+         /**
+          * 如果卖家和买家是同一个人，则不能给自己发送消息
+          */
+         if(_this.messageUser.from==_this.messageUser.to){
+             _this.$toast('不能给自己发送消息！')
+         }
+
          /**
           * 发送消息
           */
@@ -243,6 +251,14 @@ export default {
               return;
           }
           _this.initialize();
+
+        /**
+          * 如果卖家和买家是同一个人，则不能给自己发送消息
+          */
+         if(_this.messageUser.from==_this.messageUser.to){
+             _this.$toast('不能给自己发送消息！')
+         }
+
          /**
           * 发送消息 
           */ 

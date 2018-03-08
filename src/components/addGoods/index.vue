@@ -31,16 +31,7 @@
                 <div class="addList2"><a href="#/addgoods/category?bicid=121324398"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
             </div>
             <button type="submit" class="releasedBtn" @click="next()">下一步</button>
-            <!-- <div class="addImgAlert">
-                <div class="addImgAlertCon">
-                    <dl>
-                        <dt>添加商品图片</dt>
-                        <dd><a href="#">拍照</a></dd>
-                        <dd><a href="#">从相册选择</a></dd>
-                    </dl>
-                    <button type="button">取消</button>
-                </div>
-            </div> -->
+            
     </section>
   </div> 
 </template>
@@ -112,7 +103,7 @@ export default {
         });
         _this.$http("get", "//wsproduct.hc360.com/mBusinChance/alfWarnCheck", {
             params: {
-              title: _this.shopname
+              title:encodeURI(encodeURI(_this.shopname)) 
             }
           }).then(res => {
             if (!res.success) {
