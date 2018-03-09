@@ -30,9 +30,16 @@ export default {
                console.log('Error: WebSocket is not supported by this browser.');
               return;
             }  
-             //接收到消息的回调函数
-         _this.socket.onmessage = function(event) {
+
+        //建立连接后的回调函数
+         _this.socket.onopen=function(){
+            console.log('foot socket open!')
+        }    
+        
+        //接收到消息的回调函数
+        _this.socket.onmessage = function(event) {
             let data=event.data;
+            console.log(event);
             if(data){
                _this.isNews=true;
             }

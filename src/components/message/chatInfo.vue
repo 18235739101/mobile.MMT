@@ -49,7 +49,7 @@
                     <!-- 当前留言列表 -->
                     <div :class="{'chatRig':item.fromuserid==messageUser.from,'chatLeft':item.fromuserid!=messageUser.from}" v-for="(item,j) in newMessageList" :key="item.id">
                         <div class="chatLeftCon">
-                            <div class="chatLeftImg"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div>
+                            <div class="chatLeftImg"><img :src="getLogo(item)"></div>
                             <div class="chatLeftImgRig">
                                 <em></em>
                                 <div class="chatLeftImgRigCon" v-show="item.type==0">
@@ -310,7 +310,8 @@ export default {
                     ...data
                 }); 
                 _this.$nextTick(()=>{
-                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
+
+                    // document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
                 })
             }
               

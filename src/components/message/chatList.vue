@@ -34,6 +34,11 @@ export default {
              }
          }).then((res)=>{
              if(res.length>0){
+                res.map((item)=>{
+                    if(item.type==1){
+                        item.content=decodeURIComponent(JSON.parse(item.content||"{}").title); 
+                    }
+                })
                 _this.chartData = _this.chartData.concat(res);
              }
          })

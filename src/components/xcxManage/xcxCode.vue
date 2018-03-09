@@ -5,10 +5,9 @@
             <div class="sProgramCode">
                 <h5>{{companyInfo.name}}</h5>
                 <div class="codeImg"><img :src="xcxImgUrl ? xcxImgUrl : 'https://style.org.hc360.com/images/microMall/program/codeImg.png'"></div>
-                <p>长按或扫描二维码</p>
-                <p>关注我的店铺</p>
+                
             </div>
-            <div class="codeImgBot">发送二维码给好友，吸引更多客流</div>
+            <div class="codeImgBot">您可长按图片保存小程序码，<br>也可以分享给好友，吸引更多客流</div>
         </section>
 
         <footerContent></footerContent>
