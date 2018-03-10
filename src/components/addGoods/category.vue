@@ -16,9 +16,6 @@ export default {
     return {
       headname: "商品类目",
 
-      /*当前修改商机的商机id */
-      bcid: "",
-
       /*类目列表 */
       supcateArray: []
     };
@@ -73,18 +70,11 @@ export default {
   components: {
     goodhead
   },
-  created() {
-    let _bcid=this.$route.query.bicid;
+  created() {    
     /**
      * 修改商机,清空类目,重新选择类目
      */
-    if(_bcid){
-      this.bcid=_bcid;
-      this.$store.commit('saveShopSet',{
-        cate:{}
-      })
-    }
-    this.getCateData();
+    this.clearCate();
   },
   computed:{
     cate(){

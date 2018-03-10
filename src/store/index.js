@@ -70,7 +70,7 @@ let store = new Vuex.Store({
         /**
          * 是否有新消息
          */
-        hasNewMessage:false
+        messageList:[]
 
         
     },
@@ -80,11 +80,8 @@ let store = new Vuex.Store({
          * @param {*} state 
          * @param {*} hasNewMessage 
          */
-        saveMessage(state,hasNewMessage){
-            state.hasNewMessage=hasNewMessage;
-            if(window.location.hash=='#/message'&&hasNewMessage==true){
-              // window.location.reload();
-            }
+        saveMessage(state,messageList){
+            state.messageList=messageList;
         },
         /**
          * 保存商机标题校验配置

@@ -1,7 +1,7 @@
 <template>
    <div class="tabBoxList">
        		<ul class="tabBoxListCon1">
-            	<li v-for="(item,i) in chartData" :key="i">
+            	<li v-for="(item,i) in messageList" :key="i">
                 	<a :href="'#/message/chatInfo?from='+username+'&to='+ getToUser(item)" >
                         <div class="messImg"><em v-show="item.readstate==0"></em><div class="messImgCon"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div></div>
                         <dl>
@@ -21,6 +21,11 @@ export default {
         chartData:[],
         username:''
       }
+  },
+  computed:{
+    messageList(){
+       return this.$store.state.messageList
+    }
   },
   methods:{
      /*
@@ -87,7 +92,7 @@ export default {
      /*
       * 获取及时沟通列表
       */      
-     this.getChatData();
+    // this.getChatData();
   }
 }
 </script>

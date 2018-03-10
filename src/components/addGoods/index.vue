@@ -28,7 +28,7 @@
                     </ul>
                 </div>
                 <div class="addList1"><a href="#/addgoods/addDesc"><span class="listLeft">添加商品描述</span><p class="listRig" v-show="productObj.desc">已添加</p> </a></div>
-                <div class="addList2"><a href="#/addgoods/category?bicid=121324398"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
+                <div class="addList2"><a href="#/addgoods/category"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
             </div>
             <button type="submit" class="releasedBtn" @click="next()">下一步</button>
             
@@ -281,6 +281,7 @@ export default {
             return;
           }
           _this.$store.commit('savePicStr',res.picstr)
+          // 发布商品需要传给后台
           _this.$store.commit("saveShopSet", {
             sessionid: res.sessionid,
             bcid:_this.bcid
@@ -320,8 +321,15 @@ export default {
              _this.getShopImg().then((res)=>{
               res = JSON.parse(res.slice(1, res.length - 1) || "{}");
               if (res.result.length > 0) {
+                /**
+                 * 替换为大图
+                 */
+                res.result.map((item)=>{
+                  item.url=item.url.replace(/(\.\.)(\d+x\d+)/g, "$1220x220a");
+                });
                 _this.imgList = [...res.result];
                 shopDetail.imgList = [...res.result];
+                
                 // 保存商品标题图片描述和类目
                 _this.$store.commit("saveShopSet", {
                   ...shopDetail

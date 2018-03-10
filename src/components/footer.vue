@@ -2,7 +2,7 @@
   <section class="botFixed">
     	<ul>
         	<li><router-link to="/manage" active-class="botCur"><em class="ico1"></em>工作台</router-link></li>
-          <li><router-link to="/message" active-class="botCur"><b v-show="hasNewMessage"></b><em class="ico3"></em>消息管理</router-link></li>
+          <li><router-link to="/message" active-class="botCur"><b v-show="hasNewMes"></b><em class="ico3"></em>消息管理</router-link></li>
           <li><router-link to="/xcxManage" active-class="botCur"><em class="ico2"></em>小程序管理</router-link></li>
         	<!-- <li><a href="#" class="botCur"><em class="ico2"></em>订单管理</a></li> -->
           <li><router-link to="/more" active-class="botCur"><em class="ico4"></em>更多</router-link></li>
@@ -10,20 +10,44 @@
     </section>
 </template>
 <script>
+import chartList from '../components/message/chatList';
 export default {
   data(){
       return {
          username:'',
          socket:null,
-         lockReconnect:false
+         lockReconnect:false,
+         chartData:[],
+         hasNewMes:false
       }
   },
   computed:{
-    hasNewMessage(){
-       return this.$store.state.hasNewMessage
+    messageList(){
+       return this.$store.state.messageList
     }
   },
   methods:{
+    /*
+      * 获取及时沟通列表
+      */  
+     getChatData(){
+         let _this=this;
+         _this.$http('get','http://ydmmt.hc360.com/mobilechat/getchatlist/'+_this.username+'/',{
+             params:{
+                 to:_this.username
+             }
+         }).then((res)=>{
+             if(res.length>0){
+                res.map((item)=>{
+                    if(item.type==1){
+                        item.content=decodeURIComponent(JSON.parse(item.content||"{}").title); 
+                    }
+                })
+                _this.chartData = _this.chartData.concat(res);
+                _this.$store.commit('saveMessage',_this.chartData)
+             }
+         })
+     },
     createsocket(){
         let _this=this,
             host='ws://ydmmt.hc360.com/chatpoint/hcgztmonitor/'+_this.username+'/';
@@ -46,7 +70,8 @@ export default {
             let data=event.data;
             console.log('hasmessage:'+data);
             if(data){
-              _this.$store.commit('saveMessage',true);
+              _this.hasNewMes=true;
+              _this.getChatData();
             }
          };  
 
@@ -94,10 +119,12 @@ export default {
       /**@description
        *  查询是否有新消息 
        */   
-      _this.$http('get','http://ydmmt.hc360.com/mobilechat/getisnew/'+_this.username+'/').then((res)=>{
+      _this.$http('get','http://ydmmt.hc360.com/mobilechat/getisnew/'+_this.username+'/').then((res)=>{  
           if(res){
-             _this.$store.commit('saveMessage',true);
-          }
+             _this.hasNewMes=true;
+             _this.getChatData();
+          }     
+          
       })
       
       /**
@@ -105,6 +132,8 @@ export default {
        * 建立长连接
        * */
       _this.createsocket();
+
+      _this.getChatData();
   }
 }
 </script>
