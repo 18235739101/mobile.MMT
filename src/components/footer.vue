@@ -2,7 +2,7 @@
   <section class="botFixed">
     	<ul>
         	<li><router-link to="/manage" active-class="botCur"><em class="ico1"></em>工作台</router-link></li>
-          <li><router-link to="/message" active-class="botCur"><b v-show="isNews"></b><em class="ico3"></em>消息管理</router-link></li>
+          <li><router-link to="/message" active-class="botCur"><b v-show="hasNewMessage"></b><em class="ico3"></em>消息管理</router-link></li>
           <li><router-link to="/xcxManage" active-class="botCur"><em class="ico2"></em>小程序管理</router-link></li>
         	<!-- <li><a href="#" class="botCur"><em class="ico2"></em>订单管理</a></li> -->
           <li><router-link to="/more" active-class="botCur"><em class="ico4"></em>更多</router-link></li>
@@ -15,8 +15,13 @@ export default {
       return {
          username:'',
          socket:null,
-         isNews:false
+         lockReconnect:false
       }
+  },
+  computed:{
+    hasNewMessage(){
+       return this.$store.state.hasNewMessage
+    }
   },
   methods:{
     createsocket(){
@@ -39,13 +44,14 @@ export default {
         //接收到消息的回调函数
         _this.socket.onmessage = function(event) {
             let data=event.data;
-            console.log(event);
+            console.log('hasmessage:'+data);
             if(data){
-               _this.isNews=true;
+              _this.$store.commit('saveMessage',true);
             }
          };  
 
          _this.socket.onclose=function(){
+           console.log('foot socket close!')
            _this.initialize();
          }
 
@@ -64,9 +70,14 @@ export default {
          if(_this.socket.readyState==1){
              return;
          }
+         if(_this.lockReconnect){
+             return;
+         }
+         _this.lockReconnect=true;
          //没连接上会一直重连，设置延迟避免请求过多
          setTimeout(function(){
            _this.createsocket();
+           _this.lockReconnect=false;
          },2000)  
     }
   },
@@ -85,7 +96,7 @@ export default {
        */   
       _this.$http('get','http://ydmmt.hc360.com/mobilechat/getisnew/'+_this.username+'/').then((res)=>{
           if(res){
-             _this.isNews=true;
+             _this.$store.commit('saveMessage',true);
           }
       })
       

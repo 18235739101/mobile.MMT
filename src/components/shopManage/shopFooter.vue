@@ -56,13 +56,13 @@ export default {
             qq: {forbid: 0, lower: 1, higher: 2},
             uc: {forbid: 0, allow: 1}
           },
-          useragent='navigator.userAgent.toLowerCase()',
+          useragent=navigator.userAgent.toLowerCase(),
           isWeixin= useragent.indexOf('micromessenger') !==-1;
       let UA = navigator.appVersion;
       let isqqBrowser = (UA.split("MQQBrowser/").length > 1) ? bLevel.qq.higher : bLevel.qq.forbid;
       let isucBrowser = (UA.split("UCBrowser/").length > 1) ? bLevel.uc.allow : bLevel.uc.forbid;
 
-      if((isqqBrowser && isqqBrowser>0) || (isucBrowser && isucBrowser>0)||(!isWeixin)){
+      if((isqqBrowser && isqqBrowser>0) || (isucBrowser && isucBrowser>0)&&(!isWeixin)){
         this.isShare = true;
       }
     },

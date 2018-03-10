@@ -64,10 +64,28 @@ let store = new Vuex.Store({
         /**
          * 上传图片的picstr
          */
-        picstr:''
+        picstr:'',
+
+
+        /**
+         * 是否有新消息
+         */
+        hasNewMessage:false
+
         
     },
     mutations: {
+        /**
+         * 保存是否有新消息
+         * @param {*} state 
+         * @param {*} hasNewMessage 
+         */
+        saveMessage(state,hasNewMessage){
+            state.hasNewMessage=hasNewMessage;
+            if(window.location.hash=='#/message'&&hasNewMessage==true){
+              // window.location.reload();
+            }
+        },
         /**
          * 保存商机标题校验配置
          * @param {*} state 

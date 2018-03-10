@@ -112,7 +112,12 @@ export default {
         /**
          * 图文消息详情
          */
-        proDetail:{}
+        proDetail:{},
+
+        /**
+         * socket是否连接成功
+         */
+        lockReconnect:false,
       }
   },
   computed:{
@@ -132,8 +137,9 @@ export default {
       */ 
      getLogo(item){
          let hclogo='https://style.org.hc360.com/images/microMall/manage/hImg.png',
-             defaultlogo='https://style.org.hc360.com/images/microMall/message/topImg.png';
-         if(item.fromuserid==this.messageUser.from) {
+             defaultlogo='https://style.org.hc360.com/images/microMall/message/topImg.png',
+             from=this.messageUser.type=='buy'?item.fromuserid:item.touserid;
+         if(from==this.messageUser.from) {
              return defaultlogo;
          } 
          return hclogo;
@@ -165,9 +171,7 @@ export default {
                 })
                 _this.messageList=_this.messageList.concat(res);
                 _this.changeMessageState();
-                _this.$nextTick(()=>{
-                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
-                })
+                _this.gotoFooter();
             }
          })
      },
@@ -200,13 +204,12 @@ export default {
               readstate:_this.messageUser.type ? "" : 1,
             }; 
 
-         _this.initialize();
-
          /**
           * 如果卖家和买家是同一个人，则不能给自己发送消息
           */
          if(_this.messageUser.from==_this.messageUser.to){
-             _this.$toast('不能给自己发送消息！')
+             _this.$toast('不能给自己发送消息！');
+             return;
          }
 
          /**
@@ -229,9 +232,7 @@ export default {
                /**
                 * 发送完消息，将滚动条滚动到页面底部
                 */
-               _this.$nextTick(()=>{
-                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
-                })
+               _this.gotoFooter();
             }
          })
      },
@@ -247,16 +248,16 @@ export default {
               readstate:_this.messageUser.type ? "" : 1,
              };  
           if(_this.message.length==0){
-              _this.$toast('发送的消息不能为空！')
+              _this.$toast('发送的消息不能为空！');
               return;
           }
-          _this.initialize();
-
+        
         /**
           * 如果卖家和买家是同一个人，则不能给自己发送消息
           */
          if(_this.messageUser.from==_this.messageUser.to){
              _this.$toast('不能给自己发送消息！')
+             return;
          }
 
          /**
@@ -277,9 +278,7 @@ export default {
                     fromuserid:_this.messageUser.from
                 });  
                 _this.message='';
-                _this.$nextTick(()=>{
-                    document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
-                })
+                _this.gotoFooter();
            }
          })
      },
@@ -309,10 +308,7 @@ export default {
                     fromuserid:_this.messageUser.to,
                     ...data
                 }); 
-                _this.$nextTick(()=>{
-
-                    // document.getElementsByClassName('chatBox')[0].scrollTop='1000000';
-                })
+               _this.gotoFooter(); 
             }
               
          };
@@ -321,7 +317,7 @@ export default {
          * 连接成功后的回调函数
          */
         _this.socket.onopen=function(){
-            console.log('socket open!')
+            console.log('inner socket open!')
             // 如果是从终极页进入的买家界面弹出商品详情的浮层
             if(_this.messageUser.type=='buy'){
                 if(!_this.messageUser.bcid){
@@ -336,7 +332,8 @@ export default {
                         imgurl:res.picUrls&&res.picUrls[0].picUrl,
                         title:res.title,
                         price:res.price||'面议' 
-                    }
+                    };
+                    _this.gotoFooter();
                 })
               
             }
@@ -346,17 +343,31 @@ export default {
          * 连接关闭后的回调函数
          */
         _this.socket.onclose=function(){
-           console.log('连接已经关闭！')
-           _this.initialize();
+           console.log('inner soket close！')
+           let isOpenSocket=localStorage.getItem('isOpenSocket');
+           if(isOpenSocket==1){
+              _this.initialize();
+           }
         }
 
        /**
          * 连接失败后的回调函数
          */
         _this.socket.onerror=function(){
-            console.log('连接error！')
-             _this.initialize();
+            console.log('inner soket error！')
+            _this.initialize();
         }
+     },
+     /**
+      * 滚动到聊天底部
+      */
+     gotoFooter(){
+        let _this=this;
+        _this.$nextTick(()=>{
+              try{
+                 document.getElementsByClassName('chatBox')[0].scrollTop='10000000';
+              }catch(e){ }
+        })
      },
      /**
       * 断开后重新连接
@@ -369,9 +380,15 @@ export default {
          if(_this.socket.readyState==1){
              return;
          }
+         console.log(_this.socket.readyState)
+         if(_this.lockReconnect){
+             return;
+         }
+         _this.lockReconnect=true;
          //没连接上会一直重连，设置延迟避免请求过多
          setTimeout(function(){
            _this.createdSocket();
+           _this.lockReconnect=false;
          },2000)  
      },
      gotoback(){
@@ -379,6 +396,7 @@ export default {
          /**
           * 返回到消息列表页面之前，关闭socket
           */
+         localStorage.setItem('isOpenSocket',0); 
          _this.socket.close();
          _this.$router.go(-1);
      }
@@ -389,6 +407,7 @@ export default {
       if(this.messageUser.type=='buy'&&this.messageUser.shop){
         this.headName=decodeURIComponent(this.messageUser.shop);
       }
+      localStorage.setItem('isOpenSocket',1);
       // 获取消息列表 
       this.getMessageList();
       // 创建socket

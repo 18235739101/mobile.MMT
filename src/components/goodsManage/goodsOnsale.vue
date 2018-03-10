@@ -111,7 +111,7 @@
         <a href="javascript:void(0)" class="resendBtn" @click="OneKeyResend()">一键重发</a>
 
         <mt-popup :modal=false v-model="popupVisible"  position="bottom">
-           <div class="shareBox"><a class="closeBtn2" @click="closeShare">×</a></div>
+           <div class="shareBox" ><a class="closeBtn2" @click="closeShare">×</a></div>
            <div id="nativeShare"></div>  
         </mt-popup>       
     </div>
@@ -289,11 +289,14 @@ export default {
             _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
              //隐藏推广弹层
             _this.popupVisible = false;
+            // 允许页面滚动
+            document.body.style.overflow='';
             //清空一口价
             _this.priceValue='';
             if(proItem){
                 _this.setXCXparams.bcid = proItem.bcid;
                 _this.setXCXparams.type = 1;
+                 document.body.style.overflow='hidden';
             }
         },
 
@@ -357,6 +360,7 @@ export default {
                      _this.priceValue='';
                     _this.$toast(res.returnMsg || '导入小程序失败！');
                 }
+                document.body.style.overflow='';
             })
         },
 
@@ -479,13 +483,13 @@ export default {
                  qq: {forbid: 0, lower: 1, higher: 2},
                  uc: {forbid: 0, allow: 1}
                 },
-                useragent='navigator.userAgent.toLowerCase()',
+                useragent=navigator.userAgent.toLowerCase(),
                 isWeixin= useragent.indexOf('micromessenger') !==-1;
             let UA = navigator.appVersion;
             let isqqBrowser = (UA.split("MQQBrowser/").length > 1) ? bLevel.qq.higher : bLevel.qq.forbid;
             let isucBrowser = (UA.split("UCBrowser/").length > 1) ? bLevel.uc.allow : bLevel.uc.forbid;
 
-            if((isqqBrowser && isqqBrowser>0) || (isucBrowser && isucBrowser>0) || (!isWeixin)){
+            if((isqqBrowser && isqqBrowser>0) || (isucBrowser && isucBrowser>0) && (!isWeixin)){
                 this.isPopularize = true;
             }
         },
@@ -497,6 +501,10 @@ export default {
         popularizePro(pro){
             let _this = this;
             _this.popupVisible = !_this.popupVisible;
+            /**
+              * 禁止页面滚动
+              */
+            document.body.style.overflow='hidden';
 
             if(pro){
                 _this.shareConfig.url = '//m.hc360.com/supplyself/'+ pro.bcid +'.html';
@@ -512,6 +520,7 @@ export default {
          */
         closeShare(){
            this.popupVisible=false;
+           document.body.style.overflow='';
         },
 
         /**
