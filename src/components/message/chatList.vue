@@ -10,7 +10,7 @@
                         </dl>
                     </a>
                 </li>
-            	
+
             </ul>
         </div>
 </template>
@@ -30,7 +30,7 @@ export default {
   methods:{
      /*
       * 获取及时沟通列表
-      */  
+      */
      getChatData(){
          let _this=this;
          _this.$http('get','http://ydmmt.hc360.com/mobilechat/getchatlist/'+_this.username+'/',{
@@ -41,7 +41,7 @@ export default {
              if(res.length>0){
                 res.map((item)=>{
                     if(item.type==1){
-                        item.content=decodeURIComponent(JSON.parse(item.content||"{}").title); 
+                        item.content=decodeURIComponent(JSON.parse(item.content||"{}").title);
                     }
                 })
                 _this.chartData = _this.chartData.concat(res);
@@ -53,7 +53,7 @@ export default {
       * 时间戳转换为时间
       */
      timestampToTime(timestamp) {
-        let _this=this; 
+        let _this=this;
         let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
         let Y = date.getFullYear(),
             M = _this.formateDate(date.getMonth()+1),
@@ -63,7 +63,7 @@ export default {
             s =_this.formateDate(date.getSeconds());
         return Y+'-'+M+'-'+D+' '+h+':'+m+':'+s;
      },
-  
+
      /**@augments
       * 格式化时间日期，如果小于两位数补0
       */
@@ -74,7 +74,7 @@ export default {
             return d
          }
      },
-     
+
      /**
       *  获取消息接收者,不为登录用户名的就是消息接收者
       */
@@ -87,11 +87,12 @@ export default {
     }
   },
   created(){
+      console.log(this.messageList)
      let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
          this.username=companInfo.username;
      /*
       * 获取及时沟通列表
-      */      
+      */
     // this.getChatData();
   }
 }
