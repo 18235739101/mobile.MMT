@@ -4,7 +4,7 @@
        <section>
         <div class="addProBox">
             <div class="addList4Top"><p>分类至</p><span>{{ classInfo }}</span></div>
-         
+
             <div class="addList4Box" v-for="(item,i) in lstSeriesVO" :key="i" @click="showChildren(i,$event)">
                 <div class="addList4" ><a href="javascript:;" @click="selectSort(item,'1')">{{ item.seriesName}}</a><em v-show="item.children.length>0"></em></div>
                 <div class="addList4List" v-show="item.children.length>0">
@@ -13,11 +13,11 @@
                     </ul>
                 </div>
             </div>
-           
+
         </div>
     </section>
-  </div>    
-  
+  </div>
+
 </template>
 <script>
 import goodhead from "../header.vue";
@@ -59,7 +59,7 @@ export default {
              }
          })
      },
-     
+
      /**
       * 点击显示二级分类
       */
@@ -73,8 +73,8 @@ export default {
             }else{
                 _classlist.push('addList4Show');
             }
-             wrap[i].setAttribute('class',_classlist.join(' ')); 
-        }        
+             wrap[i].setAttribute('class',_classlist.join(' '));
+        }
     },
     /**
      * 点击对应的分类
@@ -91,8 +91,8 @@ export default {
                    name:store.seriesName,
                    seriesid:store.seriesid
                }
-           }) 
-       } 
+           })
+       }
        this.$store.commit('saveSort',this.storeObject);
        this.classInfo=store.seriesName;
        /**

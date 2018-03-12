@@ -1,18 +1,18 @@
 <template>
   <div>
-      <headerTop :head-name="headName"></headerTop>  
+      <headerTop :head-name="headName"></headerTop>
       <section>
           <div class="modelBox">
 
             <div class="modelCon" v-for="(item,i) in templates" :key='i'>
-              <div class="modelImgCon"><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled"><img class="modelImg" :src="item.tplUrl"></a></div>
+              <div class="modelImgCon"><a :href="'#/xcxManage/preview?reviewId='+ reviewId +'&currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled"><img class="modelImg" :src="item.tplUrl"></a></div>
               <p class="name">{{item.name}}</p>
               <div class="mdetailCur" v-if="item.stateDes!='点击查看'"><label class="curIcon"></label>{{item.stateDes}}</div>
-              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled">点击查看</a></div>
+              <div class="mdetail" v-else><a :href="'#/xcxManage/preview?reviewId='+ reviewId +'&currentTplId='+currentTplId+'&tplId='+item.tempId+'&enabled='+enabled">点击查看</a></div>
             </div>
 
           </div>
-        
+
         <!-- 弹窗 -->
         <div class="popupBg" style="display:none;">
           <div class="popupCon">
@@ -75,8 +75,8 @@ export default {
        * 审核中的模板id
        */
       reviewId:null,
-      
-      /** 
+
+      /**
        * 小程序审核状态码
        */
       telInfo:{
@@ -137,13 +137,13 @@ export default {
          *  如果有在审核的id
          */
         if(_this.reviewId){
-           _this.templates[_this.reviewId-1].stateDes=_stateInfo; 
+           _this.templates[_this.reviewId-1].stateDes=_stateInfo;
         }
         if(_this.currentTplId){
           _this.templates[_this.currentTplId-1].stateDes=desc;
         }
-        
-        
+
+
       })
     }
   },
@@ -156,11 +156,10 @@ export default {
       _this.getConfigInfo();
     })
   }
-  
+
 }
 </script>
 
 <style>
 @import "https://style.org.hc360.com/css/microMall/wxProgram.css";
 </style>
-

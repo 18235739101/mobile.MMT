@@ -6,7 +6,7 @@
           <div class="modelCon2">
             <div class="modelImg"><img :src="tmps[$route.query.tplId-1]"></div>
             <div class="modelBtn2" v-if="$route.query.tplId == $route.query.currentTplId">正在使用</div>
-
+            <div class="modelBtn2" v-else-if="$route.query.reviewId===$route.query.tplId">审核中...</div>
             <div class="modelBtn1"  :class="[ enabled==0 ? 'modelBtn2':'modelBtn1']"  v-else-if="!enableSuccess"  @click="enableModule">启用该模板</div>
 
             <div class="modelBtn2" v-else-if="enableSuccess"  @click="enableModule">审核中...</div>
@@ -74,19 +74,19 @@ export default {
           })
         }
       })
-      
+
     }
   },
 
   created(){
      // 该模板是否可以启用
-     this.enabled=this.$route.query.enabled
+     this.enabled=this.$route.query.enabled;
   },
   components:{
     XCXHead
   }
-  
-  
+
+
 }
 </script>
 
@@ -94,4 +94,3 @@ export default {
 @import "https://style.org.hc360.com/css/microMall/wxProgram.css";
 
 </style>
-

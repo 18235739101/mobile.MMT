@@ -23,10 +23,10 @@
                 <div class="proAddLeftRig">
                     <a href="javascript:;">{{storeName}}</a>
                 </div>
-            </div>       
+            </div>
         </div>
         <button type="submit"  :class="[ buttonHtml=='发布' ? 'releasedBtn' : 'releasedBtnGray' ]" @click="submitShop">{{ buttonHtml }}</button>
-  </div>    
+  </div>
 </template>
 <script>
 import goodhead from "../header.vue";
@@ -57,7 +57,7 @@ export default {
             //商品库存的校验对象
             inventory:{
                 isCheck:false,
-                mes:'' 
+                mes:''
             },
 
             buttonHtml:'发布'
@@ -76,7 +76,7 @@ export default {
                path:'/addgoods/storeClass'
            })
        },
-       
+
        /**
         * 发布商机
         */
@@ -105,11 +105,11 @@ export default {
                _this.$toast('商机发布中，请勿再次发布！');
                return;
            }
-      
+
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
-         
-           // 发布商机   
+
+           // 发布商机
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
            }).then((res)=>{
@@ -141,7 +141,7 @@ export default {
                    obj.bsid=this.storeObj.bsid;
                    if(this.storeObj.child.seriesid){
                     // 店铺分类 二级
-                      obj.secondSeries=this.storeObj.child.seriesid; 
+                      obj.secondSeries=this.storeObj.child.seriesid;
                    }
                }
                return obj;
@@ -150,7 +150,7 @@ export default {
         * 校验价格
         */
        checkPrice(){
-         let  reg=/^\d{1,10}(.*\d{0,2})$/ig; 
+         let  reg=/^\d{1,10}(.*\d{0,2})$/ig;
          if(this.priceNum==''){
             return;
          }
@@ -207,7 +207,7 @@ export default {
         * 保存价格设置
         */
        commitPrice(){
-           let _this=this;    
+           let _this=this;
            _this.$store.commit('savePrice',{
                 // 价格类型
                 ptype:_this.priceType,
@@ -234,11 +234,13 @@ export default {
        // 炫铺名称
        storeName(){
            let storeClass=this.storeObj;
+           // console.log(this.productObj);
+           // console.log(this.storeObj)
            if(storeClass.child.seriesid){
                return storeClass.child.name
            }else{
-               return storeClass.name;
-           }           
+               return this.productObj.cate.secondSeriesName || this.productObj.cate.bsname || storeClass.name;
+           }
        }
    },
    beforeMount(){

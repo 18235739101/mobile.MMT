@@ -1,5 +1,6 @@
 <template>
   <div>
+      <img style="display:none;" :src="companyInfo.logoUrl" alt="">
       <shopHeader titleName="店铺二维码"></shopHeader>
       <section>
     	<div class="codeImgBox">
@@ -43,7 +44,7 @@ export default {
                 rendererOpts: {
                     quality: 0.3
                 }
-            } 
+            }
        QRCode.toDataURL("https://m.hc360.com/b2b/"+JSON.parse(localStorage.getItem('companyInfo')).username+"/?id=1", opts, function (err, url) {
             if (err) throw err
             document.getElementById('imgWrap').src = url
@@ -53,6 +54,7 @@ export default {
   mounted(){
       let _this = this;
       _this.$nextTick(() =>{
+          document.title = _this.companyInfo.name;
           _this.drawQrcode();
       })
   }

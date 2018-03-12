@@ -7,7 +7,7 @@
             <div :class="[cate.hasNext=='0' ? 'arrowNo':'','addList1']" v-for="(cate,i) in supcateArray" :key='i' ><a href="javascript:;"  @click="checkCate(cate)" >{{cate.name}}</a></div>
         </div>
     </section>
-  </div>    
+  </div>
 </template>
 <script>
 import goodhead from "../header.vue";
@@ -32,7 +32,7 @@ export default {
        _this.$store.commit('saveShopSet',{
          cate:_cate
        });
-          
+
       //判断是否有下一级分类
       if(_this.cate.hasNext==1){
          _this.getCateData();
@@ -70,7 +70,7 @@ export default {
   components: {
     goodhead
   },
-  created() {    
+  created() {
     /**
      * 修改商机,清空类目,重新选择类目
      */
@@ -87,4 +87,3 @@ export default {
 <style>
 @import "https://style.org.hc360.com/css/microMall/releasedStyle.css";
 </style>
-

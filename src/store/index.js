@@ -72,30 +72,38 @@ let store = new Vuex.Store({
          */
         messageList:[]
 
-        
+
+    },
+    getters: {
+        /**
+         * 是否有新消息
+         */
+        messageList (state) {
+ 			return state.messageList
+ 		}
     },
     mutations: {
         /**
          * 保存是否有新消息
-         * @param {*} state 
-         * @param {*} hasNewMessage 
+         * @param {*} state
+         * @param {*} hasNewMessage
          */
         saveMessage(state,messageList){
             state.messageList=messageList;
         },
         /**
          * 保存商机标题校验配置
-         * @param {*} state 
-         * @param {*} titleSetUp 
+         * @param {*} state
+         * @param {*} titleSetUp
          */
         saveTitle(state,titleSetUp){
             state.titleConfig={...titleSetUp};
-        }, 
-        
+        },
+
         /**
          * 保存小程序订单列表状态
-         * @param {*} state 
-         * @param {*} orderStete 
+         * @param {*} state
+         * @param {*} orderStete
          */
         saveOrderState(state,orderStete){
             state.orderStatus={...orderStete};
@@ -103,8 +111,8 @@ let store = new Vuex.Store({
 
         /**
          * 保存picstr
-         * @param {*} state 
-         * @param {*} picstr 
+         * @param {*} state
+         * @param {*} picstr
          */
         savePicStr(state,picstr){
             state.picstr=picstr;
@@ -112,8 +120,8 @@ let store = new Vuex.Store({
 
         /**
          * 保存即时沟通和留言列表的标签切换
-         * @param {*} state 
-         * @param {*} name 
+         * @param {*} state
+         * @param {*} name
          */
         changeMessage(state, name) {
             state.messageValue = name;
@@ -121,8 +129,8 @@ let store = new Vuex.Store({
 
         /**
          * 保存商品设置
-         * @param {*} state 
-         * @param {*} proObj 
+         * @param {*} state
+         * @param {*} proObj
          */
         saveShopSet(state, proObj) {
             state.productObj = {
@@ -133,8 +141,8 @@ let store = new Vuex.Store({
 
         /**
          * 保存价格设置
-         * @param {*} state 
-         * @param {*} priceObj 
+         * @param {*} state
+         * @param {*} priceObj
          */
         savePrice(state, priceObj) {
             state.priceObj = {
@@ -145,8 +153,8 @@ let store = new Vuex.Store({
 
         /**
          * 保存选择的店铺分类
-         * @param {*} state 
-         * @param {*} storeObj 
+         * @param {*} state
+         * @param {*} storeObj
          */
         saveSort(state, storeObj) {
             state.storeObj = {
@@ -156,12 +164,12 @@ let store = new Vuex.Store({
         },
 
         /**
-         * 清除发布商机的存储信息 
-         * @param {*} state 
+         * 清除发布商机的存储信息
+         * @param {*} state
          */
         clearProduct(state) {
              state.productObj={
-                bcid:'', 
+                bcid:'',
                 title: '',
                 sessionid: '',
                 imgList: [],

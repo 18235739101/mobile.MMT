@@ -3,7 +3,7 @@
        		<ul class="tabBoxListCon1">
             	<li v-for="(item,i) in messageList" :key="i">
                 	<a :href="'#/message/chatInfo?from='+username+'&to='+ getToUser(item)" >
-                        <div class="messImg"><em v-show="item.readstate==0"></em><div class="messImgCon"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div></div>
+                        <div class="messImg"><em v-if="item.readstate==0"></em><div class="messImgCon"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div></div>
                         <dl>
                             <dt><h5></h5><span>{{timestampToTime(item.createtime)}}</span></dt>
                             <dd><p>{{item.content}}</p></dd>
@@ -15,6 +15,7 @@
         </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
   data(){
       return {
@@ -22,9 +23,21 @@ export default {
         username:''
       }
   },
-  computed:{
-    messageList(){
-       return this.$store.state.messageList
+  // computed:{
+  //   messageList(){
+  //       console.log(this.$store);
+  //      return this.$store.state.messageList
+  //   }
+  // },
+  computed: mapGetters(['messageList']),
+  watch: {
+    'messageList': {
+        handler: function(a,b) {   //特别注意，不能用箭头函数，箭头函数，this指向全局
+            if(b.length){
+                return this.$store.getters.messageList;
+            }
+        },
+        deep: true    //深度监听
     }
   },
   methods:{
@@ -87,7 +100,7 @@ export default {
     }
   },
   created(){
-      console.log(this.messageList)
+
      let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
          this.username=companInfo.username;
      /*

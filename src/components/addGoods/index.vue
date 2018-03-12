@@ -8,7 +8,7 @@
                     <input type="text" placeholder="请输入商品名称" @blur="blurname" v-model="shopname" maxlength="60">
                     <section class="alertPrompt">情输入商品名称</section>
                 </div>
-              
+
               <div class="proAddImg">
                   <h4>上传商品图片</h4>
                   <ul>
@@ -22,18 +22,18 @@
                           <div class="addImgBtn">
                             <form ref="imgForm">
                               <input type="file"  @change="inputchange" accept="image/*" name="upload" multiple>
-                            </form>   
+                            </form>
                           </div>
                         </li>
                     </ul>
                 </div>
                 <div class="addList1"><a href="#/addgoods/addDesc"><span class="listLeft">添加商品描述</span><p class="listRig" v-show="productObj.desc">已添加</p> </a></div>
-                <div class="addList2"><a href="#/addgoods/category"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>       
+                <div class="addList2"><a href="#/addgoods/category"><span class="listLeft">选择类目</span><p class="listRig">{{productObj.cate.name}}</p></a></div>
             </div>
             <button type="submit" class="releasedBtn" @click="next()">下一步</button>
-            
+
     </section>
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -46,9 +46,9 @@ export default {
       headname: "添加商品",
       /*
        * 商品名称
-       */ 
-      shopname: "",     
-      
+       */
+      shopname: "",
+
       /**
        * 图片列表
        */
@@ -103,7 +103,7 @@ export default {
         });
         _this.$http("get", "//wsproduct.hc360.com/mBusinChance/alfWarnCheck", {
             params: {
-              title:encodeURI(encodeURI(_this.shopname)) 
+              title:encodeURI(encodeURI(_this.shopname))
             }
           }).then(res => {
             if (!res.success) {
@@ -225,7 +225,7 @@ export default {
          _this.$toast(_this.titleConfig.mes);
          return;
       }
-      
+
       /** 验证商品图片 */
       if (_this.imgList.length == 0) {
          _this.$toast("请上传图片！");
@@ -255,7 +255,7 @@ export default {
 
     /**
      * 获取picstr
-     * 
+     *
      */
     getPicstr() {
       let _this = this,
@@ -265,10 +265,10 @@ export default {
         _this.headname='编辑商品';
         _this.bcid = bcid;
       }
-      
+
       if(_this.picstr){
         return;
-      } 
+      }
 
       _this.$http("get",getPicstrUrl,{
             params: {
@@ -292,9 +292,9 @@ export default {
         });
     },
 
-   
+
     /**
-     * 修改商机点击进入，初始化商机默认信息 
+     * 修改商机点击进入，初始化商机默认信息
      */
     initBusiness() {
       let _this = this;
@@ -304,7 +304,9 @@ export default {
                      desc: res.introduce,
                      cate: {
                         name: res.supcatname,
-                        sid:res.supcatid
+                        sid:res.supcatid,
+                        bsname: res.bsname,
+                        secondSeriesName: res.secondSeriesName
                       }
                     },
                     shopPrice = {
@@ -314,10 +316,10 @@ export default {
                       // 库存量
                       inventory: res.num
                     };
-                    
+
               // 初始化商品名称
               _this.shopname = res.title;
-             
+
              _this.getShopImg().then((res)=>{
               res = JSON.parse(res.slice(1, res.length - 1) || "{}");
               if (res.result.length > 0) {
@@ -329,7 +331,7 @@ export default {
                 });
                 _this.imgList = [...res.result];
                 shopDetail.imgList = [...res.result];
-                
+
                 // 保存商品标题图片描述和类目
                 _this.$store.commit("saveShopSet", {
                   ...shopDetail
@@ -339,9 +341,9 @@ export default {
                   ...shopPrice
                 });
               }
-             }) 
+             })
         })
-        
+
     },
      /**
      * 获取商机详情
@@ -357,7 +359,7 @@ export default {
            }).then((res)=>{
               resolve(res);
            })
-        }) 
+        })
     },
     /**
      * 获取商机图片
@@ -374,17 +376,17 @@ export default {
            }).then((res)=>{
               resolve(res);
            })
-        }) 
+        })
     }
 
   },
   beforeMount() {
-    /** 
+    /**
      * 初始化默认图片列表和标题名称
      */
     this.imgList=this.productObj.imgList;
-    this.shopname=this.productObj.title;    
-    /** 
+    this.shopname=this.productObj.title;
+    /**
      * 获取picstr
      */
     this.getPicstr();
