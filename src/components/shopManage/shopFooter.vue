@@ -1,6 +1,6 @@
 <template>
   <section class="botFixedNew">
-    	<ul>
+    	<ul ref="uls">
         	<li><a :href="'https://m.hc360.com/b2b/'+username"><em class="ico1"></em>预览店铺</a></li>
         	<li><a href="#/shopManage/code"><em class="ico2"></em>店铺二维码</a></li>
         	<li v-if="isShare"><a href="javascritp:void(0)" @click="shopShare"><em class="ico3"></em>分享店铺</a>
@@ -8,7 +8,7 @@
       </ul>
 
       <mt-popup :modal=false v-model="popupVisible"  position="bottom">
-           <div id="nativeShare"></div>  
+           <div id="nativeShare"></div>
       </mt-popup>
   </section>
 </template>
@@ -77,7 +77,7 @@ export default {
 
   mounted(){
     let _this = this;
-    
+
 	  _this.$nextTick(() =>{
       _this.browserIdenty()
       new nativeShare('nativeShare',_this.config);
@@ -93,8 +93,8 @@ export default {
   width:100%;
   height:200px;
 }
-
+.botFixedNew li{
+    width: 30%;
+}
 
 </style>
-
-

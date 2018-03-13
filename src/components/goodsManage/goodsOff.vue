@@ -4,7 +4,7 @@
        <div class="proListBox">
             <div class="proNo" v-if="finishLoading && offList.length == 0">没有任何商品哦~</div>
             <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                <div class="proListCon" v-for="(pro,i) in offList" :key="i"> 
+                <div class="proListCon" v-for="(pro,i) in offList" :key="i">
                     <div class="proImgBox">
                         <div class="proImgBoxCon"><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
                     </div>
@@ -18,7 +18,8 @@
                             <p><b>¥</b>{{pro.pricerange1 == 0 ? '面议' : pro.pricerange1}}</p>
                             <div class="proBotConRig">
                                 <a href="#" :class="{programIco:pro.weChat}"></a>
-                                <a href="javascript:void(0)" class="moreBtn" @click="showMore(i)"></a>
+                                <a v-if="pro.checked && pro.checked == '0'" href="javascript:void(0)">已修改审核中...</a>
+                                <a v-else href="javascript:void(0)" class="moreBtn" @click="showMore(i)"></a>
                             </div>
                         </div>
                     </div>
@@ -34,7 +35,7 @@
                 <p v-show="loading" class="page-infinite-loading">
                     <mt-spinner type="snake"></mt-spinner>
                     加载中...
-                </p>  
+                </p>
        		</div>
        </div>
 
@@ -101,7 +102,7 @@ export default {
                 year=date.getFullYear(),
                 month=(date.getMonth()+1)< 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1,
                 _data=date.getDate()<10 ? '0'+date.getDate() : date.getDate() ;
-            return year+'/'+month+'/'+_data; 
+            return year+'/'+month+'/'+_data;
         },
         /**加载更多 */
         loadMore(){
@@ -139,10 +140,10 @@ export default {
                         _this.loading = false;
                     },100)
                 }
-                
+
             })
         },
-        
+
         /**
          * 删除商机
          */
@@ -181,7 +182,7 @@ export default {
         },
 
         /**
-         * 上架商机 
+         * 上架商机
          */
         shelvePro(bcid){
             let _this = this;
@@ -210,7 +211,7 @@ export default {
             this.offList.forEach((item,index)=>{
                 if(index==i){
                     item.isShowMore=!item.isShowMore;
-                    
+
                 }else{
                    item.isShowMore=false;
                 }
@@ -242,4 +243,3 @@ export default {
   margin-right: 5px;
 }
 </style>
-

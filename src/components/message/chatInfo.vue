@@ -12,18 +12,18 @@
 
                         <div class="chatLeftCon">
                             <div class="chatLeftImg"><img :src="getLogo(item)"></div>
-                            
+
                             <div class="chatLeftImgRig">
                                 <em></em>
                                 <div class="chatLeftImgRigCon" v-show="item.type==0">
                                     <p>{{item.content}}</p>
                                 </div>
                                 <div class="chatLeftPro" v-show="item.type==1">
-                                    <a href="javascript:;">
+                                    <a :href="'https://m.hc360.com/supplyself/'+item.bcid+'.html'">
                                         <div class="chatLeftProImg"><span><img :src="item.content.imgurl"></span></div>
                                         <div class="chatLeftProRig">
                                             <div class="chatProName">{{ item.content.title }}</div>
-                                            <p><b>¥</b>{{ item.content.price }}.<b>00</b></p>
+                                            <p><b>¥</b>{{ item.content.price }}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -40,7 +40,7 @@
                             <div class="chatLeftProImg"><span><img :src="proDetail.imgurl"></span></div>
                             <div class="chatLeftProRig">
                                 <div class="chatProName">{{ proDetail.title }}</div>
-                                <p><b>&yen;</b>{{ proDetail.price }}<b>00</b></p>
+                                <p><b>&yen;</b>{{ proDetail.price }}</p>
                             </div>
                         </a>
                         <button type="button" @click="sendShop()">发送商品</button>
@@ -60,7 +60,7 @@
                                         <div class="chatLeftProImg"><span><img :src="item.content.imgurl"></span></div>
                                         <div class="chatLeftProRig">
                                             <div class="chatProName">{{ item.content.title }}</div>
-                                            <p><b>¥</b>{{ item.content.price }}.<b>00</b></p>
+                                            <p><b>¥</b>{{ item.content.price }}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -69,18 +69,18 @@
                     </div>
            </div>
             <div class="chatBoxBot">
-                    <input type="text" v-model="message" @keyup.enter="sendMessage">
+                    <input type="text" maxlength="200" v-model="message" @keyup.enter="sendMessage">
                     <button type="submit" @click="sendMessage">发送</button>
             </div>
        </section>
-    </div>      
+    </div>
 </template>
 <script>
 export default {
   data(){
       return {
         headName:'即时沟通',
-        
+
         /**
          * 聊天对象
          * from 发送者
@@ -91,16 +91,16 @@ export default {
         /**
          * 历史留言列表
          */
-        messageList:[],  
+        messageList:[],
 
         /**
-         *当前留言列表 
+         *当前留言列表
          */
-        newMessageList:[],   
+        newMessageList:[],
 
         /**
          * 留言消息
-         */  
+         */
         message:'',
 
         /**
@@ -108,7 +108,7 @@ export default {
          */
         socket:null,
 
-        
+
         /**
          * 图文消息详情
          */
@@ -123,7 +123,7 @@ export default {
   computed:{
     /**
      * 获取当前时间
-     */   
+     */
     time(){
         let d=new Date(),
             hours=d.getHours()<10 ? '0'+d.getHours() : d.getHours(),
@@ -134,34 +134,34 @@ export default {
   methods:{
      /*
       * 获取默认头像
-      */ 
+      */
      getLogo(item){
          let hclogo='https://style.org.hc360.com/images/microMall/manage/hImg.png',
              defaultlogo='https://style.org.hc360.com/images/microMall/message/topImg.png',
              from=this.messageUser.type=='buy'?item.fromuserid:item.touserid;
          if(from==this.messageUser.from) {
              return defaultlogo;
-         } 
+         }
          return hclogo;
      },
      /*
       * 获取上一次聊天记录
-      */ 
+      */
      getPrevTime(dataTime){
          let date=new Date(parseInt(dataTime)),
              mounth=date.getMonth()+1,
              data=date.getDate(),
              hours=date.getHours()<10 ? '0'+date.getHours() : date.getHours(),
              minutes=date.getMinutes()<10 ? '0'+date.getMinutes() : date.getMinutes();
-        return mounth+'月'+data+'日'+'  '+hours+':'+minutes    
+        return mounth+'月'+data+'日'+'  '+hours+':'+minutes
      },
      /**
       * 获取消息列表
-      */  
+      */
      getMessageList(){
          let _this=this,
              getMessageUrl='http://ydmmt.hc360.com/mobilechat/getchat/'+_this.messageUser.from+'/'+_this.messageUser.to;
-             
+
          _this.$http('get',getMessageUrl).then((res)=>{
             if(res.length>0){
                 res.forEach((val,i,arr)=>{
@@ -175,7 +175,7 @@ export default {
             }
          })
      },
-    
+
     /**
      *  将消息修改为已读状态
      */
@@ -196,13 +196,13 @@ export default {
       */
      sendShop(){
         let _this=this,
-            saveMessageUrl='http://ydmmt.hc360.com/mobilechat/savechat/'+_this.messageUser.from+'/'+_this.messageUser.to+'/',            
+            saveMessageUrl='http://ydmmt.hc360.com/mobilechat/savechat/'+_this.messageUser.from+'/'+_this.messageUser.to+'/',
             mesInfo={
               content:_this.proDetail,
               type:1,
               // 如果是买家添加此字段
               readstate:_this.messageUser.type ? "" : 1,
-            }; 
+            };
 
          /**
           * 如果卖家和买家是同一个人，则不能给自己发送消息
@@ -216,7 +216,7 @@ export default {
           * 发送消息
           */
          _this.socket.send(JSON.stringify(mesInfo));
-         
+
          /**
           * 保存消息
           */
@@ -228,7 +228,7 @@ export default {
                    fromuserid:_this.messageUser.from,
                    type:1,
                    content:_this.proDetail
-               });  
+               });
                /**
                 * 发送完消息，将滚动条滚动到页面底部
                 */
@@ -246,12 +246,12 @@ export default {
               content:_this.message,
               type:0,
               readstate:_this.messageUser.type ? "" : 1,
-             };  
+             };
           if(_this.message.length==0){
               _this.$toast('发送的消息不能为空！');
               return;
           }
-        
+
         /**
           * 如果卖家和买家是同一个人，则不能给自己发送消息
           */
@@ -261,22 +261,22 @@ export default {
          }
 
          /**
-          * 发送消息 
-          */ 
+          * 发送消息
+          */
          _this.socket.send(JSON.stringify(mesInfo));
 
          /**
-          *保存消息 
-          */   
+          *保存消息
+          */
          _this.$http('get',saveMessageUrl,{
              params:mesInfo,
          }).then((res)=>{
            if(res==true){
                 _this.newMessageList.push({
                     content:_this.message,
-                    type:0,                    
+                    type:0,
                     fromuserid:_this.messageUser.from
-                });  
+                });
                 _this.message='';
                 _this.gotoFooter();
            }
@@ -296,23 +296,23 @@ export default {
                console.log('Error: WebSocket is not supported by this browser.');
               return;
             }
-         
+
          /**
           * 接收到消息的回调函数
           */
          _this.socket.onmessage = function(event) {
             let data=JSON.parse(event.data);
             if(data.content){
-               _this.changeMessageState(); 
+               _this.changeMessageState();
                _this.newMessageList.push({
                     fromuserid:_this.messageUser.to,
                     ...data
-                }); 
-               _this.gotoFooter(); 
+                });
+               _this.gotoFooter();
             }
-              
+
          };
-        
+
         /**
          * 连接成功后的回调函数
          */
@@ -327,15 +327,15 @@ export default {
                 _this.$http('get','https://wsdetail.b2b.hc360.com/xcx/supply/'+_this.messageUser.bcid).then((res)=>{
                      if(res.errmsg){
                          return;
-                     }  
+                     }
                      _this.proDetail={
                         imgurl:res.picUrls&&res.picUrls[0].picUrl,
                         title:res.title,
-                        price:res.price||'面议' 
+                        price:res.price||'面议'
                     };
                     _this.gotoFooter();
                 })
-              
+
             }
         }
 
@@ -375,12 +375,12 @@ export default {
      initialize(){
          let _this=this;
          /**
-         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。 
-         */ 
+         * 0 - 表示连接尚未建立。1 - 表示连接已建立，可以进行通信。2 - 表示连接正在进行关闭。3 - 表示连接已经关闭或者连接不能打开。
+         */
          if(_this.socket.readyState==1){
              return;
          }
-         console.log(_this.socket.readyState)
+         // console.log(_this.socket.readyState)
          if(_this.lockReconnect){
              return;
          }
@@ -389,14 +389,14 @@ export default {
          setTimeout(function(){
            _this.createdSocket();
            _this.lockReconnect=false;
-         },2000)  
+         },2000)
      },
      gotoback(){
          let _this=this;
          /**
           * 返回到消息列表页面之前，关闭socket
           */
-         localStorage.setItem('isOpenSocket',0); 
+         localStorage.setItem('isOpenSocket',0);
          _this.socket.close();
          _this.$router.go(-1);
      }
@@ -408,7 +408,7 @@ export default {
         this.headName=decodeURIComponent(this.messageUser.shop);
       }
       localStorage.setItem('isOpenSocket',1);
-      // 获取消息列表 
+      // 获取消息列表
       this.getMessageList();
       // 创建socket
       this.createdSocket();
@@ -418,5 +418,7 @@ export default {
 
 <style>
 @import url('https://style.org.hc360.com/css/microMall/messageStyle.css');
+.chatBox{
+    -webkit-overflow-scrolling:touch;
+}
 </style>
-

@@ -4,23 +4,24 @@
         <section class="exposureBox">
             <article class="botBoxNew">
                 <div class="botBoxCon5 boxCon6">
-                    <div class="titleCon">我的曝光数据</div> 
+                    <div class="titleCon">我的曝光数据</div>
                     <ul>
-                        <li><em class="ico1"></em><span>昨天曝光量<br><b>{{myExposureData.yesterday}}</b>次</span></li> 
-                        <li><em class="ico2"></em><span>最近7天曝光量<br><b>{{myExposureData.in7Days}}</b>次</span></li> 
+                        <li><em class="ico1"></em><span>昨天曝光量<br><b>{{myExposureData.yesterday}}</b>次</span></li>
+                        <li><em class="ico2"></em><span>最近7天曝光量<br><b>{{myExposureData.in7Days}}</b>次</span></li>
                         <li><em class="ico3"></em><span>最近30天曝光量<br><b>{{myExposureData.in30Days}}</b>次</span></li>
                     </ul>
-                </div> 
-                <div class="botBoxCon2">
-                    <div class="titleCon">30日曝光数据</div> 
-                    <div class="dataBox2" ref="lineChartsBox" style="width:600px;height:280px;margin:0 auto;"></div>
                 </div>
-            
-                <div class="promptCon2" v-show="buyAbleOnline">根据您的曝光数据，建议您进行以下操作：</div> 
+                <div class="botBoxCon2">
+                    <div class="titleCon">30日曝光数据</div>
+                    <div class="dataBox2" ref="lineChartsBox" style="width:100%;height:320px;margin:0 auto;"></div>
+                    <!-- <div class="dataBox2" ref="lineChartsBox" ></div> -->
+                </div>
+
+                <div class="promptCon2" v-show="buyAbleOnline">根据您的曝光数据，建议您进行以下操作：</div>
                 <div class="botBoxCon2" v-show="buyAbleOnline">
-                    <div class="titleCon redStar">快速提升曝光</div> 
+                    <div class="titleCon redStar">快速提升曝光</div>
                     <div class="dataBox3">
-                        <p>购买互通宝，可享受超高性价比来推广自己的商机！</p> 
+                        <p>购买互通宝，可享受超高性价比来推广自己的商机！</p>
                         <a href="//mlogin.hc360.com/manager/zymmtbuy.html?source=1">立即购买</a>
                     </div>
                 </div>
@@ -60,7 +61,7 @@ export default {
          */
         getMyExposureDatas(){
             let _this = this;
-            
+
             _this.$http('get','//home.hc360.com/homes/outerInf/shopOperating/getMyExposureCardData?callback=',{
 
             }).then((res) =>{
@@ -82,7 +83,7 @@ export default {
                 let xData = [],
                 seriesData = [],
                 legendData = [];
-                
+
                 /**
                  * 处理后台数据
                  */
@@ -116,7 +117,7 @@ export default {
                 legend: {
                     data: legendData,
                     textStyle:{
-                        fontSize:24
+                        fontSize:14
                     }
                 },
                 xAxis: {
@@ -127,7 +128,7 @@ export default {
                     },
                     axisLabel : {
                         textStyle : {
-                            fontSize : 24
+                            fontSize : 14
                         }
                     },
                     axisTick:{
@@ -147,7 +148,7 @@ export default {
                     type: "value",
                     axisLabel: {
                     formatter: "{value}",
-                    fontSize:24
+                    fontSize:14
                     }
                 },
                 series: seriesData
@@ -192,7 +193,7 @@ export default {
             }
         })
     }
-  
+
 }
 </script>
 
@@ -200,4 +201,3 @@ export default {
 @import "https://style.org.hc360.com/css/microMall/analysisStyle.css";
 
 </style>
-

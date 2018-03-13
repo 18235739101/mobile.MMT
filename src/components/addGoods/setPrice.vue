@@ -250,6 +250,9 @@ export default {
        this.priceNum=this.priceObj.price;
        // 保存库存量
        this.proInventory=this.priceObj.inventory;
+       if (this.$route.query.bcid){
+           this.headname = '编辑商品';
+       };
    },
 }
 </script>

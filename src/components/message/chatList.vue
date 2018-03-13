@@ -5,7 +5,7 @@
                 	<a :href="'#/message/chatInfo?from='+username+'&to='+ getToUser(item)" >
                         <div class="messImg"><em v-if="item.readstate==0"></em><div class="messImgCon"><img src="https://style.org.hc360.com/images/microMall/message/topImg.png"></div></div>
                         <dl>
-                            <dt><h5></h5><span>{{timestampToTime(item.createtime)}}</span></dt>
+                            <dt><h5>{{checkName(item)}}</h5><span>{{timestampToTime(item.createtime)}}</span></dt>
                             <dd><p>{{item.content}}</p></dd>
                         </dl>
                     </a>
@@ -20,7 +20,8 @@ export default {
   data(){
       return {
         chartData:[],
-        username:''
+        username:'',
+        query: {}
       }
   },
   // computed:{
@@ -76,7 +77,12 @@ export default {
             s =_this.formateDate(date.getSeconds());
         return Y+'-'+M+'-'+D+' '+h+':'+m+':'+s;
      },
-
+     /**@augments
+      * 判断当前名称为买家还是卖家,显示用户名
+      */
+     checkName (item){
+         return this.username === item.fromuserid ? item.touserid : item.fromuserid;
+     },
      /**@augments
       * 格式化时间日期，如果小于两位数补0
       */
@@ -103,6 +109,7 @@ export default {
 
      let companInfo=JSON.parse(localStorage.getItem('companyInfo')||'{}');
          this.username=companInfo.username;
+         this.query = this.$route.query;
      /*
       * 获取及时沟通列表
       */

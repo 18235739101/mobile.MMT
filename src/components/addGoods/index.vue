@@ -248,8 +248,10 @@ export default {
       }
 
       /** 跳转路由 */
+      let path = '/addgoods/setPrice';
+      _this.bcid ? path += '?bcid='+ this.bcid: path
       _this.$router.push({
-        path: "/addgoods/setPrice"
+        path: path
       });
     },
 
