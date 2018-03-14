@@ -26,9 +26,12 @@
             </div>
         </div>
         <button type="submit"  :class="[ buttonHtml=='发布' ? 'releasedBtn' : 'releasedBtnGray' ]" @click="submitShop">{{ buttonHtml }}</button>
+
+        <footerContent></footerContent>
   </div>
 </template>
 <script>
+import footerContent from "../footer.vue"
 import goodhead from "../header.vue";
 export default {
    data(){
@@ -64,7 +67,8 @@ export default {
        }
    },
    components:{
-      goodhead
+      goodhead,
+      footerContent
    },
    methods:{
        /**
@@ -108,8 +112,7 @@ export default {
 
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
-
-           // 发布商机
+           console.log(_this.getProductParam());
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
            }).then((res)=>{
@@ -234,12 +237,10 @@ export default {
        // 炫铺名称
        storeName(){
            let storeClass=this.storeObj;
-           // console.log(this.productObj);
-           // console.log(this.storeObj)
            if(storeClass.child.seriesid){
                return storeClass.child.name
            }else{
-               return this.productObj.cate.secondSeriesName || this.productObj.cate.bsname || storeClass.name;
+               return storeClass.name;
            }
        }
    },

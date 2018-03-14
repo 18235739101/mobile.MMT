@@ -27,10 +27,10 @@
         <logoTip></logoTip>
     </section>
 
-    
+
     <shopFooter></shopFooter>
     </div>
-  
+
 </template>
 
 <script>
@@ -77,6 +77,7 @@ export default {
 
 <style scoped>
 @import "https://style.org.hc360.com/css/microMall/storeStyle.css";
+.personalInfo{
+    z-index: -1000;
+}
 </style>
-
-

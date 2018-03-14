@@ -5,11 +5,11 @@
         <div class="addProBox">
             <div class="addList4Top"><p>分类至</p><span>{{ classInfo }}</span></div>
 
-            <div class="addList4Box" v-for="(item,i) in lstSeriesVO" :key="i" @click="showChildren(i,$event)">
-                <div class="addList4" ><a href="javascript:;" @click="selectSort(item,'1')">{{ item.seriesName}}</a><em v-show="item.children.length>0"></em></div>
+            <div class="addList4Box" v-for="(item,i) in lstSeriesVO" :key="i" @click.stop="showChildren(i,$event)">
+                <div class="addList4" ><a href="javascript:;" @click.stop="selectSort(item,'1')">{{ item.seriesName}}</a><em v-show="item.children.length>0"></em></div>
                 <div class="addList4List" v-show="item.children.length>0">
                 	<ul v-for="(pro,j) in item.children" :key="j">
-                    	<li><a href="javascript:;" @click="selectSort(pro,'2')">{{ pro.seriesName }}</a></li>
+                    	<li><a href="javascript:;" @click.stop="selectSort(pro,'2',i)">{{ pro.seriesName }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -79,29 +79,42 @@ export default {
     /**
      * 点击对应的分类
      */
-    selectSort(store,level){
+    selectSort(store,level,parentIndex){
        if(level==1){
+           console.log(store);
           Object.assign(this.storeObject,{
               name:store.seriesName,
               bsid:store.seriesid
           })
+          this.$store.commit('saveSort',this.storeObject);
+          // this.$store.commit('saveShopSet',{
+          //     cate: {
+          //         secondSeriesName: store.seriesName
+          //     }
+          // })
        }else{
+           let lstSeriesVO = this.lstSeriesVO;
+           console.log(lstSeriesVO[parentIndex]);
            Object.assign(this.storeObject,{
+               name: lstSeriesVO[parentIndex].seriesName,
+               bsid: lstSeriesVO[parentIndex].seriesid,
                child:{
                    name:store.seriesName,
                    seriesid:store.seriesid
                }
-           })
+           });
+
+           this.$store.commit('saveSort',this.storeObject);
        }
-       this.$store.commit('saveSort',this.storeObject);
        this.classInfo=store.seriesName;
        /**
         * 延迟跳转路由
         */
-       setTimeout(()=>{
+       let timer = setTimeout(()=>{
            this.$router.push({
                path:'/addgoods/setPrice'
-           })
+           });
+           clearTimeout(timer);
        },1200)
     }
   },

@@ -33,11 +33,13 @@
             <button type="submit" class="releasedBtn" @click="next()">下一步</button>
 
     </section>
+    <footerContent></footerContent>
   </div>
 </template>
 
 <script>
 import goodhead from "../header.vue";
+import footerContent from '../footer.vue'
 import { Toast } from "mint-ui";
 import { mapState } from "vuex";
 export default {
@@ -66,7 +68,8 @@ export default {
     };
   },
   components: {
-    goodhead
+    goodhead,
+    footerContent
   },
   computed: mapState({
     //图片上传配置对象
@@ -318,7 +321,14 @@ export default {
                       // 库存量
                       inventory: res.num
                     };
-
+                _this.$store.commit("saveSort",{
+                   bsid:  res.bsid,
+                   child: {
+                       name: res.secondSeriesName,
+                       seriesid: res.secondSeries
+                   },
+                   name: res.bsname
+                });
               // 初始化商品名称
               _this.shopname = res.title;
 

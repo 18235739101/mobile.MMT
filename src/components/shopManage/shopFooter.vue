@@ -6,9 +6,9 @@
         	<li v-if="isShare"><a href="javascritp:void(0)" @click="shopShare"><em class="ico3"></em>分享店铺</a>
 			</li>
       </ul>
-
       <mt-popup :modal=false v-model="popupVisible"  position="bottom">
-           <div id="nativeShare"></div>
+         <div class="shareBox" ><a class="closeBtn2" @click="closeShare">×</a></div>
+         <div id="nativeShare"></div>
       </mt-popup>
   </section>
 </template>
@@ -47,7 +47,10 @@ export default {
   },
 
   methods:{
-
+  closeShare(){
+     this.popupVisible=false;
+     document.body.style.overflow='';
+  },
     /**
      * 浏览器识别（只有手机QQ浏览器和UC浏览器才支持店铺分享）
      */

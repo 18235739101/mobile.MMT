@@ -19,7 +19,7 @@
                                     <p>{{item.content}}</p>
                                 </div>
                                 <div class="chatLeftPro" v-show="item.type==1">
-                                    <a :href="'https://m.hc360.com/supplyself/'+item.bcid+'.html'">
+                                    <a :href="'https://m.hc360.com/supplyself/'+item.content.bcid+'.html'">
                                         <div class="chatLeftProImg"><span><img :src="item.content.imgurl"></span></div>
                                         <div class="chatLeftProRig">
                                             <div class="chatProName">{{ item.content.title }}</div>
@@ -68,8 +68,8 @@
                         </div>
                     </div>
            </div>
-            <div class="chatBoxBot">
-                    <input type="text" maxlength="200" v-model="message" @keyup.enter="sendMessage">
+            <div class="chatBoxBot" ref="chatBoxBot">
+                    <input type="text" maxlength="200" v-model="message" @focus="focusTop" @keyup.enter="sendMessage">
                     <button type="submit" @click="sendMessage">发送</button>
             </div>
        </section>
@@ -132,6 +132,14 @@ export default {
     }
   },
   methods:{
+     focusTop(){
+         let _this = this;
+         setTimeout(function (){
+             let chatBoxBot = _this.$refs.chatBoxBot;
+             chatBoxBot.scrollIntoView(true);
+             chatBoxBot.scrollIntoViewIfNeeded();
+         },200);
+     },
      /*
       * 获取默认头像
       */
@@ -140,9 +148,10 @@ export default {
              defaultlogo='https://style.org.hc360.com/images/microMall/message/topImg.png',
              from=this.messageUser.type=='buy'?item.fromuserid:item.touserid;
          if(from==this.messageUser.from) {
-             return defaultlogo;
-         }
-         return hclogo;
+            return defaultlogo;
+         } else {
+            return hclogo;
+        };
      },
      /*
       * 获取上一次聊天记录
@@ -275,7 +284,8 @@ export default {
                 _this.newMessageList.push({
                     content:_this.message,
                     type:0,
-                    fromuserid:_this.messageUser.from
+                    fromuserid:_this.messageUser.from,
+                    touserid: _this.messageUser.to
                 });
                 _this.message='';
                 _this.gotoFooter();
@@ -331,6 +341,7 @@ export default {
                      _this.proDetail={
                         imgurl:res.picUrls&&res.picUrls[0].picUrl,
                         title:res.title,
+                        bcid: res.bcid,
                         price:res.price||'面议'
                     };
                     _this.gotoFooter();

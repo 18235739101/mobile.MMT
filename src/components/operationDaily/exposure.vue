@@ -13,8 +13,8 @@
                 </div>
                 <div class="botBoxCon2">
                     <div class="titleCon">30日曝光数据</div>
-                    <div class="dataBox2" ref="lineChartsBox" style="width:100%;height:320px;margin:0 auto;"></div>
-                    <!-- <div class="dataBox2" ref="lineChartsBox" ></div> -->
+                    <div class="dataBox2" ref="lineChartsBox" style="width:100%;height:500px;margin:0 auto;"></div>
+                    <!-- <div class="dataBox2" ref="lineChartsBox" style="width:600px;height:280px;margin:0 auto;"></div> -->
                 </div>
 
                 <div class="promptCon2" v-show="buyAbleOnline">根据您的曝光数据，建议您进行以下操作：</div>
@@ -79,7 +79,7 @@ export default {
 
             }).then((res) =>{
                 res = res.data || {};
-
+                console.log(res);
                 let xData = [],
                 seriesData = [],
                 legendData = [];
@@ -100,15 +100,15 @@ export default {
                 });
 
                 (res.time || []).forEach(function(item) {
-                let tt = new Date(parseInt(item)).toLocaleString().replace(/:\d{1,2}$/,' ').split(/\s/g)[0].substring(5);
-                xData.push({value:tt,fontSize:8});
+                    let tt = new Date(parseInt(item)).toLocaleString().replace(/:\d{1,2}$/,' ').split(/\s/g)[0].substring(5);
+                    xData.push({value:tt,fontSize:14});
                 });
                 let options = {
                 grid: {
                     top: "15%",
                     left: "5%",
                     right: "2%",
-                    bottom: "2%",
+                    bottom: "20%",
                     containLabel: true
                 },
                 tooltip: {
@@ -124,23 +124,24 @@ export default {
                     type: "category",
                     boundaryGap: false,
                     axisLine: {
-                    show:false,
+                        show:true,
                     },
                     axisLabel : {
-                        textStyle : {
-                            fontSize : 14
-                        }
+                        fontSize : 14,
+                        color: '#000',
+                        rotate:-30,//-30度角倾斜显示
+                        verticalAlign: 'top'
                     },
                     axisTick:{
-                    show:false
+                        show:false
                     },
                     data: xData
                 },
                 yAxis: {
                     axisLine:{
-                    show:false,
-                    onZero:false,
-                    inside:true
+                        show:false,
+                        onZero:false,
+                        inside:true
                     },
                     axisTick:{
                     show:false
@@ -199,5 +200,7 @@ export default {
 
 <style>
 @import "https://style.org.hc360.com/css/microMall/analysisStyle.css";
-
+.dataBox2{
+    height: 500px;
+}
 </style>
