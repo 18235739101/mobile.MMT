@@ -112,7 +112,7 @@ export default {
 
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
-           console.log(_this.getProductParam());
+           // console.log(_this.getProductParam());
            _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
                params:_this.getProductParam()
            }).then((res)=>{
@@ -237,7 +237,7 @@ export default {
        // 炫铺名称
        storeName(){
            let storeClass=this.storeObj;
-           if(storeClass.child.seriesid){
+           if(storeClass.child.seriesid && storeClass.child.seriesid!='0'){
                return storeClass.child.name
            }else{
                return storeClass.name;

@@ -21,7 +21,7 @@
                             <a href="javascript:void(0)" :class="{programIco:pro.weChat}"></a>
                             <a v-if="pro.checked && pro.checked == '0'" href="javascript:void(0)">已修改审核中...</a>
                             <a v-else href="javascript:void(0)" class="moreBtn" @click="showMore(i)"></a>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
             <p v-show="loading" class="page-infinite-loading">
                 <mt-spinner type="snake"></mt-spinner>
                 加载中...
-            </p>     
+            </p>
             </div>
 
        </div>
@@ -50,7 +50,7 @@
 
         <!--导入小程序弹框-->
         <div class="wxSetUp" style="display:block" v-if="isShowImportXCXAlert">
-            <div class="wxSetUpCon">
+            <div class="wxSetUpCon" ref="wxSetUpCon">
                 <h5>小程序商品设置</h5>
                 <a class="closeBtn" @click="importXCX()">×</a>
                 <ul>
@@ -63,7 +63,7 @@
                     </li>
                     <li>
                         <span class="wxSetUpLeft">一口价</span>
-                        <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur" @keyup="priceValue=priceValue.replace(/[^\d{1,9}\.]*/,'')" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
+                        <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur"  @keyup="priceValue=priceValue.replace(/[^\d{1,9}\.]*/,'')" @focus="focusTop" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
                     </li>
                 </ul>
                 <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
@@ -106,14 +106,14 @@
                 </dl>
             </div>
         </div>
-        
+
         <!--一键重发-->
         <a href="javascript:void(0)" class="resendBtn" @click="OneKeyResend()">一键重发</a>
 
         <mt-popup :modal=false v-model="popupVisible"  position="bottom">
            <div class="shareBox" ><a class="closeBtn2" @click="closeShare">×</a></div>
-           <div id="nativeShare"></div>  
-        </mt-popup>       
+           <div id="nativeShare"></div>
+        </mt-popup>
     </div>
      <!--返回顶部-->
     <gotoTop></gotoTop>
@@ -178,7 +178,7 @@ export default {
              * 是否显示下架商机弹框
              */
             isShowUnshelveProAlert:false,
-            
+
             /**
              * 导入小程序接口参数
              */
@@ -202,7 +202,7 @@ export default {
             popupVisible:false,
 
             /**
-             * 分享的配置参数值 
+             * 分享的配置参数值
              */
             shareConfig : {
                 url:'',
@@ -227,6 +227,14 @@ export default {
     },
 
     methods:{
+        focusTop(){
+            let _this = this;
+            setTimeout(function (){
+                let wxSetUpCon = _this.$refs.wxSetUpCon;
+                wxSetUpCon.scrollIntoView(true);
+                wxSetUpCon.scrollIntoViewIfNeeded();
+            },200);
+        },
         /**
          * 获取商机时间
          */
@@ -235,11 +243,11 @@ export default {
                 year=date.getFullYear(),
                 month=(date.getMonth()+1)< 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1,
                 _data=date.getDate()<10 ? '0'+date.getDate() : date.getDate() ;
-            return year+'/'+month+'/'+_data; 
+            return year+'/'+month+'/'+_data;
         },
 
         /**
-         * 加载更多 
+         * 加载更多
          */
         loadMore(){
             let _this = this;
@@ -277,12 +285,12 @@ export default {
                         _this.loading = false;
                     },100)
                 }
-                
+
             })
         },
 
         /**
-         * 导入小程序 
+         * 导入小程序
          */
         importXCX(proItem){
             let _this = this;
@@ -321,12 +329,12 @@ export default {
                 }else{
                     this.pirceError=null;
                 }
-                this.pirceError ?  this.$toast(this.pirceError) : this.setXCXparams.price=this.priceValue;                
-            
+                this.pirceError ?  this.$toast(this.pirceError) : this.setXCXparams.price=this.priceValue;
+
         },
 
         /**
-         * 确定导入小程序 
+         * 确定导入小程序
          */
         confirmImportXCX(){
             let _this = this;
@@ -334,12 +342,12 @@ export default {
                  _this.$toast(this.pirceError);
                  return false;
             }
-          
+
             // 不支持在线交易
             if(_this.$refs.unsupportTradeOnline.checked){
               _this.setXCXparams.price = '0.00'   //后台要求0.00
             }
-            
+
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
                 params:_this.setXCXparams
             }).then(res =>{
@@ -439,7 +447,7 @@ export default {
         },
 
         /**
-         * 下架商机 
+         * 下架商机
          */
         unShelvePro(bcid){
             let _this = this;
@@ -474,7 +482,7 @@ export default {
                 }
             })
         },
-        
+
         /**
          * 浏览器识别（只有手机QQ浏览器和UC浏览器才支持店铺分享）
          */
@@ -542,14 +550,14 @@ export default {
         },
 
         /**
-         * 显示更多 
+         * 显示更多
          */
         showMore(i){
             // 隐藏其他的更多操作
             this.onSaleList.forEach((item,index)=>{
                 if(index==i){
                     item.isShowMore=!item.isShowMore;
-                    
+
                 }else{
                    item.isShowMore=false;
                 }
@@ -561,10 +569,10 @@ export default {
         let _this = this;
         _this.$nextTick(() =>{
             _this.browserIdenty()
-            
+
         })
     }
-  
+
 }
 </script>
 
@@ -588,4 +596,3 @@ export default {
   height:200px;
 }
 </style>
-

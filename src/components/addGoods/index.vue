@@ -321,13 +321,14 @@ export default {
                       // 库存量
                       inventory: res.num
                     };
+                    console.log(res.bsname);
                 _this.$store.commit("saveSort",{
                    bsid:  res.bsid,
                    child: {
                        name: res.secondSeriesName,
                        seriesid: res.secondSeries
                    },
-                   name: res.bsname
+                   name: res.bsname || '全部'
                 });
               // 初始化商品名称
               _this.shopname = res.title;
