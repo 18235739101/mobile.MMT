@@ -90,7 +90,7 @@ export default function nativeShare (elementNode, config) {
 
     this.html = function() {
         var position = document.getElementById(this.elementNode);
-        var html = 
+        var html =
             '<div class="list clearfix">'+
             '<span data-app="sinaWeibo" class="nativeShare weibo"><i></i>新浪微博</span>'+
             '<span data-app="weixin" class="nativeShare weixin"><i></i>微信好友</span>'+

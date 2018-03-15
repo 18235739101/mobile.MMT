@@ -5,7 +5,7 @@
             <div v-else v-infinite-scroll="loadMore"  infinite-scroll-disabled="loading" infinite-scroll-distance="30">
                 <div class="proListCon" v-for="(pro,i) in refuseList" :key="i">
                     <div class="proImgBox">
-                        <div class="proImgBoxCon"><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
+                        <div class="proImgBoxCon"><a href="javascript:;"><img :src="pro.picpath ? pro.picpath: 'https://style.org.hc360.com/images/microMall/pro/img1.png'"><em class="pcIco" :class="{iphoneIco :pro.pubtype == 10}"></em></a></div>
                     </div>
                     <div class="proImgBoxRig">
                         <div class="proName">
@@ -33,7 +33,7 @@
                 <p v-show="loading" class="page-infinite-loading">
                     <mt-spinner type="snake"></mt-spinner>
                     加载中...
-                </p>  
+                </p>
             </div>
 
             <!--删除商机弹框-->
@@ -124,10 +124,10 @@ export default {
                 year=date.getFullYear(),
                 month=(date.getMonth()+1)< 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1,
                 _data=date.getDate()<10 ? '0'+date.getDate() : date.getDate() ;
-            return year+'/'+month+'/'+_data; 
+            return year+'/'+month+'/'+_data;
         },
         /**
-         * 加载更多 
+         * 加载更多
          */
         loadMore(){
             let _this = this;
@@ -165,19 +165,19 @@ export default {
                         _this.loading = false;
                     },100)
                 }
-                
+
             })
         },
 
         /**
-         * 显示更多 
+         * 显示更多
          */
         showMore(i){
             // 隐藏其他的更多操作
             this.refuseList.forEach((item,index)=>{
                 if(index==i){
                     item.isShowMore=!item.isShowMore;
-                    
+
                 }else{
                    item.isShowMore=false;
                 }
@@ -265,4 +265,3 @@ export default {
   margin-right: 5px;
 }
 </style>
-
