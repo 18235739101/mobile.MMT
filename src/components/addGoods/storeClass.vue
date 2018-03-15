@@ -81,20 +81,15 @@ export default {
      */
     selectSort(store,level,parentIndex){
        if(level==1){
-           console.log(store);
+           // console.log(store);
           Object.assign(this.storeObject,{
               name:store.seriesName,
               bsid:store.seriesid
           })
           this.$store.commit('saveSort',this.storeObject);
-          // this.$store.commit('saveShopSet',{
-          //     cate: {
-          //         secondSeriesName: store.seriesName
-          //     }
-          // })
        }else{
            let lstSeriesVO = this.lstSeriesVO;
-           console.log(lstSeriesVO[parentIndex]);
+           // console.log(lstSeriesVO[parentIndex]);
            Object.assign(this.storeObject,{
                name: lstSeriesVO[parentIndex].seriesName,
                bsid: lstSeriesVO[parentIndex].seriesid,

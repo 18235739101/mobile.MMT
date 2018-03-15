@@ -169,7 +169,9 @@ export default {
           ).then(res => {
               if (res.state == "true") {
                 let imgObj = res.result;
-                imgObj.url = imgObj.url.replace(/(\.\.)(\d+x\d+)/g, "$1220x220a");
+                imgObj.url = imgObj.url.replace(/(\.\.)(\d+x\d+)(\.jpg|\.png|\.gif|\.jpeg)/g, "");
+                // imgObj.url = imgObj.url.replace(/(\.\.)(\d+x\d+)/g, "$1220x220a");
+                // console.log(imgObj.url);
                 _this.imgList.push(res.result);
                 _this.$store.commit("saveShopSet", {
                   imgList: _this.imgList
@@ -321,7 +323,7 @@ export default {
                       // 库存量
                       inventory: res.num
                     };
-                    console.log(res.bsname);
+                    // console.log(res.bsname);
                 _this.$store.commit("saveSort",{
                    bsid:  res.bsid,
                    child: {
@@ -340,7 +342,7 @@ export default {
                  * 替换为大图
                  */
                 res.result.map((item)=>{
-                  item.url=item.url.replace(/(\.\.)(\d+x\d+)/g, "$1220x220a");
+                  item.url=item.url.replace(/(\.\.)(\d+x\d+)(\.jpg|\.png|\.gif|\.jpeg)/g, "");
                 });
                 _this.imgList = [...res.result];
                 shopDetail.imgList = [...res.result];

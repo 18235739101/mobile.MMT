@@ -7,7 +7,7 @@
         <div class="swiper-pagination"></div>
       </swiper>
       <div class="scrollConBot">
-          <p>您还不是移动版买卖通会员</p>
+          <p><a href="http://ydmmt.hc360.com/mobilemmt/app.html">您还不是慧聪掌营通用户</a></p>
           <a href="tel:400-6360-888">电话咨询</a>
       </div>
     </div>
@@ -41,4 +41,3 @@ export default {
 <style>
 @import url('https://style.org.hc360.com/css/microMall/mIntroStyle.css');
 </style>
-

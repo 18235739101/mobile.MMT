@@ -49,8 +49,8 @@
 
 
         <!--导入小程序弹框-->
-        <div class="wxSetUp" style="display:block" v-if="isShowImportXCXAlert">
-            <div class="wxSetUpCon" ref="wxSetUpCon">
+        <div class="wxSetUp" style="display:block" ref="wxSetUpCon" v-if="isShowImportXCXAlert">
+            <div class="wxSetUpCon" >
                 <h5>小程序商品设置</h5>
                 <a class="closeBtn" @click="importXCX()">×</a>
                 <ul>
@@ -229,10 +229,12 @@ export default {
     methods:{
         focusTop(){
             let _this = this;
-            setTimeout(function (){
+            let timer = setTimeout(function (){
                 let wxSetUpCon = _this.$refs.wxSetUpCon;
+                // alert(window.innerHight)
                 wxSetUpCon.scrollIntoView(true);
                 wxSetUpCon.scrollIntoViewIfNeeded();
+                clearTimeout(timer);
             },200);
         },
         /**

@@ -150,6 +150,9 @@ export default {
          if(from==this.messageUser.from) {
             return defaultlogo;
          } else {
+             if (from == undefined){
+                return defaultlogo;
+             }
             return hclogo;
         };
      },
@@ -236,7 +239,8 @@ export default {
                _this.newMessageList.push({
                    fromuserid:_this.messageUser.from,
                    type:1,
-                   content:_this.proDetail
+                   content:_this.proDetail,
+                   touserid: _this.messageUser.to
                });
                /**
                 * 发送完消息，将滚动条滚动到页面底部
