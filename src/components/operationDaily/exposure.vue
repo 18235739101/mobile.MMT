@@ -79,7 +79,7 @@ export default {
 
             }).then((res) =>{
                 res = res.data || {};
-                console.log(res);
+                // console.log(res);
                 let xData = [],
                 seriesData = [],
                 legendData = [];
