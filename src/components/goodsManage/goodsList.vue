@@ -1,7 +1,13 @@
 <template>
 <div>
   <goodHead :head-name='headName' :router-path="routerPath" />
-  <section>
+  <section stype="
+        position: absolute;
+        top: 0.9rem;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        ">
        <div class="proTitBox">
        		<ul>
                    <li v-for="(tab,i) in tabs" :key="i" :class="{titCur:activeTabIndex==i}" @click="tabToggle($event,i,tab.view)"><a href="javascript:void(0)">{{tab.name}}</a></li>
@@ -14,8 +20,8 @@
 
        <div class="proBotAdd">
        		<a href="#/addgoods">添加商品</a>
-       </div> 
-       
+       </div>
+
     </section>
 </div>
 </template>
@@ -28,7 +34,7 @@ import goodsOff from 'components/goodsManage/goodsOff';
 import goodHead from '../header';
 
 export default {
-  
+
   data(){
       return {
           headName:'商品管理',
@@ -86,7 +92,7 @@ export default {
         _this.activeTabIndex = i;
 
       }
-      
+
   },
 
   mounted(){
@@ -105,4 +111,3 @@ export default {
     opacity: 0;
 }
 </style>
-

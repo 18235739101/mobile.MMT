@@ -10,7 +10,7 @@
         </div>
         <div class="slogenBox">
         	<dl>
-            	<dt><h5>慧聪微商城</h5></dt>
+            	<dt><h5>慧聪掌营通</h5></dt>
                 <dd>打造指尖上的移动电商</dd>
             </dl>
         </div>
@@ -37,4 +37,3 @@ export default {
 <style>
 @import "https://style.org.hc360.com/css/microMall/accountStyle.css";
 </style>
-

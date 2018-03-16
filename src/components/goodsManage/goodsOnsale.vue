@@ -49,24 +49,25 @@
 
 
         <!--导入小程序弹框-->
-        <div class="wxSetUp" style="display:block" ref="wxSetUpCon" v-if="isShowImportXCXAlert">
-            <div class="wxSetUpCon" >
+        <div class="wxSetUp" style="display:block" v-if="isShowImportXCXAlert">
+            <div class="wxSetUpCon" ref="wxSetUpCon" >
                 <h5>小程序商品设置</h5>
                 <a class="closeBtn" @click="importXCX()">×</a>
                 <ul>
                     <li>
                         <span class="wxSetUpLeft">是否支持在线交易</span>
                         <div class="wxSetUpRig">
-                            <div class="redioBox"><input type="radio" id="radio-1-1" ref="supportTradeOnline" name="radio-1-set" class="regular-radio" checked=""><label for="radio-1-1"></label><span>是</span></div>
-                            <div class="redioBox"><input type="radio" id="radio-1-2" ref="unsupportTradeOnline" name="radio-1-set" class="regular-radio"><label for="radio-1-2"></label><span>否</span></div>
+                            <div class="redioBox"><input type="radio" id="radio-1-1" ref="supportTradeOnline" name="radio-1-set" class="regular-radio" @click="isCheckedFn(true)" ><label for="radio-1-1"></label><span>是</span></div>
+                            <div class="redioBox"><input type="radio" id="radio-1-2" ref="unsupportTradeOnline" name="radio-1-set" class="regular-radio" @click="isCheckedFn(false)" checked=""><label for="radio-1-2"></label><span>否</span></div>
                         </div>
                     </li>
-                    <li>
+                    <li v-if="isChecked">
                         <span class="wxSetUpLeft">一口价</span>
                         <div class="wxSetUpRig"><input type="text" v-model.trim="priceValue" @blur="priceOnlineBlur"  @keyup="priceValue=priceValue.replace(/[^\d{1,9}\.]*/,'')" @focus="focusTop" ref="priceOnline" class="priceInput" placeholder="请设置一口价"></div>
                     </li>
                 </ul>
-                <p>注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
+                <p v-if="isChecked">注意：小程序商品暂不支持起批量、区间价、规格、运费、优惠券，买家下单无需卖家确认即可付款</p>
+                <p v-else>注意：如不支持在线交易，则买家无法下单，仅可询价</p>
                 <div class="wxSetUpBtn">
                     <button type="submit" class="leftRedBtn" @click="confirmImportXCX()">确定</button>
                     <button type="button" @click="importXCX()">取消</button>
@@ -130,7 +131,10 @@ export default {
 
     data(){
         return {
-
+            /**
+             * 是否显示一口价
+             */
+            isChecked: false,
             /**
              * 在售列表对象
              */
@@ -227,11 +231,13 @@ export default {
     },
 
     methods:{
+        isCheckedFn (ble){
+            this.isChecked = ble;
+        },
         focusTop(){
             let _this = this;
             let timer = setTimeout(function (){
                 let wxSetUpCon = _this.$refs.wxSetUpCon;
-                // alert(window.innerHight)
                 wxSetUpCon.scrollIntoView(true);
                 wxSetUpCon.scrollIntoViewIfNeeded();
                 clearTimeout(timer);
@@ -314,7 +320,7 @@ export default {
          * 一口价失去焦点
          */
         priceOnlineBlur(){
-            let  reg=/^[1-9]\d{0,8}\.\d{1,2}$/,
+            let reg = /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/,
                  max='9999999999.99';
                if(this.priceValue==''){
                     this.pirceError='请填写价格！';
@@ -328,6 +334,7 @@ export default {
                         this.pirceError='商品单价不能大于：9999999999.99';
                 }else if(!reg.test(this.priceValue)){
                         this.pirceError='请输入合法价格';
+                        this.priceValue = '';
                 }else{
                     this.pirceError=null;
                 }
@@ -364,12 +371,14 @@ export default {
                             break;
                         }
                     }
+                    _this.isChecked = false;
                     _this.isShowImportXCXAlert = !_this.isShowImportXCXAlert;
                 }else{
                     // 修改一口价的默认值
                      _this.priceValue='';
                     _this.$toast(res.returnMsg || '导入小程序失败！');
                 }
+                _this.setXCXparams.price = '';
                 document.body.style.overflow='';
             })
         },

@@ -3,13 +3,13 @@
  <header class="mHeaderBox"><h3>小程序管理</h3></header>
  <section>
         <div class="personalInfoNew">
-            <div class="headPortrait"><a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank"><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
+            <div class="headPortrait"><a href='#/xcxManage/account'><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
             <div class="comName">
                 <span>
-                  <a :href='"//m.hc360.com/b2b/"+companyInfo.username' target="_blank">{{companyInfo.name}}</a>
-                </span> 
+                  <a href='#/xcxManage/account'>{{companyInfo.name}}</a>
+                </span>
             </div>
-            <div class="comCodeCon"><a href="#/xcxManage/code"></a></div>
+            <div class="comCodeCon"><a href="#/xcxManage/code?copy=1"></a></div>
         </div>
         <div class="wxProgramList">
         	<ul>
@@ -21,7 +21,7 @@
             	<li>
                 	<dl>
                     	<dd class="mallDecorate"><a href="#/xcxManage/decorate">小程序店铺装修</a></dd>
-                    	<dd class="wxMallAdd"><a href="#/xcxManage/code">浏览小程序店铺</a></dd>
+                    	<dd class="wxMallAdd"><a href="#/xcxManage/code?copy=2">浏览小程序店铺</a></dd>
                         <dd class="proOrderManage"><a href="#/order">小程序订单管理</a></dd>
                     </dl>
                 </li>
@@ -74,7 +74,7 @@ export default {
             _this.getShopInfos();
         })
     }
-  
+
 }
 </script>
 
@@ -83,4 +83,3 @@ export default {
 @import "https://style.org.hc360.com/css/microMall/wxProgram.css";
 
 </style>
-

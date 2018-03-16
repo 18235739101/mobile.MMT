@@ -9,7 +9,7 @@
                     </div>
                     <div class="proImgBoxRig">
                         <div class="proName">
-                            <p><a :href="'//m.hc360.com/supplyself/'+ pro.bcid +'.html'">{{pro.title}}</a></p>
+                            <p><a href="javascript:;">{{pro.title}}</a></p>
                             <span>{{ getTime(pro.pubdate) }}</span>
                             <!-- <span>{{new Date(parseInt(pro.pubdate)).toLocaleString().replace(/:\d{1,2}$/,'').split(/\s/g)[0]}}</span> -->
                         </div>

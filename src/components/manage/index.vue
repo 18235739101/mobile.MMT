@@ -1,7 +1,7 @@
 <template>
 
     <section>
-        <header class="mHeaderBox"><h3>慧聪微店管理后台</h3></header>
+        <header class="mHeaderBox"><h3>掌营通管理后台</h3></header>
         <div class="manageCon">
         	<div class="manageBg"><img src="https://style.org.hc360.com/images/microMall/manage/manageBg.png"></div>
             <div class="personalInfo">
@@ -26,9 +26,9 @@
         <logo-tip></logo-tip>
 
         <footerContent></footerContent>
-        
+
     </section>
-  
+
 </template>
 
 <script>
@@ -64,7 +64,7 @@ export default {
             companyInfo:{}
         }
     },
-    
+
     components:{
         'logo-tip':logoTip,
         footerContent
@@ -92,14 +92,11 @@ export default {
         })
     }
 
-    
-    
+
+
 }
 </script>
 
 <style scoped>
 @import "https://style.org.hc360.com/css/microMall/manageStyle.css";
 </style>
-
-
-
