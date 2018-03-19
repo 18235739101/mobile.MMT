@@ -309,6 +309,7 @@ export default {
             document.body.style.overflow='';
             //清空一口价
             _this.priceValue='';
+            _this.isChecked = false;
             if(proItem){
                 _this.setXCXparams.bcid = proItem.bcid;
                 _this.setXCXparams.type = 1;
@@ -347,16 +348,15 @@ export default {
          */
         confirmImportXCX(){
             let _this = this;
+            // 不支持在线交易
+            if(_this.$refs.unsupportTradeOnline.checked){
+              _this.setXCXparams.price = '0.00'   //后台要求0.00
+              _this.pirceError = ''; 
+            }
             if(this.pirceError){
                  _this.$toast(this.pirceError);
                  return false;
             }
-
-            // 不支持在线交易
-            if(_this.$refs.unsupportTradeOnline.checked){
-              _this.setXCXparams.price = '0.00'   //后台要求0.00
-            }
-
             _this.$http('get','//wsproduct.hc360.com/mBusinChance/setAppletsBusin',{
                 params:_this.setXCXparams
             }).then(res =>{

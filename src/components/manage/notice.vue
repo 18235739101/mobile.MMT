@@ -8,7 +8,7 @@
       </swiper>
       <div class="scrollConBot">
           <p><a href="http://ydmmt.hc360.com/mobilemmt/app.html">您还不是慧聪掌营通用户</a></p>
-          <a href="tel:400-6360-888">电话咨询</a>
+          <a onclick="sendUserlogsElement('UserBehavior_zyt_mintroduce_tel')" href="tel:400-6360-888">电话咨询</a>
       </div>
     </div>
 </template>

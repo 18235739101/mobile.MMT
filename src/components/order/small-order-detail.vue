@@ -44,12 +44,12 @@
                             	<p><span>下单时间</span><b>{{orderDetail.order.orderCreateTime}}</b></p>
                             </div>
                         	<div class="orderDetail2">
-                            	<p><span>商品总额</span><b>&yen;{{orderDetail.order.orderTotalAmout}}</b></p>
+                            	<p><span>商品总额</span><b>&yen;{{sum}}</b></p>
                             	<p><span>运费</span><b>&yen;{{orderDetail.order.orderFareAmount}}</b></p>
                             </div>
                         </dt>
                     </dl>
-                    <div class="orderDetailBot2">应付总额：<span>&yen;1.00</span></div>
+                    <div class="orderDetailBot2">应付总额：<span>&yen;{{fareAmount}}</span></div>
                 </div>
             </div>
             <div class="courierBox" v-if="orderDetail.post">
@@ -77,6 +77,10 @@ import headerTop from '../header.vue';
 export default {
     data(){
        return {
+          // 商品金额
+          sum: 0,
+          // 应付总额
+          fareAmount: 0,
           headName:'订单详情',
           orderDetail:{},
           /**
@@ -104,8 +108,24 @@ export default {
            res=(res.data || {}).orderDetail;
            if(res){
               _this.orderDetail= res;
+              _this.computedSum(res);
            }
         })    
+    },
+    methods: {
+      computedSum (res){
+        let sum = 0;
+        let prodList = res.prodList;
+        if (prodList.length){
+          prodList.map(item => {
+            sum += item.bcUnitPrice * item.bcNumber;
+          });
+          this.fareAmount = res.order.orderTotalAmout + res.order.orderFareAmount
+          this.sum = sum;
+        }
+        
+      }  
     }
+    
 };
 </script>

@@ -5,9 +5,7 @@
         <div class="personalInfoNew">
             <div class="headPortrait"><a href='#/xcxManage/account'><img src="https://style.org.hc360.com/images/microMall/manage/hImg.png"></a></div>
             <div class="comName">
-                <span>
-                  <a href='#/xcxManage/account'>{{companyInfo.name}}</a>
-                </span>
+                  <a href='#/xcxManage/account'><span>{{companyInfo.name}}</span></a>
             </div>
             <div class="comCodeCon"><a href="#/xcxManage/code?copy=1"></a></div>
         </div>
