@@ -112,9 +112,22 @@ export default {
 
            // 修改发布按钮显示状态
            _this.buttonHtml='发布中...'
-           // console.log(_this.getProductParam());
-           _this.$http('get','//wsproduct.hc360.com/mBusinChance/pubbusin',{
-               params:_this.getProductParam()
+           var data = _this.getProductParam();
+           let formData = new FormData();
+               formData.append("bcid", data.bcid || 0);
+               formData.append("bsid", data.bsid);
+               formData.append("num", data.num);
+               formData.append("priceType", data.priceType);
+               formData.append("pricerange1",data.pricerange1);
+               formData.append('secondSeries',data.secondSeries)
+               formData.append("sessionid", data.sessionid);
+               formData.append("supcatid", data.supcatid);
+               formData.append("title", data.title);
+               formData.append("introduce", data.introduce);
+           _this.$http('post','//wsproduct.hc360.com/mBusinChance/pubbusin', formData ,{
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
            }).then((res)=>{
                if(res.success){
                   _this.$router.push({
